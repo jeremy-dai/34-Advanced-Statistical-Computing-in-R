@@ -1,0 +1,7 @@
+"0","err_AT <- replicate(10^3, MC_AT(N)) - I_true$value"
+"0","RMSE_AT <-  sqrt(mean(err_AT)^2)"
+"0","RMSE_AT"
+"1","[1]"
+"1"," 0.0002977676"
+"1","
+"

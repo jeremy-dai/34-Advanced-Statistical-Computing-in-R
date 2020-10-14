@@ -1,0 +1,160 @@
+---
+title: "Assignment Week 3"
+output: html_document
+---
+
+### Name: Yizhen Dai
+
+### ULCN: S2395479
+
+```{r label = preps, echo=FALSE}
+rm(list=ls(all=T)) #clears your workspace
+```
+
+
+
+We will compute or approximate the value of the expectation 
+$$I=E[\mathbb{1}(X > 1) X^2], \qquad X \sim \mathcal N(0, 1).$$
+
+
+### Exercise 1. Importance sampling
+
+- Obtain a Monte Carlo estimate of $I$ using importance sampling. (There are multiple solutions; make sure that your method is substantially more efficient than straightforward simulation from a normal distribution
+with mean zero.)
+```{r}
+set.seed(1234)
+
+N <- 10^4 # MC replications
+
+MC_IS <- function(N) { # Importance sampling
+  Z <- rnorm(N, mean = 1) # the alternative distribution
+  G <- as.integer(Z>1) * Z ^ 2 # calculate I(X)
+  mean(G * dnorm(Z) / dnorm(Z, mean = 1))
+}
+
+MC_IS(N)
+```
+
+- Calculate the MC approximation error.
+Firstly, we calculate the theoretical value of $I$.
+$$ I = \int_{-\infty}^10\,dx + \int_1^{\infty} x^2f(x)\,dx \\
+     =  \int_1^{\infty} \frac{x^2e^{-x^2/2}}{\sqrt{2\pi}}\,dx  $$
+     
+     
+```{r}
+integrand <- function(x) {x^2*exp(-x^2/2)/sqrt(2*pi)}
+# integrate the function from 1 to infinity
+I_true <- integrate(integrand, lower = 1, upper = Inf)
+I_true 
+```
+
+```{r}
+err_IS <- replicate(10^3, MC_IS(N)) - I_true$value
+RMSE_IS <- sqrt(mean(err_IS)^2)
+format(RMSE_IS, scientific = TRUE)  
+```
+The MC approximation error is $4.21 * 10^{-5}$.
+
+### Exercise 2. Antithetic variables
+
+- This time use antithetic variables for computing $I$.
+```{r}
+set.seed(1234)
+
+MC_AT <- function(N) { # Antithetic variables
+  U <- runif(N/2)
+  Z <- c(qnorm(U), qnorm(1 - U))
+  G <- as.integer(Z>1) * Z ^ 2 # calculate I(X)
+  mean(G)
+}
+
+MC_AT(N)
+```
+
+
+- Estimate the MC approximation error using simulation. Compare this to importance sampling.
+```{r}
+err_AT <- replicate(10^3, MC_AT(N)) - I_true$value
+RMSE_AT <- sqrt(mean(err_AT)^2)
+format(RMSE_AT, scientific = TRUE)  
+```
+The MC approximation error for Antithetic variables is $5.995 * 10^{-4}$, which is about 10 times of the error for Importance sampling. Importance sampling is much more effcicent in this case.
+
+- Now combine antithetic variables with importance sampling to achieve maximal accuracy.
+
+```{r}
+set.seed(1234)
+
+MC_AT_IS <- function(N) { 
+  U <- runif(N/2) # prepare for Antithetic variables
+  Z <- c( qnorm(U, mean = 1), qnorm(1 - U, mean = 1)) # the alternative distribution
+  G <- as.integer(Z>1) * Z ^ 2 # calculate I(X)
+  mean(G * dnorm(Z) / dnorm(Z, mean = 1))
+}
+
+MC_AT_IS(N)
+```
+
+- Compute the MC approximation error and compare to the previous methods.
+```{r}
+err_AT_IS <- replicate(10^3, MC_AT_IS(N)) - I_true$value
+RMSE_AT_IS <-  sqrt(mean(err_AT_IS)^2)
+format(RMSE_AT_IS, scientific = TRUE)  
+```
+The MC approximation error for the combined methods is $2.74 * 10^{-5}$, which is the smallest among the results from three methods. Using both methods together does increase the simulation efficiency.
+
+### Exercise 3. Metropolis-Hastings
+
+Let $f(x)=(2+\sin(1/x))\exp(-x^2)$.
+
+- Use the Metropolis-Hastings algorithm to sample from the distribution with density proportional to $f$, and plot a histogram. Use a suitable proposal distribution.
+
+> Mixing is strongly affected by features of the proposal distribution, especially its spread. For a general Metropolis–Hastings chain such as an independence chain, it seems intuitively clear that we wish the proposal distribution g to approximate the target distribution f very well, which in turn suggests that a very high rate of accepting proposals is desirable. In practice, the variance of the proposal distribution can be selected through an informal iterative process. Start a chain, and monitor the proportion of proposals that have been accepted; then adjust the spread of the proposal distribution accordingly. For a Metropolis algorithm with normal target and proposal distributions, it has been suggested that an acceptance rate of between 25 and 50% should be preferred, with the best choice being about 44% for one-dimensional problems
+
+[Ref: G. H. Givens and J. A. Hoeting. Computational Statistics. Wiley, New Jersey, 2005.]
+
+
+```{r}
+# Start with normal distribution as proposal distribution
+set.seed(1234)
+
+N <- 10^5
+sigma <- 1.5
+f <- function(x) (2+sin(1/x))/exp(x^2)
+g <- function(x) rnorm(1, x, sigma)
+
+x <- numeric(N)
+x[1] <- g(0)
+k <- 0
+u <- runif(N)
+
+for (i in 2:N) { 
+  xt <- x[i-1]
+  y <- g(xt)
+  num <- f(y) * dnorm(xt, y, sigma) 
+  den <- f(xt) * dnorm(y, xt, sigma) 
+  if (u[i] <= num/den) x[i] <- y else {
+  x[i] <- xt 
+  k <- k+1
+  }
+}
+
+x <- x[-c(1:1000)] # burn the first 1000 iterations
+
+1 - k/(N-10^3) # acceptance rate 
+```
+
+Around 42% of the candidate points are accepted. Next we examine the stochastic process after the burn-in period
+
+```{r}
+index <- 1:1000
+y1 <- x[index]
+plot(index, y1, type="l", main="", ylab="x")
+```
+
+The number of thrown-away burn-in samples seems reasonable.
+
+```{r}
+hist(x,breaks="scott", main="", xlab="", freq=FALSE)
+```
+

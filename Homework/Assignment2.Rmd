@@ -1,0 +1,110 @@
+Assignment for week 2
+=====================
+
+### Name: Yizhen Dai
+
+### ULCN: S2395479
+
+```{r echo=FALSE}
+rm(list=ls())
+```
+
+### Monte Carlo
+
+Let $\mathbf{X}=X_1,X_2,\ldots,X_{100}$ be i.i.d. Gamma distributed values with shape and scale parameters $20$ and $1$, respectively. Define $T(\mathbf{X})=\min\{X_1,\ldots,X_{100}\}$.
+
+- Estimate and plot the sampling distribution of $T$.
+```{r}
+set.seed(1234)
+
+N <- 10000 # MC replications
+Tx <- numeric(N) # preallocate result 
+
+for (rep in 1:N) {
+  Tx[rep] <- min(rgamma(100, shape = 20, scale = 1)) # calculate
+}
+
+hist(Tx, prob = TRUE, breaks = 100)
+```
+The estimated $T$ distribution is bell-shaped and left-skewed
+
+- Estimate mean and standard error of $T$.
+```{r}
+cat('The mean of T is',mean(Tx), 'and the standard error of T is',sd(Tx))
+```
+
+
+- What is the approximation error for $E[T]$?
+```{r}
+errors <- 2 * sd(Tx) / sqrt(N)
+cat('The approximation error for E[T] is',errors,'for a MC replication of 10000 times.')
+```
+
+
+
+- Estimate $P(T<10)$ using simulation.
+```{r}
+P1 <- mean(Tx<10)
+P1
+```
+
+- Now work out $P(T<10)$ analytically, and calculate its value in R (hint: use the function `pgamma()`).
+
+$P(T<10) = P($ at lease one $X_i$ is smaller than $10) = 1 - P($ every $X_i$ is bigger than $10)$ 
+
+```{r}
+P2 <- 1 - pgamma(10, shape = 20, scale = 1, lower.tail = F)^100
+P2
+```
+
+The true probability is 0.292, really close to 0.289 that we got from simulation.
+
+### Hypothesis tests
+
+After observing a sequence $\mathbf{X}=X_1,\ldots,X_{100}$ of natural numbers, we wish to test whether these numbers are Poisson distributed with mean $10$. To test this, we use the log of the likelihood as a test statistic: $T(\textbf{X})=\log P(\textbf{X};\lambda=10)$.
+
+- Decide on a rejection set $K$. Use simulation to estimate the size of the test given this rejection set $K$. Tweak the rejection set until the size is less than $0.01$, in order to control the Type I error probability.
+
+$H_0$:$\mathbf{X} \sim Poisson(10)$. Type I Error $(\alpha)$/Size is the probability of rejecting a true null hypothesis. 
+
+If $\mathbf{X} \sim Poisson(10)$, $T(\textbf{X})= \log \prod p(X_{i})$.
+
+Let's first examine the distribution.
+```{r}
+set.seed(1234)
+N <- 10000 # MC replications
+n <- 100
+X <- rpois(n*N, 10) # Generate random variables
+X_m <- matrix(X,nrow = N,ncol = n) # Create a matrix
+
+prob <- function(x) log(prod(dpois(x, 10))) # The function of calculating the log likelihood
+T_N <- apply(X_m,1,prob) # N simulations of T
+hist(T_N)
+```
+```{r}
+mean(T_N)
+sd(T_N)
+```
+
+To get a $\alpha < 0.01$, we apply the the empirical rule and use $3\sigma$. We set the rejection set $K$ as $(- \infty, -276) \cup (-236, \infty)$.
+```{r}
+mean(T_N < -276 | T_N > -236)
+```
+
+- Now sample 100 outcomes from a geometric distribution with mean 10. Calculate the test statistic and see if you can comfortably reject the hypothesis that these data are Poisson. (Note that the mean of the geometric distribution with parameter $\theta$ is $(1-\theta)/\theta$.)
+
+$(1-\theta)/\theta = 10, \theta = 1/11$
+```{r}
+set.seed(1234)
+N <- 100 # MC replications
+n <- 100
+X <- rgeom(N*n, 1/11) # Generate random variables from the geometric distribution
+X_m <- matrix(X,nrow = N,ncol = n) # Create a matrix
+
+prob <- function(x) log(prod(dpois(x, 10))) # The function of calculating the log likelihood
+T_N <- apply(X_m,1,prob) # Calculating the test statistic
+
+mean(T_N < -276 | T_N > -236)
+```
+
+All outcomes are correctly rejected.

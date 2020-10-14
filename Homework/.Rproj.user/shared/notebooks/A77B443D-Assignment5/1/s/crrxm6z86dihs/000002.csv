@@ -1,0 +1,4 @@
+"0","set.seed(5)"
+"0","X <- rexp(500)"
+"0","Y <- 2 + 0.5 * X + rnorm(500)"
+"0","dat <- data.frame(Y, X)"

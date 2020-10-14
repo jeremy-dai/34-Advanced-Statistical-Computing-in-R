@@ -1,0 +1,7 @@
+"0","err_AT_IS <- replicate(10^3, MC_AT_IS(N)) - I_true$value"
+"0","RMSE_AT_IS <-  sqrt(mean(err_AT_IS)^2)"
+"0","format(RMSE_AT_IS, scientific = TRUE)  "
+"1","[1]"
+"1"," ""2.744768e-05"""
+"1","
+"

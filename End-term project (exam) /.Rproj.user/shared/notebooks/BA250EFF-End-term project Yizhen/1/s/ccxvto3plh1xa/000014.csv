@@ -1,0 +1,2 @@
+"0","legend( x = 'topright', legend = c('Vt','Pt'), pch=1, "
+"0","        col = c('black', 'red'))"

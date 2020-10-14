@@ -1,0 +1,4 @@
+"0","# examine the stochastic process"
+"0","index <- 1:1000"
+"0","y1 <- x[index]"
+"0","plot(index, y1, type=""l"", main="""", ylab=""x"")"

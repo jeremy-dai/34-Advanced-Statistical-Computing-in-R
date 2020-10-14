@@ -1,0 +1,7 @@
+"0","err_IS <- replicate(10^3, MC_IS(N)) - I_true$value"
+"0","RMSE_IS <-  sqrt(mean(err_IS)^2)"
+"0","RMSE_IS"
+"1","[1]"
+"1"," 5.255064e-05"
+"1","
+"

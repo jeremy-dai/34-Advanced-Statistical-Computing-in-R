@@ -1,0 +1,252 @@
+---
+title: "Assignment Week 5"
+output: html_document
+---
+
+### Name: Yizhen Dai
+
+### ULCN: S2395479
+
+```{r label = preps, echo=FALSE}
+rm(list=ls()) #clears your workspace
+```
+
+### Exercise 1
+
+We will use the EM algorithm to estimate the parameters of a normal mixture model and study its behavior. Recall that $X$ follows a normal mixture distribution if it has density, 
+$$f(x; \theta) = \sum_{k = 1}^K w_k \phi(x; \mu_k, \sigma_k),$$
+where 
+
+* $\theta = (w_1, \dots, w_K, \mu_1, \sigma_1, \dots, \mu_K, \sigma_K)$ 
+is the vector of unknown parameters,
+* $\phi(\cdot; \mu, \sigma)$ is the density of a $\mathcal{N}(\mu, \sigma^2)$ random variable.
+
+Also keep in mind that there are constraints on the parameters:
+
+* $\sum_{k = 1}^K w_k = 1$ 
+* $\sigma_k > 0, 0 \le w_k \le 1$ for all $k = 1, \dots, K$.
+
+**(a)** Write a function `rmixt()` that simulates from a Gaussian mixture model.
+The function should take four arguments:
+
+* `n`: the number of samples to simulate,
+* `w`, `mu`, `sigma`: the model parameters (length `K` vectors).
+
+Verify that your function is correct by making a histogram of simulated data. 
+This function will be useful to check whether your solution of (c) is correct.
+
+**Solution**
+
+```{r}
+rmixt <- function(n, w, mu, sigma) {
+  k <- sample(1:length(w), n, replace = TRUE, prob = w) 
+  rnorm(n, mean = mu[k], sd = sigma[k]) 
+}
+
+X <- rmixt(10^4, c(0.5,0.5), c(-5,5), c(2,5))
+hist(X)
+```
+
+
+
+**(b)** Write a function `dmixt()` that computes the mixture density. It should 
+take the following arguments:
+
+* `x`: vector of evaluation points,
+* `w`, `mu`, `sigma`: the model parameters (length `K` vectors).
+
+Verify that your function is correct by plotting the density over a histogram of simulated data. 
+
+**Solution**
+
+```{r}
+dmixt <- function(x, w, mu, sigma) {
+  sapply(x, FUN=function(x_) sum(w * dnorm(x_, mu, sigma)))
+}
+
+X <- sort(X)
+d <- dmixt(X, c(0.5,0.5), c(-5,5), c(2,5))
+plot(X, d, type = 'l')
+```
+
+
+**(c)** Write a function `fit_em()` that implements the EM algorithm for fitting the Gaussian mixture parameters. The function should take five arguments
+
+* `x`: the data,
+* `w, mu, sigma`: initial guesses for parameters.
+* `eps`: a threshold value that is used to terminate the algorithm as soon as the parameters reach their optimal values.
+
+It should return a matrix with columns `(w, mu, sigma)`.
+
+**Solution**
+
+$w_{k}^{(t+1)}=\frac{\sum_{i=1}^{n} \pi_{k, i}}{\sum_{y=1}^{K} \sum_{i=1}^{n} \pi_{k, i}}$
+
+$\mu_{k}^{(t+1)}=\frac{\sum_{i=1}^{n} X_{i} \pi_{k, i}}{\sum_{i=1}^{n} \pi_{k, i}}, \quad \sigma_{k}^{(t+1)}=\sqrt{\frac{\sum_{i=1}^{n}\left(X_{i}-\mu_{k}^{(t+1)}\right)^{2} \pi_{k, i}}{\sum_{i=1}^{n} \pi_{k, i}}}$
+
+```{r}
+fit_em <- function(x, w, mu, sigma, eps) {
+
+  if_pass <- 0 # check if meet converging criteria
+  i <- 0       # counter
+  while(!if_pass){
+    sum_pie <- sapply(1:length(w),   # sum pi for i from 1 to n
+       FUN=function(k) sum(w[k]*dnorm(x, mu[k], sigma[k])/dmixt(x, w, mu, sigma)))
+    w_new <- sum_pie/sum(sum_pie)
+    
+    sum_Xpie <- sapply(1:length(w), 
+       FUN=function(k) sum(x*w[k]*dnorm(x, mu[k], sigma[k])/dmixt(x, w, mu, sigma)))
+    mu_new <- sum_Xpie/sum_pie 
+    
+    sum_MSEpie <- sapply(1:length(w), 
+       FUN=function(k) sum((x-mu[k])^2*w[k]*dnorm(x, mu[k], sigma[k])/dmixt(x, w, mu, sigma)))
+    sigma_new <- sqrt(sum_MSEpie/sum_pie)
+    
+    if_pass <- prod((w_new - w) < eps)*
+               prod((mu_new - mu) < eps)*
+               prod((sigma_new - sigma) < eps)
+    
+    i <- i + 1
+    w <- w_new
+    mu <- mu_new
+    sigma <- sigma_new
+  }
+  cat('A total of ',i,' iterations.\n')
+  return(list('w' = w, 'mu' = mu, 'sigma' = sigma))
+}
+
+results <- fit_em(X, c(0.4,0.6), c(-4,6), c(2,4), 10^-3)
+results
+```
+
+**(d)** 
+
+We will now investigate the role of the starting parameters. We will use the 
+following data:
+
+```{r}
+set.seed(5)
+w_true <- c(0.2, 0.3, 0.5)
+mu_true <- c(0.5, 2, 4)
+sigma_true <- c(0.5, 1, 0.5)
+X <- rmixt(1000, w_true, mu_true, sigma_true)
+```
+
+Consider the following choices of initial guesses:
+
+1. `w <- w_true; mu <- mu_true; sigma <- sigma_true`.
+2. `w <- rep(1/3, 3); mu <- rep(mean(X), 3); sigma <- rep(sd(X), 3)`
+3. `w <- rep(1/3, 3); mu <- mean(X) + sd(X) * c(-1, 0, 1); sigma <- rep(sd(X), 3)`
+4. The group frequency/mean/SD where groups are computed via the k-means algorithm:
+``` r
+clusters <- kmeans(X, 3)$cluster
+w <- table(clusters) / length(X)
+mu <- tapply(X, clusters, mean)
+sigma <- tapply(X, clusters, sd)
+```
+
+For every choice of starting parameters, run the EM algorithm and 
+compare the estimated densities with a histogram. Which methods can you recommend 
+for practical use?
+
+**Solution**
+
+```{r}
+### sort X
+X <- sort(X)
+```
+
+
+##### 1.
+
+```{r}
+w <- w_true; mu <- mu_true; sigma <- sigma_true
+
+results <- fit_em(X, w, mu, sigma, 10^-3)
+print(results)
+d <- dmixt(X, results$w, results$mu, results$sigma)
+plot(X, d, type = 'l') 
+```
+
+##### 2.
+
+```{r}
+w <- rep(1/3, 3); mu <- rep(mean(X), 3); sigma <- rep(sd(X), 3)
+
+results <- fit_em(X, w, mu, sigma, 10^-3)
+print(results)
+d <- dmixt(X, results$w, results$mu, results$sigma)
+plot(X, d, type = 'l') 
+```
+
+##### 3. 
+```{r}
+w <- rep(1/3, 3); mu <- mean(X) + sd(X) * c(-1, 0, 1); sigma <- rep(sd(X), 3)
+
+results <- fit_em(X, w, mu, sigma, 10^-3)
+print(results)
+d <- dmixt(X, results$w, results$mu, results$sigma)
+plot(X, d, type = 'l') 
+```
+
+##### 4. 
+```{r}
+clusters <- kmeans(X, 3)$cluster
+w <- table(clusters) / length(X)
+mu <- tapply(X, clusters, mean)
+sigma <- tapply(X, clusters, sd)
+
+results <- fit_em(X, w, mu, sigma, 10^-3)
+print(results)
+d <- dmixt(X, results$w, results$mu, results$sigma)
+plot(X, d, type = 'l') 
+```
+
+I would recommend the last method. 
+- The first method is not realistic. 
+- The second method is not correct since it does not update
+- The third method is slow to converge and does not show three peaks
+- The last method converges pretty quickly and show the correct peaks
+
+
+## Exercise 2
+
+Consider the following data:
+```{r}
+set.seed(5)
+X <- rexp(500)
+Y <- 2 + 0.5 * X + rnorm(500)
+dat <- data.frame(Y, X)
+```
+We fit a linear model to this data and compute confidence intervals for both parameters:
+```{r}
+fit <- lm(Y ~ X, data = dat)
+confint(fit)
+```
+Now implement a bootstrap algorithm to estimate 95%-confidence intervals for both 
+parameters. Compare your results to the confidence intervals above.
+
+**Solution:**
+We will use empirical bootstrap to compute beta's and Normal boostrap to construct confident intervals (based on the normality assumption of linear models)
+```{r}
+#### Empirical bootstrap algorithm
+B <- 1000
+set.seed(1000)
+
+M1 <- model.matrix(fit)
+
+beta_stars <- t(sapply(1:B, function(b){
+  y <- fit$fitted  + sample(residuals(fit), replace = TRUE) # empirical 
+  bstar <- coefficients(lm(y ~ M1 - 1, data = dat)) 
+  return(t(bstar))
+  }))
+
+### construct the confident intervals
+se_boot <- apply(beta_stars, 2, sd) # Bootstrap se's of the coefficients
+results <- rep(fit$coefficients, 2) + # estimate of the coefficients
+  rep(se_boot,2) * qnorm(c(0.025, 0.025, 0.975, 0.975)) 
+names(results) <- c('int_low', 'beta_low', 'int_high', 'beta_high')
+
+results 
+```
+We can the bootstrap results are very close the calculated ones.

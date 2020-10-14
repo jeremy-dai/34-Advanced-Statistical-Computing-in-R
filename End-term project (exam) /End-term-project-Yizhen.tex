@@ -1,0 +1,422 @@
+\documentclass[11pt,]{article}
+\usepackage[left=1in,top=1in,right=1in,bottom=1in]{geometry}
+\newcommand*{\authorfont}{\fontfamily{phv}\selectfont}
+\usepackage[]{mathpazo}
+
+
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+
+
+
+
+\usepackage{abstract}
+\renewcommand{\abstractname}{}    % clear the title
+\renewcommand{\absnamepos}{empty} % originally center
+
+\renewenvironment{abstract}
+ {{%
+    \setlength{\leftmargin}{0mm}
+    \setlength{\rightmargin}{\leftmargin}%
+  }%
+  \relax}
+ {\endlist}
+
+\makeatletter
+\def\@maketitle{%
+  \newpage
+%  \null
+%  \vskip 2em%
+%  \begin{center}%
+  \let \footnote \thanks
+    {\fontsize{18}{20}\selectfont\raggedright  \setlength{\parindent}{0pt} \@title \par}%
+}
+%\fi
+\makeatother
+
+
+
+
+\setcounter{secnumdepth}{0}
+
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+
+
+
+\title{End-term project: Advanced Statistical Computing 2020  }
+
+
+
+\author{\Large Yizhen Dai\vspace{0.05in} \newline\normalsize\emph{s2395479}  }
+
+
+\date{}
+
+\usepackage{titlesec}
+
+\titleformat*{\section}{\normalsize\bfseries}
+\titleformat*{\subsection}{\normalsize\itshape}
+\titleformat*{\subsubsection}{\normalsize\itshape}
+\titleformat*{\paragraph}{\normalsize\itshape}
+\titleformat*{\subparagraph}{\normalsize\itshape}
+
+
+\usepackage{natbib}
+\bibliographystyle{apsr}
+\usepackage[strings]{underscore} % protect underscores in most circumstances
+
+
+
+\newtheorem{hypothesis}{Hypothesis}
+\usepackage{setspace}
+
+
+% set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+\usepackage{hyperref}
+
+% move the hyperref stuff down here, after header-includes, to allow for - \usepackage{hyperref}
+
+\makeatletter
+\@ifpackageloaded{hyperref}{}{%
+\ifxetex
+  \PassOptionsToPackage{hyphens}{url}\usepackage[setpagesize=false, % page size defined by xetex
+              unicode=false, % unicode breaks when used with xetex
+              xetex]{hyperref}
+\else
+  \PassOptionsToPackage{hyphens}{url}\usepackage[draft,unicode=true]{hyperref}
+\fi
+}
+
+\@ifpackageloaded{color}{
+    \PassOptionsToPackage{usenames,dvipsnames}{color}
+}{%
+    \usepackage[usenames,dvipsnames]{color}
+}
+\makeatother
+\hypersetup{breaklinks=true,
+            bookmarks=true,
+            pdfauthor={Yizhen Dai (s2395479)},
+             pdfkeywords = {pandoc, r markdown, knitr},  
+            pdftitle={End-term project: Advanced Statistical Computing 2020},
+            colorlinks=true,
+            citecolor=blue,
+            urlcolor=blue,
+            linkcolor=magenta,
+            pdfborder={0 0 0}}
+\urlstyle{same}  % don't use monospace font for urls
+
+% Add an option for endnotes. -----
+
+
+% add tightlist ----------
+\providecommand{\tightlist}{%
+\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+% add some other packages ----------
+
+% \usepackage{multicol}
+% This should regulate where figures float
+% See: https://tex.stackexchange.com/questions/2275/keeping-tables-figures-close-to-where-they-are-mentioned
+\usepackage[section]{placeins}
+
+
+\begin{document}
+	
+% \pagenumbering{arabic}% resets `page` counter to 1 
+%
+% \maketitle
+
+{% \usefont{T1}{pnc}{m}{n}
+\setlength{\parindent}{0pt}
+\thispagestyle{plain}
+{\fontsize{18}{20}\selectfont\raggedright 
+\maketitle  % title \par  
+
+}
+
+{
+   \vskip 13.5pt\relax \normalsize\fontsize{11}{12} 
+\textbf{\authorfont Yizhen Dai} \hskip 15pt \emph{\small s2395479}   
+
+}
+
+}
+
+
+
+
+
+
+
+
+\begin{abstract}
+
+    \hbox{\vrule height .2pt width 39.14pc}
+
+    \vskip 8.5pt % \small 
+
+\noindent This document provides an introduction to R Markdown, argues for its
+benefits, and presents a sample manuscript template intended for an
+academic audience. I include basic syntax to R Markdown and a minimal
+working example of how the analysis itself can be conducted within R
+with the \texttt{knitr} package.
+
+
+\vskip 8.5pt \noindent \emph{Keywords}: pandoc, r markdown, knitr \par
+
+    \hbox{\vrule height .2pt width 39.14pc}
+
+
+
+\end{abstract}
+
+
+\vskip -8.5pt
+
+
+ % removetitleabstract
+
+\noindent  
+
+\hypertarget{introduction}{%
+\section{Introduction}\label{introduction}}
+
+This project aims at solving a modeling problem faced by an insurance
+company - ANV. Two of ANV business lines,
+\href{https://en.wikipedia.org/wiki/Professional_liability_insurance}{Professional
+liability insurance} (PLI) and
+\href{https://en.wikipedia.org/wiki/Workers\%27_compensation}{Workers'
+compensation} (WC), were affected by a huge claim from one client during
+the last year. Therefore, ANV comes to a reinsurance company for an
+insurance policy. For some threshold \(t = 100,110,…,200\): - If
+\(PLI+WC<=t\), ANV pays the claim themselves. - If not, the reinsurance
+company pays the claim.
+
+The price that reinsurance company asks depends on the threshold \(t\):
+
+\[P(t)=40000 * e^{-t/7}\] Of course, the policy is only reasonable if
+the expected over-threshold claim exceeds the price:
+\(V(t)=E[(PLI+WC)1(PLI+WC>t)] > P(t)\). We will use statistical modeling
+to approximate \(V(t)\)
+
+\hypertarget{methodolgy}{%
+\section{Methodolgy}\label{methodolgy}}
+
+\hypertarget{simulation-study}{%
+\section{Simulation study}\label{simulation-study}}
+
+\hypertarget{results}{%
+\section{Results}\label{results}}
+
+The lion's share of a R Markdown document will be raw text, though the
+front matter may be the most important part of the document. R Markdown
+uses \href{http://www.yaml.org/}{YAML} for its metadata and the fields
+differ from
+\href{http://svmiller.com/blog/2015/02/moving-from-beamer-to-r-markdown/}{what
+an author would use for a Beamer presentation}. I provide a sample YAML
+metadata largely taken from this exact document and explain it below.
+
+\hypertarget{markdown-syntax}{%
+\section{Markdown Syntax}\label{markdown-syntax}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\FunctionTok{# Introduction}
+
+\NormalTok{**Lorem ipsum** dolor *sit amet*. }
+
+\NormalTok{- }\StringTok{Single asterisks italicize text *like this*. }
+\StringTok{- Double asterisks embolden text **like this**.}
+
+\NormalTok{Start a new paragraph with a blank line separating paragraphs.}
+
+\NormalTok{- }\StringTok{This will start an unordered list environment, and this will be the first item.}
+\StringTok{- This will be a second item.}
+\StringTok{- A third item.}
+\StringTok{    - Four spaces and a dash create a sublist and this item in it.}
+\StringTok{- The fourth item.}
+\StringTok{    }
+\StringTok{1. This starts a numerical list.}
+\StringTok{2. This is no. 2 in the numerical list.}
+\StringTok{    }
+\StringTok{# This Starts A New Section}
+\StringTok{## This is a Subsection}
+\StringTok{### This is a Subsubsection}
+\StringTok{#### This starts a Paragraph Block.}
+
+\NormalTok{>}\DataTypeTok{ This will create a block quote, if you want one.}
+
+\NormalTok{Want a table? This will create one.}
+
+\NormalTok{Table Header  | Second Header}
+\NormalTok{------------- | -------------}
+\NormalTok{Table Cell    | Cell 2}
+\NormalTok{Cell 3        | Cell 4 }
+
+\NormalTok{Note that the separators *do not* have to be aligned.}
+
+\NormalTok{Want an image? This will do it.}
+
+\AlertTok{![caption for my image](path/to/image.jpg)}
+
+\BaseNTok{`fig_caption: yes`}\NormalTok{ will provide a caption. Put that in the YAML metadata.}
+
+\NormalTok{Almost forgot about creating a footnote.}\OtherTok{[^1]}\NormalTok{ This will do it again.}\OtherTok{[^2]}
+
+\OtherTok{[^1]}\NormalTok{: The first footnote}
+\OtherTok{[^2]}\NormalTok{: The second footnote}
+
+\NormalTok{Want to cite something? }
+
+\NormalTok{- }\StringTok{Find your biblatexkey in your bib file.}
+\StringTok{- Put an @ before it, like @smith1984, or whatever it is.}
+\StringTok{- @smith1984 creates an in-text citation (e.g. Smith (1984) says...)}
+\StringTok{- [@smith1984] creates a parenthetical citation (Smith, 1984)}
+
+\NormalTok{That'll also automatically create a reference list at the end of the document.}
+
+\OtherTok{[In-text link to Google](http://google.com)}\NormalTok{ as well.}
+\end{Highlighting}
+\end{Shaded}
+
+That's honestly it. Markdown takes the chore of markup from your
+manuscript (hence: ``Markdown'').
+
+On that note, you could easily pass most LaTeX code through Markdown if
+you're writing a LaTeX document. However, you don't need to do this
+(unless you're using the math environment) and probably shouldn't anyway
+if you intend to share your document in HTML as well.
+
+\hypertarget{using-r-markdown-with-knitr}{%
+\section{Using R Markdown with
+Knitr}\label{using-r-markdown-with-knitr}}
+
+\texttt{eval=FALSE} option just displays the R code (and does not run
+it), \texttt{tidy=TRUE} wraps long code so it does not run off the page.
+\texttt{include=FALSE} hide code and output from document.
+\texttt{echo=FALSE} hides only the code, but not the output.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(stevemisc)}
+\KeywordTok{data}\NormalTok{(uniondensity)}
+
+\NormalTok{M1 <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(union }\OperatorTok{~}\StringTok{ }\NormalTok{left }\OperatorTok{+}\StringTok{ }\NormalTok{size }\OperatorTok{+}\StringTok{ }\NormalTok{concen, }\DataTypeTok{data =}\NormalTok{ uniondensity)}
+
+\KeywordTok{library}\NormalTok{(arm)}
+\KeywordTok{coefplot}\NormalTok{(M1)}
+\end{Highlighting}
+\end{Shaded}
+
+The implications for workflow are faily substantial. Authors can rather
+quickly display the code they used to run the analyses in the document
+itself (likely in the appendix). As such, there's little guesswork for
+reviewers and editors in understanding what the author did in the
+analyses reported in the manuscript.
+
+\hypertarget{figure}{%
+\subsection{Figure}\label{figure}}
+
+\texttt{eval=FALSE} changes to \texttt{eval=TRUE}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{coefplot}\NormalTok{(M1)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{table}{%
+\subsection{Table}\label{table}}
+
+add \texttt{results="asis"} to the brackets to start the R code chunk.
+The ensuing output will look like this (though the table may come on the
+next page).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{stargazer}\NormalTok{(M1, }\DataTypeTok{title =} \StringTok{"A Handsome Table"}\NormalTok{, }\DataTypeTok{header =} \OtherTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{footnote}{%
+\subsection{Footnote}\label{footnote}}
+
+Adding \texttt{echo="FALSE"} inside the brackets to start the R chunk
+will omit the presentation of the R commands. It will just present the
+table. This provides substantial opportunity for authors in doing their
+analyses. Now, the analysis and presentation in the form of a polished
+manuscript can be effectively simultaneous.\footnote{I'm not sure if I'm
+  ready to commit to this myself since my workflow is still largely
+  derived from
+  \href{http://robjhyndman.com/hyndsight/workflow-in-r/}{Rob J.
+  Hyndman's example}. However, \emph{knitr} has endless potential,
+  especially when analyses can stored in cache, saved as chunks, or
+  loaded in the preamble of a document to reference later in the
+  manuscript.}
+
+For my template, I'm pretty sure this is mandatory.\footnote{The main
+  reason I still use \texttt{pdflatex} (and most readers probably do as
+  well) is because of LaTeX fonts.
+  \href{http://www-rohan.sdsu.edu/~aty/bibliog/latex/gripe.html}{Unlike
+  others}, I find standard LaTeX fonts to be appealing.}
+
+\hypertarget{how-to-cite}{%
+\subsection{How to cite}\label{how-to-cite}}
+
+Perhaps the greatest intrigue of R Markdown comes with the
+\href{http://yihui.name/knitr/}{\texttt{knitr} package} provided by
+\citet{xie2013ddrk}.
+
+
+
+
+
+\newpage
+\singlespacing 
+\bibliography{master.bib}
+
+\end{document}

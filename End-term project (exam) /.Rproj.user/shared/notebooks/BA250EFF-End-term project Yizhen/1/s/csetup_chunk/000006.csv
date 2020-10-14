@@ -1,0 +1,67 @@
+"0","knitr::opts_chunk$set(cache=TRUE,"
+"0","                      message=FALSE, warning=FALSE,"
+"0","                      fig.path='figs/',"
+"0","                      cache.path = '_cache/',"
+"0","                      fig.process = function(x) {"
+"0","                      x2 = sub('-\\d+([.][a-z]+)$', '\\1', x)"
+"0","                      if (file.rename(x, x2)) x2 else x"
+"0","                      })"
+"0",""
+"0","library(copula)"
+"2","package ‘copula’ was built under R version 3.6.2"
+"0","library(WVPlots)"
+"2","package ‘WVPlots’ was built under R version 3.6.2"
+"2","Loading required package: wrapr
+"
+"2","package ‘wrapr’ was built under R version 3.6.2"
+"2","
+Attaching package: ‘wrapr’
+
+"
+"2","The following object is masked from ‘package:copula’:
+
+    lambda
+
+"
+"2","Registered S3 method overwritten by 'data.table':
+  method           from
+  print.data.table     
+"
+"2","Registered S3 method overwritten by 'dplyr':
+  method           from
+  print.rowwise_df     
+"
+"0","library(gridExtra)"
+"0","library(tidyverse)"
+"2","Registered S3 methods overwritten by 'dbplyr':
+  method         from
+  print.tbl_lazy     
+  print.tbl_sql      
+"
+"2","[30m── [1mAttaching packages[22m ───────────────────────────────────────────────────────────── tidyverse 1.3.0 ──[39m
+"
+"2","[30m[32m✓[30m [34mggplot2[30m 3.3.0     [32m✓[30m [34mpurrr  [30m 0.3.3
+[32m✓[30m [34mtibble [30m 3.0.3     [32m✓[30m [34mdplyr  [30m 0.8.3
+[32m✓[30m [34mtidyr  [30m 1.0.0     [32m✓[30m [34mstringr[30m 1.4.0
+[32m✓[30m [34mreadr  [30m 1.3.1     [32m✓[30m [34mforcats[30m 0.4.0[39m
+"
+"2","package ‘tibble’ was built under R version 3.6.2"
+"2","[30m── [1mConflicts[22m ──────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+[31mx[30m [34mdplyr[30m::[32mcoalesce()[30m masks [34mwrapr[30m::coalesce()
+[31mx[30m [34mdplyr[30m::[32mcombine()[30m  masks [34mgridExtra[30m::combine()
+[31mx[30m [34mdplyr[30m::[32mfilter()[30m   masks [34mstats[30m::filter()
+[31mx[30m [34mdplyr[30m::[32mlag()[30m      masks [34mstats[30m::lag()
+[31mx[30m [34mtidyr[30m::[32munpack()[30m   masks [34mwrapr[30m::unpack()
+[31mx[30m [34mtibble[30m::[32mview()[30m    masks [34mwrapr[30m::view()[39m
+"
+"0","library(stargazer)"
+"2","
+Please cite as: 
+
+"
+"2"," Hlavac, Marek (2018). stargazer: Well-Formatted Regression and Summary Statistics Tables.
+"
+"2"," R package version 5.2.2. https://CRAN.R-project.org/package=stargazer 
+
+"
+"0","options(digits.secs = 3)"

@@ -40,6 +40,7 @@ library(WVPlots)
 library(gridExtra)
 library(tidyverse)
 library(stargazer)
+tinytex::install_tinytex()
 options(digits.secs = 3)
 ```
 
@@ -67,7 +68,7 @@ cor(x1, x2)
 
 $X_1$ and $X_2$ are positively correlated. The correlation between $X_1$ and $X_2$ is 0.528. The linear regression line (in red) and the *LOWESS* smoother line (in blue) is shown below.
 
-```{r echo=F fig.cap="The relationship between X1 and X2"}
+```{r,echo=F ,fig.cap="The relationship between X1 and X2"}
 plot(x1, x2)
 abline(lm(x2 ~ x1), col = "red")
 lines(lowess(x1,x2), col = "blue")
@@ -83,11 +84,14 @@ $$
 where $u_1 = F_{X_{1}}\left(x_{1}\right),u2= F_{X_{2}}\left(x_{2}\right)$, which are the marginal functions of $f_{X_{1}}$ and $f_{X_{2}}$; $c\left(u_{1}, u_{2}\right)$ is the joint integral transforms  $U_{1}=F_{X_{1}}\left(X_{1}\right)$ and $U_{2}=F_{X_{2}}\left(X_{2}\right)$.
 
 Preliminary experiments suggested the following parametric models:
-$$
-f_{X_{1}}\left(\cdot ; \mu_{1}, \sigma_{1}\right) & \sim \text{Lognormal} \left(\mu_{1}, \sigma_{1}\right), \mu_{1} \in \mathbb{R}, \sigma_{1}>0 \\
-f_{X_{2}}\left(\cdot ; \mu_{2}, \sigma_{2}\right) & \sim \text{Lognormal} \left(\mu_{2}, \sigma_{2}\right), \mu_{2} \in \mathbb{R}, \sigma_{2}>0 \\
-c(\cdot ; \theta) & \sim \operatorname{Joe}(\theta), \theta \geq 1
-$$
+
+$f_{X_{1}}\left(\cdot ; \mu_{1}, \sigma_{1}\right)  \sim \text{Lognormal} \left(\mu_{1}, \sigma_{1}\right), \mu_{1} \in \mathbb{R}, \sigma_{1}>0$
+
+$f_{X_{2}}\left(\cdot ; \mu_{2}, \sigma_{2}\right)  \sim \text{Lognormal} \left(\mu_{2}, \sigma_{2}\right), \mu_{2} \in \mathbb{R}, \sigma_{2}>0$
+
+
+$c(\cdot ; \theta)  \sim \operatorname{Joe}(\theta), \theta \geq 1$
+
 where a Lognormal distribution is for a random variable whose logarithm is normally distributed; a Joe distribution is one of the most prominent bivariate Archimedean copulas in Copula models.
 
 # Methodolgy
@@ -177,9 +181,10 @@ rmycopula <- function(n, mu1, sd1, mu2, sd2, theta){
 
 To evaluate our estimated model, we can compare the simulated data using the above function with the observed data.
 
-```{r echo=F fig.cap="Observed Data vs Simulated Data"}
+```{r ,echo=F, fig.cap="Observed Data vs Simulated Data"}
 set.seed(1234)
-simulated_data <- rmycopula(length(data$ID), est$est1[1], est$est1[2], est$est2[1], est$est2[2], est$est3)
+k <- length(data$ID) # number of data points in the dataset
+simulated_data <- rmycopula(k, est$est1[1], est$est1[2], est$est2[1], est$est2[2], est$est3)
 
 ScatterHist(data, 'PLI', 'WC', title='Observed Data', contour = T)
 ScatterHist(simulated_data, 'x1', 'x2', title='Simulated Data', contour = T)
@@ -191,9 +196,9 @@ We can also check change in data distributions when we tune the parameters using
 
 When we increase $\theta$ to 4:
 
-```{r echo=F fig.cap="Theta = 4"}
+```{r ,echo=F ,fig.cap="theta = 4"}
 set.seed(1234)
-simulated_data <- rmycopula(length(data$ID), est$est1[1], est$est1[2], est$est2[1], est$est2[2], 4)
+simulated_data <- rmycopula(k, est$est1[1], est$est1[2], est$est2[1], est$est2[2], 4)
 
 ScatterHist(simulated_data, 'x1', 'x2', title='Simulated Data', contour = T)
 ```
@@ -202,9 +207,9 @@ We can see with a bigger theta, the data are more correlated with smaller deviat
 
 Next, we check the distribution with bigger $\mu_1,\mu_2: 3, 4$
 
-```{r echo=F fig.cap="mu1 = 3, mu2 = 4"}
+```{r ,echo=F ,fig.cap="mu1 = 3, mu2 = 4"}
 set.seed(1234)
-simulated_data <- rmycopula(length(data$ID), 3, est$est1[2], 4, est$est2[2], est$est3)
+simulated_data <- rmycopula(k, 3, est$est1[2], 4, est$est2[2], est$est3)
 
 ScatterHist(simulated_data, 'x1', 'x2', title='mu1 = 3, mu2 = 4', contour = T)
 ```
@@ -213,9 +218,9 @@ We can see when we increase $\mu_1,\mu_2$, the center of the contour also shifts
 
 Next, we check the distribution with bigger standard deviation of Lognormal distribution: $\sigma_1 =\sigma_2 = 0.8$.
 
-```{r echo=F fig.cap="sigma1 = sigma2 = 0.8"}
+```{r,echo=F ,fig.cap="sigma1 = sigma2 = 0.8"}
 set.seed(1234)
-simulated_data <- rmycopula(length(data$ID), est$est1[1], .8, est$est2[1], .8, est$est3)
+simulated_data <- rmycopula(k, est$est1[1], .8, est$est2[1], .8, est$est3)
 
 ScatterHist(simulated_data, 'x1', 'x2', title='sigma1 = sigma2 = 0.8', contour = T)
 ```
@@ -229,7 +234,7 @@ To evaluate how accurate our parameter estimation can be, we conduct a simulatio
 
 We compute the RMSE for 100 simulation runs of 200,500 and 1000 data points. The codes for accuracy analysis is shown below:
 
-```{r eval=F tidy=T}
+```{r, eval=F }
 fit_n_times <- function(n){
   ##############################
   # This function estimates the parameters for 100 times and returns the RMSE
@@ -240,10 +245,11 @@ fit_n_times <- function(n){
   sim_data <- lapply(1:100,function(x) rmycopula(n, 1, 2, 3, 0.5, 2))
   results <- c()
   for (i in 1:100){
-    results <- cbind(results, unlist(estimate(sim_data[[i]]$x1, sim_data[[i]]$x2)))
+    results <- cbind(results, 
+                     unlist(estimate(sim_data[[i]]$x1, sim_data[[i]]$x2)))
   }
   ### calculate RMSE
-  (results - c(1, 2, 3, 0.5, 2))^2 %>%   # esitimated minus true values
+  (results - c(1, 2, 3, 0.5, 2))^2 %>%   # estimated minus true values
     rowMeans(.) %>% 
     sqrt(.)
 }
@@ -263,17 +269,17 @@ for (n in c(2,5,10) * 100) {
 time <- data.frame(number_of_runs=c(2,5,10) * 100, time=time)
 ```
 
-```{r include=F}
+```{r ,eval=F, include=F}
 save(time, RMSE, file = 'fit_n_times.RData')
 ```
 
-```{r echo=F}
+```{r ,echo=F}
 load('fit_n_times.RData')
 ```
 
 The RMSE and average computing time are shown in the following figure.
 
-```{r echo=F fig.cap="RMSE and average computing time"}
+```{r ,echo=F ,fig.cap="RMSE and average computing time"}
 ### plot time
 plot(time, type ='b')
 
@@ -301,27 +307,31 @@ RMSE gets smaller with more simulation runs. $\theta$ is the hardest parameter t
 Having a feeling of the simulation models, we fit all the five parameters to the observed data. We compute the expected payout of the reinsurance $V(t)$ using parametric Monte Carlo simulation (based on the estimated parameters). We use $10^5$ Monte Carlo samples and calculate expected $V(t), t=100,110,…,200$, as the average over the simulation runs.The codes are shown below
 
 
-```{r tidy=T eval = F}
-
+```{r ,tidy=T ,eval = F}
 B <- 10^5 # number of simulation runs
 
 ### simulated B data points to save time
 simulated_data <- rmycopula(B, est$est1[1], est$est1[2], est$est2[1], est$est2[2], est$est3)
 total_claim <- rowSums(simulated_data) # x1 + x2
 
+### replace claims <= t with zeros
+V <- sapply(seq(100,200,10), function(t) 
+  c(total_claim[total_claim > t], rep(0,sum(total_claim <= t))))
+
+Vt <- colMeans(V) # mean for each client
+Vt_sd <- apply(V, 2, sd) # sd
+```
+
+```{r, include=F ,eval = F}
+#################################### 
+### old methods -- Discard
+### discard due to incorrect number of samples
 total_claim <- matrix(total_claim, nrow=k)
 V <- sapply(seq(100,200,10), function(t) 
   {apply(total_claim, 2, function(x) mean(x[x > t]))})
 V[is.na(V)] <- 0 # replace NA with zeros
 
-Vt <- colMeans(V)/k # mean for each client
-Vt_sd <- apply(V, 2, sd)/k # sd
-```
-
-```{r include=F eval = F}
-### old method
-### discard due to slowness and incorrect number of samples
-k <- length(data$ID) # number of data points for each simulation run
+### discard due to slowness
 V <- c()
 for (i in 1:B){
   temp_data <- simulated_data[(k*(i-1)+1):(k*i),] # simulated data for current run
@@ -330,20 +340,21 @@ for (i in 1:B){
   V_new <- sapply(seq(100,200,10), function(t) mean(total_claim[total_claim > t])) 
   V <- rbind(V,V_new)
 }
+#################################### 
 ```
 
-```{r include=F eval = F}
+```{r ,include=F ,eval = F}
 save(Vt, Vt_sd, file = 'Vt.RData')
 rm(V, simulated_data, total_claim)
 ```
 
-```{r echo=F}
+```{r ,echo=F}
 load('Vt.RData')
 ```
 
 The table and the plot of $V(t)$ for $t=100,110,…,200$ based on $10^5$ Monte Carlo samples are shown below.
 
-```{r echo=F size='small'}
+```{r ,echo=F ,size='small'}
 Pt <- 40000 * exp(-seq(100,200,10)/7)
 results <- cbind(Pt, Vt, Vt_sd, Pt < Vt)
 results <- as.data.frame(results)
@@ -353,24 +364,24 @@ rownames(results) <- seq(100,200,10)
 stargazer(results, title="P(t) and V(t)", header=T)
 ```
 
-```{r echo=F fig.cap="P(t) vs t"}
+```{r ,echo=F, fig.cap="P(t) vs t"}
 plot(seq(100,200,10), Vt, type='b', xlab = 'threshold(t)', ylab = 'P/V')
 lines(seq(100,200,10), Pt, type='b', col='red')
 legend( x = 'topright', legend = c('Vt','Pt'), pch=1, 
         col = c('black', 'red'))
 ```
 
-Based on the results, buying the reinsurance policy seems a good idea when $t\geq110$ since the policy price ($P(t)$)is smaller than the potential cost of not buying the policy ($V(t)$). However, the standard deviation is high for $V(t)$. This is because the claim exceeding $t$ is a highly improbable event. 
+Based on the results, buying the reinsurance policy seems a good idea when $t\leq120$ since the policy price ($P(t)$)is smaller than the potential cost of not buying the policy ($V(t)$). However, the standard deviation is high for $V(t)$. This is because the claim exceeding $t$ is a highly improbable event. 
 
 ## Importance sampling
 To handle the highly improbable events, we use importance sampling. The codes are shown below.
 
-```{r eval=F tidy=T}
+```{r, eval=F ,tidy=T}
 ### new parameters est2 for importance sampling
 est2 <- est
 ### setting higher mu's to make the events more probable
-est2$est1[1] <- 4
-est2$est2[1] <- 3
+est2$est1[1] <- est2$est1[1] + 0.5
+est2$est2[1] <- est2$est2[1] + 0.5
 
 
 dmycopula <- function(Y, est) {
@@ -382,13 +393,30 @@ dmycopula <- function(Y, est) {
   u1 <- plnorm(x1, meanlog = est$est1[1], sdlog = est$est1[2])
   u2 <- plnorm(x2, meanlog = est$est2[1], sdlog = est$est2[2])
   dlnorm(x1, est$est1[1], est$est1[2]) * 
-    dlnorm(x2, est$est1[1], est$est2[2]) *
+    dlnorm(x2, est$est2[1], est$est2[2]) *
     dCopula(cbind(u1, u2), joeCopula(est$est3)) 
 }
 
-simulated_data2 <- rmycopula(k*B, est2$est1[1], est2$est1[2], 
+simulated_data2 <- rmycopula(B, est2$est1[1], est2$est1[2], 
                est2$est2[1], est2$est2[2], est2$est3)
+total_claim2 <- rowSums(simulated_data2) 
 
+V2 <- sapply(seq(100,200,10), function(t) {
+  ind <- (total_claim2 > t) # index for the data with total claim > t
+  temp <- simulated_data2[ind,] # get Y for dmycopula
+  ### importance sampling
+  c(total_claim2[ind] * dmycopula(temp, est)/dmycopula(temp, est2), rep(0, B - sum(ind)))  # replace claims <= t with zeros
+  })
+  
+Vt2 <- colMeans(V2) # mean for each client
+Vt_sd2 <- apply(V2, 2, sd) # sd
+
+```
+
+```{r ,include=F ,eval = F}
+#################################### 
+### old methods -- Discard
+### discard due to incorrect number of samples
 V2 <- c()
 for (i in 1:B){
   Y <- simulated_data2[(k*(i-1)+1):(k*i),] # get Y for dmycopula
@@ -399,24 +427,23 @@ for (i in 1:B){
                                                    density_div[total_claim > t])) 
   V2 <- rbind(V2,V_new)
 }
-
-
 Vt2 <- colMeans(V2)/k # mean
 Vt_sd2 <- apply(V2, 2, sd)/k #sd
+#################################### 
 ```
 
-```{r include=F eval = F}
+```{r, include=F ,eval = F}
 save(Vt2, Vt_sd2, file = 'Vt2.RData')
-rm(V2, simulated_data2)
+rm(V2, simulated_data2, total_claim2)
 ```
 
-```{r echo=F}
+```{r ,echo=F}
 load('Vt2.RData')
 ```
 
 The table and the plot of $V(t)$ for $t=100,110,…,200$ based on $10^5$ Monte Carlo samples and importance sampling are shown below.
 
-```{r echo=F size='small'}
+```{r ,echo=F, size='small'}
 results2 <- cbind(Pt, Vt2, Vt_sd2, Pt < Vt2)
 results2 <- as.data.frame(results2)
 names(results2) <- c('P(t)', 'V(t)', 'Std of V(t)', 'P(t) < V(t)')
@@ -425,27 +452,30 @@ rownames(results2) <- seq(100,200,10)
 stargazer(results2, title="P(t) and V(t) based on importance sampling", header=T)
 ```
 
-```{r fig.cap="P(t) and V(t) vs t  based on importance sampling"}
+```{r ,echo=F, fig.cap="P(t) and V(t) vs t  based on importance sampling"}
 plot(seq(100,200,10), Vt2, xlab ='threshold(t)', ylab ='P/V', type='b')
 lines(seq(100,200,10), Pt, type='b', col='red')
 legend( x = 'topright', legend = c('Vt','Pt'), pch=1, 
         col = c('black', 'red'))
 ```
 
-One noticeable change is $V(t)$ increased significantly using importance sampling when $t$ is 100 and 110. Based on the results, the company should buy the reinsurance policy regardless of the value of $t$.
+The $V(t)$ based on importance sampling have values when $t>120$. Based on the results, the company should buy the reinsurance policy regardless of the value of $t$.
 
 ## Confidence Intervals
 Since we are not sure how confident we are about our estimates, we can to conduct bootstrapping to get confident intervals of $V(t)$. The codes doing a bootstrap method to compute 80% confidence intervals for $V(t)$ are shown below.
 
-```{r echo=F tidy=T}
+```{r ,echo=F ,eval=F, tidy=T}
 #### Empirical bootstrap algorithm
-B <- 2#1000 # number of bootstrap runs
-set.seed(1000)
- system.time(
-Vt_boot <- t(sapply(1:B, function(b){
-  ### draw samples from the observed data; using empirical bootstrapping
-  data_boot <- data[sample(1:length(data$ID), replace = TRUE),] 
-  x1_boot <- data_boot[,1]; x2_boot <- data_boot[,2]
+b <- 1000 # number of bootstrap runs
+set.seed(1234)
+
+### draw samples from the observed data; using empirical bootstrapping
+data_boot <- data[sample(1:k, size = b*k, replace = TRUE),] 
+
+V3 <- c()
+for (i in 1:b) { 
+  x1_boot <- data_boot[(k*(i-1)+1):(k*i),2]
+  x2_boot <- data_boot[(k*(i-1)+1):(k*i),3]
   ### using the above-mentioned estimate function to get estimated parameters
   est_boot <- estimate(x1_boot,x2_boot)
   ### create est2 for importance sampling
@@ -453,151 +483,54 @@ Vt_boot <- t(sapply(1:B, function(b){
   est2_boot$est1[1] <- est2_boot$est1[1]+1
   est2_boot$est2[1] <- est2_boot$est1[1]+0.1
 
-  V3 <- c()
-  ### 1000 bootstrapping simulations using importance sampling
-  for (i in 1:10^5){
-    Y <- rmycopula(length(data$ID), est2$est1[1], est2$est1[2], 
-                 est2$est2[1], est2$est2[2], est2$est3)
-    total_claim <- rowSums(Y) 
-    density_div <- dmycopula(Y, est) / dmycopula(Y, est2)
-    V_new <- sapply(seq(100,200,10), function(t) sum(total_claim[total_claim > t]*
-                                                     density_div[total_claim > t])) 
-    V3 <- rbind(V3,V_new)
-  }
-  return(t(colMeans(V3)))
-})))
+  ### importance sampling
+  simulated_data3 <- rmycopula(B, est2_boot$est1[1], est2_boot$est1[2], 
+               est2_boot$est2[1], est2_boot$est2[2], est2_boot$est3)
+  total_claim3 <- rowSums(simulated_data3) 
+
+  V_new <- sapply(seq(100,200,10), function(t) {
+    ind <- (total_claim3 > t) # index for the data with total claim > t
+    temp <- simulated_data3[ind,] # get Y for dmycopula
+    c(total_claim3[ind] * dmycopula(temp, est_boot)/dmycopula(temp, est2_boot), 
+      rep(0, B - sum(ind))) } # replace claims <= t with zeros
+    )
+  
+  V3 <- rbind(V3,colMeans(V_new))  # add a row of V(t) for each client
+}
 ```
 
-```{r include=F}
-save(Vt_boot, file = 'Vt_boot.RData')
-rm(V)
+
+```{r ,include=F ,eval = F}
+save(V3, file = 'Vt_boot.RData')
+rm(V_new, simulated_data3, total_claim3)
 ```
 
-```{r echo=F}
+```{r ,echo=F}
 load('Vt_boot.RData')
 ```
  
-```{r tidy=T}
+```{r, tidy=T}
 ### construct the confident intervals
-se_boot <- apply(Vt_boot, 2, sd) # Bootstrap se's of the coefficients
+mean_boot <- apply(V3, 2, mean)
+se_boot <- apply(V3, 2, sd) # Bootstrap se's of the coefficients
 ### calculate 80% confidence intervals for V(t)
-CI_low <- Vt + se_boot * qnorm(0.1) 
-CI_up  <- Vt + se_boot * qnorm(0.9)
+CI_low <- mean_boot + se_boot * qnorm(0.1) 
+CI_low[CI_low < 0] <- 0
+CI_up  <- mean_boot + se_boot * qnorm(0.9)
 ```
 
-```{r}
-plot(seq(100,200,10), Vt, type='l')
+```{r ,echo=F, fig.cap= '90% Confidence Interval P(t) in dashed line and V(t)' }
+plot(seq(100,200,10), mean_boot, xlab ='threshold(t)', ylab ='P/V', type='b')
 lines(seq(100,200,10), CI_low, lty=2)
 lines(seq(100,200,10), CI_up, lty=2)
-lines(seq(100,200,10), Pt, col='red')
+lines(seq(100,200,10), Pt,type='b', col='red')
+legend( x = 'topright', legend = c('Vt','Pt'), pch=1, 
+        col = c('black', 'red'))
 ```
-
-
-
- Explain your implementation and why it does/doesn’t account for a) estimation error, b) MC approximation error. 
- 
- Add the confidence intervals to the plot in 10. Does that change your recommendation in 10?
-
-Huge uncertainty
-
 # Results
+As you can see from the graph, there is huge uncertainty in the values of $P(t)$. We cannot draw a conclusion that $V(t)$ will be smaller than $P(t)$.
 
+The implementation does account for MC approximation error since we are doing bootstrapping.
+The implementation does not account for estimation error since we are relying on the existing data (648 data points). 
+ 
 
-
-# Markdown Syntax
-
-```markdown
-
-- This will start an unordered list environment, and this will be the first item.
-- This will be a second item.
-- A third item.
-    - Four spaces and a dash create a sublist and this item in it.
-- The fourth item.
-    
-1. This starts a numerical list.
-2. This is no. 2 in the numerical list.
-
-> This will create a block quote, if you want one.
-
-Table:
-
-Table Header  | Second Header
-------------- | -------------
-Table Cell    | Cell 2
-Cell 3        | Cell 4 
-
-Image:
-
-![caption for my image](path/to/image.jpg)
-
-Almost forgot about creating a footnote.[^1] This will do it again.[^2]
-
-[^1]: The first footnote
-[^2]: The second footnote
-
-Want to cite something? 
-
-- Find your biblatexkey in your bib file.
-- Put an @ before it, like @smith1984, or whatever it is.
-- @smith1984 creates an in-text citation (e.g. Smith (1984) says...)
-- [@smith1984] creates a parenthetical citation (Smith, 1984)
-
-
-
-# Using R Markdown with Knitr
-
-`eval=FALSE` option just displays the R code (and does not run it),
-`tidy=TRUE` wraps long code so it does not run off the page.
-`include=FALSE` hide code and output from document.
-`echo=FALSE` hides only the code, but not the output.
-
-```{r, eval=FALSE, tidy = TRUE}
-library(stevemisc)
-data(uniondensity)
-
-M1 <- lm(union ~ left + size + concen, data=uniondensity)
-
-library(arm)
-coefplot(M1)
-
-```
-
-The implications for workflow are faily substantial. Authors can rather quickly display the code they used to run the analyses in the document itself (likely in the appendix). As such, there's little guesswork for reviewers and editors in understanding what the author did in the analyses reported in the manuscript.
-
-## Figure
- `eval=FALSE` changes to `eval=TRUE`
-
-```{r, eval=F, tidy = TRUE, cache=FALSE, fig.cap="A Coefficient Plot", message=F, warning=F}
-coefplot(M1)
-```
-
-
-## Table
-add `results="asis"` to the brackets to start the R code chunk. The ensuing output will look like this (though the table may come on the next page).
-
-```{r, eval=F, tidy = TRUE, size="small", cache=FALSE, results="asis", message=F, warning=F}
-
-stargazer(M1, title="A Handsome Table", header=FALSE)
-```
-
-## Footnote
-Adding `echo="FALSE"` inside the brackets to start the R chunk will omit the presentation of the R commands. It will just present the table. This provides substantial opportunity for authors in doing their analyses. Now, the analysis and presentation in the form of a polished manuscript can be effectively simultaneous.[^4]
-
-[^4]: I'm not sure if I'm ready to commit to this myself since my workflow is still largely derived from [Rob J. Hyndman's example](http://robjhyndman.com/hyndsight/workflow-in-r/). However, *knitr* has endless potential, especially when analyses can stored in cache, saved as chunks, or loaded in the preamble of a document to reference later in the manuscript.
-
-For my template, I'm pretty sure this is mandatory.[^pdflatex]
-
-[^pdflatex]: The main reason I still use `pdflatex` (and most readers probably do as well) is because of LaTeX fonts. [Unlike others](http://www-rohan.sdsu.edu/~aty/bibliog/latex/gripe.html), I find standard LaTeX fonts to be appealing.
-
-
-## How to cite
-Perhaps the greatest intrigue of R Markdown comes with the [`knitr` package](http://yihui.name/knitr/) provided by @xie2013ddrk.
-
-<!--
-# References
-\setlength{\parindent}{-0.2in}
-\setlength{\leftskip}{0.2in}
-\setlength{\parskip}{8pt}
-\vspace*{-0.2in}
-\noindent
--->

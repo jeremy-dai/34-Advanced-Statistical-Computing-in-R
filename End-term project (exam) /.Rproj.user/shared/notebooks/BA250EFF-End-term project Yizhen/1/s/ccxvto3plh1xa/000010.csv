@@ -1,1 +1,0 @@
-"0","plot(seq(100,200,10), Vt, type='b', xlab = 'threshold(t)', ylab = 'P/V')"

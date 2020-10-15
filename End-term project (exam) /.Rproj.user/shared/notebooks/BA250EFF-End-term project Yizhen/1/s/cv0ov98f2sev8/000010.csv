@@ -1,2 +1,0 @@
-"0","legend( x = 'topright', legend = names(RMSE), pch=1, "
-"0","        col = c('red', 'orange', 'black', 'blue', 'green'))"

@@ -1,6 +1,0 @@
-"0",""
-"0","### plot RMSE"
-"0","RMSE <- as.data.frame(RMSE)"
-"0","names(RMSE) <- c('mu1', 'sigma1', 'mu2', 'sigma2', 'theta')"
-"0","plot(NULL, xlab = 'number_of_runs', ylab = 'RMSE', "
-"0","     xlim=c(0, 10^3), ylim=c(min(RMSE), max(RMSE))) "

@@ -2,10 +2,10 @@
 \usepackage[left=1in,top=1in,right=1in,bottom=1in]{geometry}
 \newcommand*{\authorfont}{\fontfamily{phv}\selectfont}
 \usepackage[]{mathpazo}
-
+\usepackage{amsmath}
 
   \usepackage[T1]{fontenc}
-  \usepackage[utf8]{inputenc}
+  \usepackage[utf8x]{inputenc}
 
 
 
@@ -80,6 +80,15 @@
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
 
 
 \title{End-term project: Advanced Statistical Computing 2020  }
@@ -224,6 +233,9 @@ with the \texttt{knitr} package.
 \hypertarget{introduction}{%
 \section{Introduction}\label{introduction}}
 
+\hypertarget{the-goal}{%
+\subsection{The goal}\label{the-goal}}
+
 This project aims at solving a modeling problem faced by an insurance
 company - ANV. Two of ANV business lines,
 \href{https://en.wikipedia.org/wiki/Professional_liability_insurance}{Professional
@@ -231,185 +243,474 @@ liability insurance} (PLI) and
 \href{https://en.wikipedia.org/wiki/Workers\%27_compensation}{Workers'
 compensation} (WC), were affected by a huge claim from one client during
 the last year. Therefore, ANV comes to a reinsurance company for an
-insurance policy. For some threshold \(t = 100,110,…,200\): - If
-\(PLI+WC<=t\), ANV pays the claim themselves. - If not, the reinsurance
-company pays the claim.
+insurance policy. To put the problem in a mathematical format, we define
+the following notation: - \(X_1\): the loss incurred for PLI from ANV
+clients (in million euros); - \(X_2\): the loss incurred for WC from ANV
+clients (in million euros); - \(t\): the threshold set by the
+reinsurance company (in million euros). For some threshold
+\(t = 100,110,…,200\), if the total loss incurred for PLI and WC from a
+certain client exceeds \(t\), ANV pays the claim themselves; Otherwise,
+the reinsurance company pays the claim; - \(V(t)\): the expected
+over-threshold claims, which is equal to \(E[(X_1+X_2)1(X_1+X_2>t)]\); -
+\(P(t)\): the price that reinsurance company asks. \(P(t)\) depends on
+the threshold \(t\) as \(P(t)=40000 * e^{-t/7}\).
 
-The price that reinsurance company asks depends on the threshold \(t\):
+Our goal is to determine if ANV should buy such policy from the
+reinsurance company. Of course, the policy is only reasonable if the
+expected over-threshold claim exceeds the price: \(V(t) > P(t)\). The
+data available is the loss incurred for PLI and WC for all the clients
+of ANV during last year. With limited data available, we use statistical
+modeling to approximate \(V(t)\) and therefore determine if
+\(V(t) > P(t)\).
 
-\[P(t)=40000 * e^{-t/7}\] Of course, the policy is only reasonable if
-the expected over-threshold claim exceeds the price:
-\(V(t)=E[(PLI+WC)1(PLI+WC>t)] > P(t)\). We will use statistical modeling
-to approximate \(V(t)\)
+\hypertarget{data-explorative-analysis}{%
+\subsection{Data Explorative analysis}\label{data-explorative-analysis}}
+
+\(X_1\) and \(X_2\) are positively correlated. The correlation between
+\(X_1\) and \(X_2\) is 0.528. The linear regression line (in red) and
+the \emph{LOWESS} smoother line (in blue) is shown below.
+
+\begin{figure}
+\centering
+\includegraphics{figs/unnamed-chunk-2.pdf}
+\caption{The relationship between X1 and X2}
+\end{figure}
+
+\hypertarget{models}{%
+\subsection{Models}\label{models}}
+
+In order to reflect the dependence in the data, we cannot simulate
+\(X_1\) and \(X_2\) separately. We use a Copula model to model the joint
+density \(f_{X_{1}, X_{2}}\).
+
+\[
+f_{X_{1}, X_{2}}\left(x_{1}, x_{2}\right)=f_{X_{1}}\left(x_{1}\right) f_{X_{2}}\left(x_{2}\right) c\left(u_1,u_2\right)
+\]
+
+where
+\(u_1 = F_{X_{1}}\left(x_{1}\right),u2= F_{X_{2}}\left(x_{2}\right)\),
+which are the marginal functions of \(f_{X_{1}}\) and \(f_{X_{2}}\);
+\(c\left(u_{1}, u_{2}\right)\) is the joint integral transforms
+\(U_{1}=F_{X_{1}}\left(X_{1}\right)\) and
+\(U_{2}=F_{X_{2}}\left(X_{2}\right)\).
+
+Preliminary experiments suggested the following parametric models:
+
+$f_{X_{1}}( \cdot  ; \mu_{1}, \sigma_{1})  \sim     \text{Lognormal} (\mu_{1}, \sigma_{1}), \mu_{1} \in \mathbb{R}, \sigma_{1}>0$
+
+$f_{X_{2}}( \cdot ;  \mu_{2}, \sigma_{2})  \sim     \text{Lognormal} (\mu_{2}, \sigma_{2}), \mu_{2} \in \mathbb{R}, \sigma_{2}>0$
+
+$c(\cdot ; \theta)   \sim      \operatorname{Joe}(\theta), \theta \geq 1$
+
+where a Lognormal distribution is for a random variable whose logarithm
+is normally distributed; a Joe distribution is one of the most prominent
+bivariate Archimedean copulas in Copula models.
 
 \hypertarget{methodolgy}{%
 \section{Methodolgy}\label{methodolgy}}
 
+\hypertarget{parameter-estimates}{%
+\subsection{Parameter Estimates}\label{parameter-estimates}}
+
+Based on the models, we have a total of five parameters to be estimated from the data: $\mu_{1}, \sigma_{1},\mu_{2},\sigma_{2},\theta $. The maximum likelihood estimation is used to estimate these parameters.
+
+First, we estimate $\mu_{1}, \sigma_{1},\mu_{2},\sigma_{2}$ by finding the values that can maximize the sum of log density of the
+observed data so the data is most probable under our model assumption
+$f_{X_{1}}, f_{X_{2}}$. To speed up the optimization, we can use the
+sample mean and sample standard deviation of the observed data on the
+log scale.
+
+Afterwards, we estimate \(\theta\) using the probability integral
+transforms of the observed data. Such transforms are not observed get
+pseudo-observations by pluging in the estimated
+\(\mu_{1}, \sigma_{1},\mu_{2},\sigma_{2}\). It might work if our
+estimated parameters are close to the true parameters.
+
+The codes for parameter estimates are shown below.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{get_theta <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(x1, x2, est1, est2) \{}
+    \CommentTok{############################## This function estimate theta using pseudo-observations x1 and x2 are the}
+    \CommentTok{############################## observed data est1 and est2 are the estimated parameters of lognormal}
+    \CommentTok{############################## distribution}
+    
+    \CommentTok{### get u1 and u2 based on the estimated mu and sigma}
+\NormalTok{    u1 <-}\StringTok{ }\KeywordTok{plnorm}\NormalTok{(x1, }\DataTypeTok{meanlog =}\NormalTok{ est1[}\DecValTok{1}\NormalTok{], }\DataTypeTok{sdlog =}\NormalTok{ est1[}\DecValTok{2}\NormalTok{])}
+\NormalTok{    u2 <-}\StringTok{ }\KeywordTok{plnorm}\NormalTok{(x2, }\DataTypeTok{meanlog =}\NormalTok{ est2[}\DecValTok{1}\NormalTok{], }\DataTypeTok{sdlog =}\NormalTok{ est2[}\DecValTok{2}\NormalTok{])}
+    \CommentTok{### using Joe(theta)-density; evaluated at u; u is a (n x 2) matrix}
+\NormalTok{    g3 <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(theta) \{}
+        \OperatorTok{-}\KeywordTok{sum}\NormalTok{(}\KeywordTok{dCopula}\NormalTok{(}\KeywordTok{cbind}\NormalTok{(u1, u2), }\KeywordTok{joeCopula}\NormalTok{(theta), }\DataTypeTok{log =}\NormalTok{ T), }\DataTypeTok{na.rm =}\NormalTok{ T)}
+\NormalTok{    \}}
+    \CommentTok{### minimize the negative log likelihood function for the copula function}
+    \KeywordTok{nlminb}\NormalTok{(}\DecValTok{2}\NormalTok{, g3, }\DataTypeTok{lower =} \DecValTok{1} \OperatorTok{+}\StringTok{ }\DecValTok{10}\OperatorTok{^-}\DecValTok{8}\NormalTok{, }\DataTypeTok{upper =} \OtherTok{Inf}\NormalTok{)}\OperatorTok{$}\NormalTok{par}
+\NormalTok{\}}
+
+
+\NormalTok{estimate <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(x1, x2) \{}
+    \CommentTok{############################## This function estimate the five parameters in our Copula model x1 and x2}
+    \CommentTok{############################## are the observed data}
+    
+\NormalTok{    meanlog <-}\StringTok{ }\KeywordTok{sapply}\NormalTok{(}\KeywordTok{list}\NormalTok{(}\KeywordTok{log}\NormalTok{(x1), }\KeywordTok{log}\NormalTok{(x2)), mean)}
+\NormalTok{    sdlog <-}\StringTok{ }\KeywordTok{sapply}\NormalTok{(}\KeywordTok{list}\NormalTok{(}\KeywordTok{log}\NormalTok{(x1), }\KeywordTok{log}\NormalTok{(x2)), sd)}
+    
+    \CommentTok{### negative log likelihood function to be minimized}
+\NormalTok{    g1 <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(beta) \{}
+        \OperatorTok{-}\KeywordTok{sum}\NormalTok{(}\KeywordTok{dlnorm}\NormalTok{(x1, }\DataTypeTok{meanlog =}\NormalTok{ beta[}\DecValTok{1}\NormalTok{], }\DataTypeTok{sdlog =}\NormalTok{ beta[}\DecValTok{2}\NormalTok{], }\DataTypeTok{log =}\NormalTok{ T), }\DataTypeTok{na.rm =}\NormalTok{ T)}
+\NormalTok{    \}}
+\NormalTok{    g2 <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(beta) \{}
+        \OperatorTok{-}\KeywordTok{sum}\NormalTok{(}\KeywordTok{dlnorm}\NormalTok{(x2, }\DataTypeTok{meanlog =}\NormalTok{ beta[}\DecValTok{1}\NormalTok{], }\DataTypeTok{sdlog =}\NormalTok{ beta[}\DecValTok{2}\NormalTok{], }\DataTypeTok{log =}\NormalTok{ T), }\DataTypeTok{na.rm =}\NormalTok{ T)}
+\NormalTok{    \}}
+    
+    \CommentTok{### Compute estimates for x1 by maximum likelihood method}
+\NormalTok{    est1 <-}\StringTok{ }\KeywordTok{nlminb}\NormalTok{(}\KeywordTok{c}\NormalTok{(meanlog[}\DecValTok{1}\NormalTok{], sdlog[}\DecValTok{1}\NormalTok{]), g1, }\DataTypeTok{lower =} \KeywordTok{c}\NormalTok{(}\OperatorTok{-}\OtherTok{Inf}\NormalTok{, }\DecValTok{0}\NormalTok{), }\DataTypeTok{upper =} \OtherTok{Inf}\NormalTok{)}\OperatorTok{$}\NormalTok{par}
+    \KeywordTok{names}\NormalTok{(est1) <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"mu1"}\NormalTok{, }\StringTok{"sigma1"}\NormalTok{)}
+    
+    \CommentTok{### Compute estimates for x2 by maximum likelihood method}
+\NormalTok{    est2 <-}\StringTok{ }\KeywordTok{nlminb}\NormalTok{(}\KeywordTok{c}\NormalTok{(meanlog[}\DecValTok{2}\NormalTok{], sdlog[}\DecValTok{2}\NormalTok{]), g2, }\DataTypeTok{lower =} \KeywordTok{c}\NormalTok{(}\OperatorTok{-}\OtherTok{Inf}\NormalTok{, }\DecValTok{0}\NormalTok{), }\DataTypeTok{upper =} \OtherTok{Inf}\NormalTok{)}\OperatorTok{$}\NormalTok{par}
+    \KeywordTok{names}\NormalTok{(est2) <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"mu2"}\NormalTok{, }\StringTok{"sigma2"}\NormalTok{)}
+    
+    \CommentTok{### Estimate the parameters of a Joe copula model for (U1,U2).}
+\NormalTok{    est3 <-}\StringTok{ }\KeywordTok{get_theta}\NormalTok{(x1, x2, est1, est2)}
+    
+    \KeywordTok{return}\NormalTok{(}\KeywordTok{list}\NormalTok{(}\DataTypeTok{est1 =}\NormalTok{ est1, }\DataTypeTok{est2 =}\NormalTok{ est2, }\DataTypeTok{est3 =}\NormalTok{ est3))}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+The estimated parameters are:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{est <-}\StringTok{ }\KeywordTok{estimate}\NormalTok{(x1,x2)}
+\NormalTok{est}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $est1
+##       mu1    sigma1 
+## 1.9821375 0.5134642 
+## 
+## $est2
+##       mu2    sigma2 
+## 2.9968901 0.3108409 
+## 
+## $est3
+## [1] 1.608163
+\end{verbatim}
+
+\(\hat{\mu_{1}}=1.982, \hat{\sigma_{1}}=0.513,\hat{\mu_{2}}=2.997,\hat{\sigma_{2}}=0.311,\hat{\theta}=1.608\)
+
+\hypertarget{simulated-data}{%
+\subsection{Simulated data}\label{simulated-data}}
+
+We get the parameter estimates, then we can simulate enough data to get
+the average cost \(V(t)\) over the years.
+
+To generate enough data, we need a function that simulates from the
+joint model for \((X_1,X_2)\) for a given set of parameters
+\((\mu_{1},\sigma_{1},\mu_{2},\sigma_{2},\theta)\). The function is
+shown below.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{rmycopula <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(n, mu1, sd1, mu2, sd2, theta) \{}
+    \CommentTok{############################## This function simulates n samples from a Joe copula with estimated}
+    \CommentTok{############################## parameters}
+    
+    \CommentTok{### use rCopula(n, joeCopula(theta)) to simulate u1 and u2}
+\NormalTok{    u <-}\StringTok{ }\KeywordTok{rCopula}\NormalTok{(n, }\KeywordTok{joeCopula}\NormalTok{(theta))  }\CommentTok{# u is a (n x 2) matrix}
+\NormalTok{    x1 <-}\StringTok{ }\KeywordTok{qlnorm}\NormalTok{(u[, }\DecValTok{1}\NormalTok{], mu1, sd1)}
+\NormalTok{    x2 <-}\StringTok{ }\KeywordTok{qlnorm}\NormalTok{(u[, }\DecValTok{2}\NormalTok{], mu2, sd2)}
+    \KeywordTok{as.data.frame}\NormalTok{(}\KeywordTok{cbind}\NormalTok{(x1, x2))}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+To evaluate our estimated model, we can compare the simulated data using
+the above function with the observed data.
+
+\includegraphics{figs/unnamed-chunk-6.pdf}
+\includegraphics{figs/unnamed-chunk-6.pdf}
+
+We can see the marginal and joint distributions of observed data and
+simulated data are similar, which is a good sign of our implementation.
+
+We can also check change in data distributions when we tune the
+parameters using our simulation function. Currently
+\(\hat{\mu_{1}},= 1.982,\hat{\sigma_{1}}=0.513,\hat{\mu_{2}}=2.997,\hat{\sigma_{2}}=0.311,\hat{\theta}=1.608\).
+
+When we increase \(\theta\) to 4:
+
+\begin{figure}
+\centering
+\includegraphics{figs/unnamed-chunk-7.pdf}
+\caption{theta = 4}
+\end{figure}
+
+We can see with a bigger theta, the data are more correlated with
+smaller deviation from the linear regression line.
+
+Next, we check the distribution with bigger \(\mu_1,\mu_2: 3, 4\)
+
+\begin{figure}
+\centering
+\includegraphics{figs/unnamed-chunk-8.pdf}
+\caption{mu1 = 3, mu2 = 4}
+\end{figure}
+
+We can see when we increase \(\mu_1,\mu_2\), the center of the contour
+also shifts in the same direction.
+
+Next, we check the distribution with bigger standard deviation of
+Lognormal distribution: \(\sigma_1 =\sigma_2 = 0.8\).
+
+\begin{figure}
+\centering
+\includegraphics{figs/unnamed-chunk-9.pdf}
+\caption{sigma1 = sigma2 = 0.8}
+\end{figure}
+
+We can see that the data is more dispersed, which is same as expected.
+We can also observe that a small change in \(\sigma_1, \sigma_2\) has a
+big influence on the extreme values. This is partly because the
+\(\sigma\) is on the log scale.
+
 \hypertarget{simulation-study}{%
-\section{Simulation study}\label{simulation-study}}
+\section{Simulation Study}\label{simulation-study}}
 
-\hypertarget{results}{%
-\section{Results}\label{results}}
+\hypertarget{acuracy-evaluation}{%
+\subsection{Acuracy evaluation}\label{acuracy-evaluation}}
 
-The lion's share of a R Markdown document will be raw text, though the
-front matter may be the most important part of the document. R Markdown
-uses \href{http://www.yaml.org/}{YAML} for its metadata and the fields
-differ from
-\href{http://svmiller.com/blog/2015/02/moving-from-beamer-to-r-markdown/}{what
-an author would use for a Beamer presentation}. I provide a sample YAML
-metadata largely taken from this exact document and explain it below.
+To evaluate how accurate our parameter estimation can be, we conduct a
+simulation study assuming the following values for true parameters:
+\(\mu_1=1,\sigma_1=2,\mu_2=3,\sigma_2=0.5,\theta=2\).
 
-\hypertarget{markdown-syntax}{%
-\section{Markdown Syntax}\label{markdown-syntax}}
+We compute the RMSE for 100 simulation runs of 200,500 and 1000 data
+points. The codes for accuracy analysis is shown below:
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\NormalTok{fit_n_times <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(n)\{}
+  \CommentTok{##############################}
+  \CommentTok{# This function estimates the parameters for 100 times and returns the RMSE}
+  \CommentTok{# n: the number of data points in each simulation run}
+  \CommentTok{##############################}
+  
+  \CommentTok{### simulate}
+\NormalTok{  sim_data <-}\StringTok{ }\KeywordTok{lapply}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{100}\NormalTok{,}\ControlFlowTok{function}\NormalTok{(x) }\KeywordTok{rmycopula}\NormalTok{(n, }\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\FloatTok{0.5}\NormalTok{, }\DecValTok{2}\NormalTok{))}
+\NormalTok{  results <-}\StringTok{ }\KeywordTok{c}\NormalTok{()}
+  \ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\DecValTok{100}\NormalTok{)\{}
+\NormalTok{    results <-}\StringTok{ }\KeywordTok{cbind}\NormalTok{(results, }
+                     \KeywordTok{unlist}\NormalTok{(}\KeywordTok{estimate}\NormalTok{(sim_data[[i]]}\OperatorTok{$}\NormalTok{x1, sim_data[[i]]}\OperatorTok{$}\NormalTok{x2)))}
+\NormalTok{  \}}
+  \CommentTok{### calculate RMSE}
+\NormalTok{  (results }\OperatorTok{-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\FloatTok{0.5}\NormalTok{, }\DecValTok{2}\NormalTok{))}\OperatorTok{^}\DecValTok{2} \OperatorTok{%>%}\StringTok{   }\CommentTok{# estimated minus true values}
+\StringTok{    }\KeywordTok{rowMeans}\NormalTok{(.) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{    }\KeywordTok{sqrt}\NormalTok{(.)}
+\NormalTok{\}}
 
-\FunctionTok{# Introduction}
+\CommentTok{### initiate time and RMSE}
+\NormalTok{time <-}\StringTok{ }\KeywordTok{numeric}\NormalTok{(}\DecValTok{3}\NormalTok{)}
+\NormalTok{RMSE <-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{5}\NormalTok{) }
 
-\NormalTok{**Lorem ipsum** dolor *sit amet*. }
+\CommentTok{### conduct simulation for n = 200,500 and 1000}
+\NormalTok{i <-}\StringTok{ }\DecValTok{1}
+\ControlFlowTok{for}\NormalTok{ (n }\ControlFlowTok{in} \KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{5}\NormalTok{,}\DecValTok{10}\NormalTok{) }\OperatorTok{*}\StringTok{ }\DecValTok{100}\NormalTok{) \{}
+\NormalTok{  time[i] <-}\StringTok{ }\KeywordTok{system.time}\NormalTok{(RMSE[i,] <-}\StringTok{ }\KeywordTok{fit_n_times}\NormalTok{(n))}\OperatorTok{/}\DecValTok{100} \CommentTok{# average computing time}
+\NormalTok{  i <-}\StringTok{ }\NormalTok{i }\OperatorTok{+}\StringTok{ }\DecValTok{1}
+\NormalTok{\}}
 
-\NormalTok{- }\StringTok{Single asterisks italicize text *like this*. }
-\StringTok{- Double asterisks embolden text **like this**.}
-
-\NormalTok{Start a new paragraph with a blank line separating paragraphs.}
-
-\NormalTok{- }\StringTok{This will start an unordered list environment, and this will be the first item.}
-\StringTok{- This will be a second item.}
-\StringTok{- A third item.}
-\StringTok{    - Four spaces and a dash create a sublist and this item in it.}
-\StringTok{- The fourth item.}
-\StringTok{    }
-\StringTok{1. This starts a numerical list.}
-\StringTok{2. This is no. 2 in the numerical list.}
-\StringTok{    }
-\StringTok{# This Starts A New Section}
-\StringTok{## This is a Subsection}
-\StringTok{### This is a Subsubsection}
-\StringTok{#### This starts a Paragraph Block.}
-
-\NormalTok{>}\DataTypeTok{ This will create a block quote, if you want one.}
-
-\NormalTok{Want a table? This will create one.}
-
-\NormalTok{Table Header  | Second Header}
-\NormalTok{------------- | -------------}
-\NormalTok{Table Cell    | Cell 2}
-\NormalTok{Cell 3        | Cell 4 }
-
-\NormalTok{Note that the separators *do not* have to be aligned.}
-
-\NormalTok{Want an image? This will do it.}
-
-\AlertTok{![caption for my image](path/to/image.jpg)}
-
-\BaseNTok{`fig_caption: yes`}\NormalTok{ will provide a caption. Put that in the YAML metadata.}
-
-\NormalTok{Almost forgot about creating a footnote.}\OtherTok{[^1]}\NormalTok{ This will do it again.}\OtherTok{[^2]}
-
-\OtherTok{[^1]}\NormalTok{: The first footnote}
-\OtherTok{[^2]}\NormalTok{: The second footnote}
-
-\NormalTok{Want to cite something? }
-
-\NormalTok{- }\StringTok{Find your biblatexkey in your bib file.}
-\StringTok{- Put an @ before it, like @smith1984, or whatever it is.}
-\StringTok{- @smith1984 creates an in-text citation (e.g. Smith (1984) says...)}
-\StringTok{- [@smith1984] creates a parenthetical citation (Smith, 1984)}
-
-\NormalTok{That'll also automatically create a reference list at the end of the document.}
-
-\OtherTok{[In-text link to Google](http://google.com)}\NormalTok{ as well.}
+\CommentTok{### update format for plotting}
+\NormalTok{time <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{number_of_runs=}\KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{5}\NormalTok{,}\DecValTok{10}\NormalTok{) }\OperatorTok{*}\StringTok{ }\DecValTok{100}\NormalTok{, }\DataTypeTok{time=}\NormalTok{time)}
 \end{Highlighting}
 \end{Shaded}
 
-That's honestly it. Markdown takes the chore of markup from your
-manuscript (hence: ``Markdown'').
+The RMSE and average computing time are shown in the following figure.
 
-On that note, you could easily pass most LaTeX code through Markdown if
-you're writing a LaTeX document. However, you don't need to do this
-(unless you're using the math environment) and probably shouldn't anyway
-if you intend to share your document in HTML as well.
+\includegraphics{figs/unnamed-chunk-13.pdf}
+\includegraphics{figs/unnamed-chunk-13.pdf}
 
-\hypertarget{using-r-markdown-with-knitr}{%
-\section{Using R Markdown with
-Knitr}\label{using-r-markdown-with-knitr}}
+We can see that required computation time increase linearly with the
+number of runs.
 
-\texttt{eval=FALSE} option just displays the R code (and does not run
-it), \texttt{tidy=TRUE} wraps long code so it does not run off the page.
-\texttt{include=FALSE} hide code and output from document.
-\texttt{echo=FALSE} hides only the code, but not the output.
+RMSE gets smaller with more simulation runs. \(\theta\) is the hardest
+parameter to estimate with largest RMSE. \(\mu_1, \sigma_1\) have higher
+RMSE than \(\mu_2, \sigma_2\) separately. This is probably due to a
+lower standard deviation for \(f_{X_2}\) (0.5 compared to 2 on the log
+scale). The distribution for \(f_{X_1}\) is more dispersed, leading to a
+larger RMSE for \(\mu_1, \sigma_1\).
+
+\hypertarget{working-on-the-real-data-vt}{%
+\subsection{Working on the real data:
+V(t)}\label{working-on-the-real-data-vt}}
+
+Having a feeling of the simulation models, we fit all the five
+parameters to the observed data. We compute the expected payout of the
+reinsurance \(V(t)\) using parametric Monte Carlo simulation (based on
+the estimated parameters). We use \(10^5\) Monte Carlo samples and
+calculate expected \(V(t), t=100,110,…,200\), as the average over the
+simulation runs.The codes are shown below
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(stevemisc)}
-\KeywordTok{data}\NormalTok{(uniondensity)}
+\NormalTok{B <-}\StringTok{ }\DecValTok{10}\OperatorTok{^}\DecValTok{5}  \CommentTok{# number of simulation runs}
 
-\NormalTok{M1 <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(union }\OperatorTok{~}\StringTok{ }\NormalTok{left }\OperatorTok{+}\StringTok{ }\NormalTok{size }\OperatorTok{+}\StringTok{ }\NormalTok{concen, }\DataTypeTok{data =}\NormalTok{ uniondensity)}
+\CommentTok{### simulated B data points to save time}
+\NormalTok{simulated_data <-}\StringTok{ }\KeywordTok{rmycopula}\NormalTok{(B, est}\OperatorTok{$}\NormalTok{est1[}\DecValTok{1}\NormalTok{], est}\OperatorTok{$}\NormalTok{est1[}\DecValTok{2}\NormalTok{], est}\OperatorTok{$}\NormalTok{est2[}\DecValTok{1}\NormalTok{], est}\OperatorTok{$}\NormalTok{est2[}\DecValTok{2}\NormalTok{], }
+\NormalTok{    est}\OperatorTok{$}\NormalTok{est3)}
+\NormalTok{total_claim <-}\StringTok{ }\KeywordTok{rowSums}\NormalTok{(simulated_data)  }\CommentTok{# x1 + x2}
 
-\KeywordTok{library}\NormalTok{(arm)}
-\KeywordTok{coefplot}\NormalTok{(M1)}
+\CommentTok{### replace claims <= t with zeros}
+\NormalTok{V <-}\StringTok{ }\KeywordTok{sapply}\NormalTok{(}\KeywordTok{seq}\NormalTok{(}\DecValTok{100}\NormalTok{, }\DecValTok{200}\NormalTok{, }\DecValTok{10}\NormalTok{), }\ControlFlowTok{function}\NormalTok{(t) }\KeywordTok{c}\NormalTok{(total_claim[total_claim }\OperatorTok{>}\StringTok{ }\NormalTok{t], }\KeywordTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, }
+    \KeywordTok{sum}\NormalTok{(total_claim }\OperatorTok{<=}\StringTok{ }\NormalTok{t))))}
+
+\NormalTok{Vt <-}\StringTok{ }\KeywordTok{colMeans}\NormalTok{(V)  }\CommentTok{# mean for each client}
+\NormalTok{Vt_sd <-}\StringTok{ }\KeywordTok{apply}\NormalTok{(V, }\DecValTok{2}\NormalTok{, sd)  }\CommentTok{# sd}
 \end{Highlighting}
 \end{Shaded}
 
-The implications for workflow are faily substantial. Authors can rather
-quickly display the code they used to run the analyses in the document
-itself (likely in the appendix). As such, there's little guesswork for
-reviewers and editors in understanding what the author did in the
-analyses reported in the manuscript.
+The table and the plot of \(V(t)\) for \(t=100,110,…,200\) based on
+\(10^5\) Monte Carlo samples are shown below.
 
-\hypertarget{figure}{%
-\subsection{Figure}\label{figure}}
+\begin{verbatim}
+## 
+## % Table created by stargazer v.5.2.2 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
+## % Date and time: Thu, Oct 15, 2020 - 02:34:26
+## \begin{table}[!htbp] \centering 
+##   \caption{P(t) and V(t)} 
+##   \label{} 
+## \begin{tabular}{@{\extracolsep{5pt}}lccccccc} 
+## \\[-1.8ex]\hline 
+## \hline \\[-1.8ex] 
+## Statistic & \multicolumn{1}{c}{N} & \multicolumn{1}{c}{Mean} & \multicolumn{1}{c}{St. Dev.} & \multicolumn{1}{c}{Min} & \multicolumn{1}{c}{Pctl(25)} & \multicolumn{1}{c}{Pctl(75)} & \multicolumn{1}{c}{Max} \\ 
+## \hline \\[-1.8ex] 
+## P(t) & 11 & 0.003 & 0.008 & 0.00000 & 0.00000 & 0.001 & 0.025 \\ 
+## V(t) & 11 & 0.004 & 0.009 & 0.000 & 0.000 & 0.004 & 0.031 \\ 
+## Std for V(t) & 11 & 0.357 & 0.646 & 0.000 & 0.000 & 0.479 & 1.832 \\ 
+## P(t) \textless  V(t) & 11 & 0.273 & 0.467 & 0 & 0 & 0.5 & 1 \\ 
+## \hline \\[-1.8ex] 
+## \end{tabular} 
+## \end{table}
+\end{verbatim}
 
-\texttt{eval=FALSE} changes to \texttt{eval=TRUE}
+\begin{figure}
+\centering
+\includegraphics{figs/unnamed-chunk-19.pdf}
+\caption{P(t) vs t}
+\end{figure}
+
+Based on the results, buying the reinsurance policy seems a good idea
+when \(t\leq120\) since the policy price (\(P(t)\))is smaller than the
+potential cost of not buying the policy (\(V(t)\)). However, the
+standard deviation is high for \(V(t)\). This is because the claim
+exceeding \(t\) is a highly improbable event.
+
+\hypertarget{importance-sampling}{%
+\subsection{Importance sampling}\label{importance-sampling}}
+
+To handle the highly improbable events, we use importance sampling. The
+codes are shown below.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{coefplot}\NormalTok{(M1)}
+\CommentTok{### new parameters est2 for importance sampling}
+\NormalTok{est2 <-}\StringTok{ }\NormalTok{est}
+\CommentTok{### setting higher mu's to make the events more probable}
+\NormalTok{est2}\OperatorTok{$}\NormalTok{est1[}\DecValTok{1}\NormalTok{] <-}\StringTok{ }\NormalTok{est2}\OperatorTok{$}\NormalTok{est1[}\DecValTok{1}\NormalTok{] }\OperatorTok{+}\StringTok{ }\FloatTok{0.5}
+\NormalTok{est2}\OperatorTok{$}\NormalTok{est2[}\DecValTok{1}\NormalTok{] <-}\StringTok{ }\NormalTok{est2}\OperatorTok{$}\NormalTok{est2[}\DecValTok{1}\NormalTok{] }\OperatorTok{+}\StringTok{ }\FloatTok{0.5}
+
+
+\NormalTok{dmycopula <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(Y, est) \{}
+    \CommentTok{############################## This function calculate the density of the copula model at Y Y: the}
+    \CommentTok{############################## observed data with X1 and X2}
+\NormalTok{    x1 <-}\StringTok{ }\NormalTok{Y[, }\DecValTok{1}\NormalTok{]}
+\NormalTok{    x2 <-}\StringTok{ }\NormalTok{Y[, }\DecValTok{2}\NormalTok{]}
+\NormalTok{    u1 <-}\StringTok{ }\KeywordTok{plnorm}\NormalTok{(x1, }\DataTypeTok{meanlog =}\NormalTok{ est}\OperatorTok{$}\NormalTok{est1[}\DecValTok{1}\NormalTok{], }\DataTypeTok{sdlog =}\NormalTok{ est}\OperatorTok{$}\NormalTok{est1[}\DecValTok{2}\NormalTok{])}
+\NormalTok{    u2 <-}\StringTok{ }\KeywordTok{plnorm}\NormalTok{(x2, }\DataTypeTok{meanlog =}\NormalTok{ est}\OperatorTok{$}\NormalTok{est2[}\DecValTok{1}\NormalTok{], }\DataTypeTok{sdlog =}\NormalTok{ est}\OperatorTok{$}\NormalTok{est2[}\DecValTok{2}\NormalTok{])}
+    \KeywordTok{dlnorm}\NormalTok{(x1, est}\OperatorTok{$}\NormalTok{est1[}\DecValTok{1}\NormalTok{], est}\OperatorTok{$}\NormalTok{est1[}\DecValTok{2}\NormalTok{]) }\OperatorTok{*}\StringTok{ }\KeywordTok{dlnorm}\NormalTok{(x2, est}\OperatorTok{$}\NormalTok{est2[}\DecValTok{1}\NormalTok{], est}\OperatorTok{$}\NormalTok{est2[}\DecValTok{2}\NormalTok{]) }\OperatorTok{*}\StringTok{ }
+\StringTok{        }\KeywordTok{dCopula}\NormalTok{(}\KeywordTok{cbind}\NormalTok{(u1, u2), }\KeywordTok{joeCopula}\NormalTok{(est}\OperatorTok{$}\NormalTok{est3))}
+\NormalTok{\}}
+
+\NormalTok{simulated_data2 <-}\StringTok{ }\KeywordTok{rmycopula}\NormalTok{(B, est2}\OperatorTok{$}\NormalTok{est1[}\DecValTok{1}\NormalTok{], est2}\OperatorTok{$}\NormalTok{est1[}\DecValTok{2}\NormalTok{], est2}\OperatorTok{$}\NormalTok{est2[}\DecValTok{1}\NormalTok{], est2}\OperatorTok{$}\NormalTok{est2[}\DecValTok{2}\NormalTok{], }
+\NormalTok{    est2}\OperatorTok{$}\NormalTok{est3)}
+\NormalTok{total_claim2 <-}\StringTok{ }\KeywordTok{rowSums}\NormalTok{(simulated_data2)}
+
+\NormalTok{V2 <-}\StringTok{ }\KeywordTok{sapply}\NormalTok{(}\KeywordTok{seq}\NormalTok{(}\DecValTok{100}\NormalTok{, }\DecValTok{200}\NormalTok{, }\DecValTok{10}\NormalTok{), }\ControlFlowTok{function}\NormalTok{(t) \{}
+\NormalTok{    ind <-}\StringTok{ }\NormalTok{(total_claim2 }\OperatorTok{>}\StringTok{ }\NormalTok{t)  }\CommentTok{# index for the data with total claim > t}
+\NormalTok{    temp <-}\StringTok{ }\NormalTok{simulated_data2[ind, ]  }\CommentTok{# get Y for dmycopula}
+    \CommentTok{### importance sampling}
+    \KeywordTok{c}\NormalTok{(total_claim2[ind] }\OperatorTok{*}\StringTok{ }\KeywordTok{dmycopula}\NormalTok{(temp, est)}\OperatorTok{/}\KeywordTok{dmycopula}\NormalTok{(temp, est2), }\KeywordTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, }
+\NormalTok{        B }\OperatorTok{-}\StringTok{ }\KeywordTok{sum}\NormalTok{(ind)))  }\CommentTok{# replace claims <= t with zeros}
+\NormalTok{\})}
+
+\NormalTok{Vt2 <-}\StringTok{ }\KeywordTok{colMeans}\NormalTok{(V2)  }\CommentTok{# mean for each client}
+\NormalTok{Vt_sd2 <-}\StringTok{ }\KeywordTok{apply}\NormalTok{(V2, }\DecValTok{2}\NormalTok{, sd)  }\CommentTok{# sd}
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{table}{%
-\subsection{Table}\label{table}}
+The table and the plot of \(V(t)\) for \(t=100,110,…,200\) based on
+\(10^5\) Monte Carlo samples and importance sampling are shown below.
 
-add \texttt{results="asis"} to the brackets to start the R code chunk.
-The ensuing output will look like this (though the table may come on the
-next page).
+\begin{verbatim}
+## 
+## % Table created by stargazer v.5.2.2 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
+## % Date and time: Thu, Oct 15, 2020 - 02:34:26
+## \begin{table}[!htbp] \centering 
+##   \caption{P(t) and V(t) based on importance sampling} 
+##   \label{} 
+## \begin{tabular}{@{\extracolsep{5pt}}lccccccc} 
+## \\[-1.8ex]\hline 
+## \hline \\[-1.8ex] 
+## Statistic & \multicolumn{1}{c}{N} & \multicolumn{1}{c}{Mean} & \multicolumn{1}{c}{St. Dev.} & \multicolumn{1}{c}{Min} & \multicolumn{1}{c}{Pctl(25)} & \multicolumn{1}{c}{Pctl(75)} & \multicolumn{1}{c}{Max} \\ 
+## \hline \\[-1.8ex] 
+## P(t) & 11 & 0.003 & 0.008 & 0.00000 & 0.00000 & 0.001 & 0.025 \\ 
+## V(t) & 11 & 0.005 & 0.009 & 0.00002 & 0.0001 & 0.004 & 0.028 \\ 
+## Std of V(t) & 11 & 0.125 & 0.159 & 0.007 & 0.015 & 0.175 & 0.486 \\ 
+## P(t) \textless  V(t) & 11 & 1.000 & 0.000 & 1 & 1 & 1 & 1 \\ 
+## \hline \\[-1.8ex] 
+## \end{tabular} 
+## \end{table}
+\end{verbatim}
+
+\begin{figure}
+\centering
+\includegraphics{figs/unnamed-chunk-25.pdf}
+\caption{P(t) and V(t) vs t based on importance sampling}
+\end{figure}
+
+The \(V(t)\) based on importance sampling have values when \(t>120\).
+Based on the results, the company should buy the reinsurance policy
+regardless of the value of \(t\).
+
+\hypertarget{confidence-intervals}{%
+\subsection{Confidence Intervals}\label{confidence-intervals}}
+
+Since we are not sure how confident we are about our estimates, we can
+to conduct bootstrapping to get confident intervals of \(V(t)\). The
+codes doing a bootstrap method to compute 80\% confidence intervals for
+\(V(t)\) are shown below.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{stargazer}\NormalTok{(M1, }\DataTypeTok{title =} \StringTok{"A Handsome Table"}\NormalTok{, }\DataTypeTok{header =} \OtherTok{FALSE}\NormalTok{)}
+\CommentTok{### construct the confident intervals}
+\NormalTok{mean_boot <-}\StringTok{ }\KeywordTok{apply}\NormalTok{(V3, }\DecValTok{2}\NormalTok{, mean)}
+\NormalTok{se_boot <-}\StringTok{ }\KeywordTok{apply}\NormalTok{(V3, }\DecValTok{2}\NormalTok{, sd)  }\CommentTok{# Bootstrap se's of the coefficients}
+\CommentTok{### calculate 80% confidence intervals for V(t)}
+\NormalTok{CI_low <-}\StringTok{ }\NormalTok{mean_boot }\OperatorTok{+}\StringTok{ }\NormalTok{se_boot }\OperatorTok{*}\StringTok{ }\KeywordTok{qnorm}\NormalTok{(}\FloatTok{0.1}\NormalTok{)}
+\NormalTok{CI_low[CI_low }\OperatorTok{<}\StringTok{ }\DecValTok{0}\NormalTok{] <-}\StringTok{ }\DecValTok{0}
+\NormalTok{CI_up <-}\StringTok{ }\NormalTok{mean_boot }\OperatorTok{+}\StringTok{ }\NormalTok{se_boot }\OperatorTok{*}\StringTok{ }\KeywordTok{qnorm}\NormalTok{(}\FloatTok{0.9}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{footnote}{%
-\subsection{Footnote}\label{footnote}}
+\includegraphics{figs/unnamed-chunk-30.pdf} \# Results As you can see
+from the graph, there is huge uncertainty in the values of \(P(t)\). We
+cannot draw a conclusion that \(V(t)\) will be smaller than \(P(t)\).
 
-Adding \texttt{echo="FALSE"} inside the brackets to start the R chunk
-will omit the presentation of the R commands. It will just present the
-table. This provides substantial opportunity for authors in doing their
-analyses. Now, the analysis and presentation in the form of a polished
-manuscript can be effectively simultaneous.\footnote{I'm not sure if I'm
-  ready to commit to this myself since my workflow is still largely
-  derived from
-  \href{http://robjhyndman.com/hyndsight/workflow-in-r/}{Rob J.
-  Hyndman's example}. However, \emph{knitr} has endless potential,
-  especially when analyses can stored in cache, saved as chunks, or
-  loaded in the preamble of a document to reference later in the
-  manuscript.}
-
-For my template, I'm pretty sure this is mandatory.\footnote{The main
-  reason I still use \texttt{pdflatex} (and most readers probably do as
-  well) is because of LaTeX fonts.
-  \href{http://www-rohan.sdsu.edu/~aty/bibliog/latex/gripe.html}{Unlike
-  others}, I find standard LaTeX fonts to be appealing.}
-
-\hypertarget{how-to-cite}{%
-\subsection{How to cite}\label{how-to-cite}}
-
-Perhaps the greatest intrigue of R Markdown comes with the
-\href{http://yihui.name/knitr/}{\texttt{knitr} package} provided by
-\citet{xie2013ddrk}.
+The implementation does account for MC approximation error since we are
+doing bootstrapping. The implementation does not account for estimation
+error since we are relying on the existing data (648 data points).
 
 
 

@@ -1,0 +1,109 @@
+---
+title: "example"
+author: "Jeremy"
+date: "10/15/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Markdown Syntax
+
+```markdown
+
+- This will start an unordered list environment, and this will be the first item.
+- This will be a second item.
+- A third item.
+    - Four spaces and a dash create a sublist and this item in it.
+- The fourth item.
+    
+1. This starts a numerical list.
+2. This is no. 2 in the numerical list.
+
+> This will create a block quote, if you want one.
+
+Table:
+
+Table Header  | Second Header
+------------- | -------------
+Table Cell    | Cell 2
+Cell 3        | Cell 4 
+
+Image:
+
+![caption for my image](path/to/image.jpg)
+
+Almost forgot about creating a footnote.[^1] This will do it again.[^2]
+
+[^1]: The first footnote
+[^2]: The second footnote
+
+Want to cite something? 
+
+- Find your biblatexkey in your bib file.
+- Put an @ before it, like @smith1984, or whatever it is.
+- @smith1984 creates an in-text citation (e.g. Smith (1984) says...)
+- [@smith1984] creates a parenthetical citation (Smith, 1984)
+
+
+
+# Using R Markdown with Knitr
+
+`eval=FALSE` option just displays the R code (and does not run it),
+`tidy=TRUE` wraps long code so it does not run off the page.
+`include=FALSE` hide code and output from document.
+`echo=FALSE` hides only the code, but not the output.
+
+```{r, eval=FALSE, tidy = TRUE}
+library(stevemisc)
+data(uniondensity)
+
+M1 <- lm(union ~ left + size + concen, data=uniondensity)
+
+library(arm)
+coefplot(M1)
+
+```
+
+The implications for workflow are faily substantial. Authors can rather quickly display the code they used to run the analyses in the document itself (likely in the appendix). As such, there's little guesswork for reviewers and editors in understanding what the author did in the analyses reported in the manuscript.
+
+## Figure
+ `eval=FALSE` changes to `eval=TRUE`
+
+```{r, eval=F, tidy = TRUE, cache=FALSE, fig.cap="A Coefficient Plot", message=F, warning=F}
+coefplot(M1)
+```
+
+
+## Table
+add `results="asis"` to the brackets to start the R code chunk. The ensuing output will look like this (though the table may come on the next page).
+
+```{r, eval=F, tidy = TRUE, size="small", cache=FALSE, results="asis", message=F, warning=F}
+
+stargazer(M1, title="A Handsome Table", header=FALSE)
+```
+
+## Footnote
+Adding `echo="FALSE"` inside the brackets to start the R chunk will omit the presentation of the R commands. It will just present the table. This provides substantial opportunity for authors in doing their analyses. Now, the analysis and presentation in the form of a polished manuscript can be effectively simultaneous.[^4]
+
+[^4]: I'm not sure if I'm ready to commit to this myself since my workflow is still largely derived from [Rob J. Hyndman's example](http://robjhyndman.com/hyndsight/workflow-in-r/). However, *knitr* has endless potential, especially when analyses can stored in cache, saved as chunks, or loaded in the preamble of a document to reference later in the manuscript.
+
+For my template, I'm pretty sure this is mandatory.[^pdflatex]
+
+[^pdflatex]: The main reason I still use `pdflatex` (and most readers probably do as well) is because of LaTeX fonts. [Unlike others](http://www-rohan.sdsu.edu/~aty/bibliog/latex/gripe.html), I find standard LaTeX fonts to be appealing.
+
+
+## How to cite
+Perhaps the greatest intrigue of R Markdown comes with the [`knitr` package](http://yihui.name/knitr/) provided by @xie2013ddrk.
+
+<!--
+# References
+\setlength{\parindent}{-0.2in}
+\setlength{\leftskip}{0.2in}
+\setlength{\parskip}{8pt}
+\vspace*{-0.2in}
+\noindent
+-->
+

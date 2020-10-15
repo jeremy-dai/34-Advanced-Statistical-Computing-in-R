@@ -1,2 +1,0 @@
-"0","number_of_runs <- c(2,5,10) * 100"
-"0","lines(number_of_runs, type ='b', RMSE$mu1, col='red')"

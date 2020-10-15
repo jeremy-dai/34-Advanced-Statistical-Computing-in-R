@@ -1,391 +1,329 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2019.5.8)  15 OCT 2020 02:52
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.10.15)  15 OCT 2020 16:58
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **End-term-project-Yizhen.tex
 (./End-term-project-Yizhen.tex
-LaTeX2e <2018-12-01>
-(/usr/local/texlive/2019/texmf-dist/tex/latex/base/article.cls
-Document Class: article 2018/09/03 v1.4i Standard LaTeX document class
-(/usr/local/texlive/2019/texmf-dist/tex/latex/base/size11.clo
-File: size11.clo 2018/09/03 v1.4i Standard LaTeX file (size option)
+LaTeX2e <2020-10-01> patch level 1
+L3 programming layer <2020-10-05> xparse <2020-03-03> (/Users/jeremydai/Library
+/TinyTeX/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2020/04/10 v1.4m Standard LaTeX document class
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/base/size11.clo
+File: size11.clo 2020/04/10 v1.4m Standard LaTeX file (size option)
 )
-\c@part=\count80
-\c@section=\count81
-\c@subsection=\count82
-\c@subsubsection=\count83
-\c@paragraph=\count84
-\c@subparagraph=\count85
-\c@figure=\count86
-\c@table=\count87
-\abovecaptionskip=\skip41
-\belowcaptionskip=\skip42
-\bibindent=\dimen102
-)
-(/usr/local/texlive/2019/texmf-dist/tex/latex/geometry/geometry.sty
-Package: geometry 2018/04/16 v5.8 Page Geometry
-
-(/usr/local/texlive/2019/texmf-dist/tex/latex/graphics/keyval.sty
+\c@part=\count175
+\c@section=\count176
+\c@subsection=\count177
+\c@subsubsection=\count178
+\c@paragraph=\count179
+\c@subparagraph=\count180
+\c@figure=\count181
+\c@table=\count182
+\abovecaptionskip=\skip47
+\belowcaptionskip=\skip48
+\bibindent=\dimen138
+) (/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2020/01/02 v5.9 Page Geometry
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/graphics/keyval.sty
 Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
-\KV@toks@=\toks14
-)
-(/usr/local/texlive/2019/texmf-dist/tex/generic/oberdiek/ifpdf.sty
-Package: ifpdf 2018/09/07 v3.3 Provides the ifpdf switch
-)
-(/usr/local/texlive/2019/texmf-dist/tex/generic/oberdiek/ifvtex.sty
-Package: ifvtex 2016/05/16 v1.6 Detect VTeX and its facilities (HO)
-Package ifvtex Info: VTeX not detected.
-)
-(/usr/local/texlive/2019/texmf-dist/tex/generic/ifxetex/ifxetex.sty
-Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
-)
-\Gm@cnth=\count88
-\Gm@cntv=\count89
-\c@Gm@tempcnt=\count90
-\Gm@bindingoffset=\dimen103
-\Gm@wd@mp=\dimen104
-\Gm@odd@mp=\dimen105
-\Gm@even@mp=\dimen106
-\Gm@layoutwidth=\dimen107
-\Gm@layoutheight=\dimen108
-\Gm@layouthoffset=\dimen109
-\Gm@layoutvoffset=\dimen110
-\Gm@dimlist=\toks15
-)
-(/usr/local/texlive/2019/texmf-dist/tex/latex/psnfss/mathpazo.sty
-Package: mathpazo 2005/04/12 PSNFSS-v9.2a Palatino w/ Pazo Math (D.Puga, WaS) 
+\KV@toks@=\toks15
+) (/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/generic/iftex/ifvtex.sty
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/generic/iftex/iftex.sty
+Package: iftex 2020/03/06 v1.0d TeX engine tests
+))
+\Gm@cnth=\count183
+\Gm@cntv=\count184
+\c@Gm@tempcnt=\count185
+\Gm@bindingoffset=\dimen139
+\Gm@wd@mp=\dimen140
+\Gm@odd@mp=\dimen141
+\Gm@even@mp=\dimen142
+\Gm@layoutwidth=\dimen143
+\Gm@layoutheight=\dimen144
+\Gm@layouthoffset=\dimen145
+\Gm@layoutvoffset=\dimen146
+\Gm@dimlist=\toks16
+) (/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/psnfss/mathpazo.sty
+Package: mathpazo 2020/03/25 PSNFSS-v9.3 Palatino w/ Pazo Math (D.Puga, WaS) 
 \symupright=\mathgroup4
-)
-(/usr/local/texlive/2019/texmf-dist/tex/latex/amsmath/amsmath.sty
-Package: amsmath 2018/12/01 v2.17b AMS math features
-\@mathmargin=\skip43
-
-For additional information on amsmath, use the `?' option.
-(/usr/local/texlive/2019/texmf-dist/tex/latex/amsmath/amstext.sty
-Package: amstext 2000/06/29 v2.01 AMS text
-
-(/usr/local/texlive/2019/texmf-dist/tex/latex/amsmath/amsgen.sty
-File: amsgen.sty 1999/11/30 v2.0 generic functions
-\@emptytoks=\toks16
-\ex@=\dimen111
-))
-(/usr/local/texlive/2019/texmf-dist/tex/latex/amsmath/amsbsy.sty
-Package: amsbsy 1999/11/29 v1.2d Bold Symbols
-\pmbraise@=\dimen112
-)
-(/usr/local/texlive/2019/texmf-dist/tex/latex/amsmath/amsopn.sty
-Package: amsopn 2016/03/08 v2.02 operator names
-)
-\inf@bad=\count91
-LaTeX Info: Redefining \frac on input line 223.
-\uproot@=\count92
-\leftroot@=\count93
-LaTeX Info: Redefining \overline on input line 385.
-\classnum@=\count94
-\DOTSCASE@=\count95
-LaTeX Info: Redefining \ldots on input line 482.
-LaTeX Info: Redefining \dots on input line 485.
-LaTeX Info: Redefining \cdots on input line 606.
-\Mathstrutbox@=\box27
-\strutbox@=\box28
-\big@size=\dimen113
-LaTeX Font Info:    Redeclaring font encoding OML on input line 729.
-LaTeX Font Info:    Redeclaring font encoding OMS on input line 730.
-\macc@depth=\count96
-\c@MaxMatrixCols=\count97
-\dotsspace@=\muskip10
-\c@parentequation=\count98
-\dspbrk@lvl=\count99
-\tag@help=\toks17
-\row@=\count100
-\column@=\count101
-\maxfields@=\count102
-\andhelp@=\toks18
-\eqnshift@=\dimen114
-\alignsep@=\dimen115
-\tagshift@=\dimen116
-\tagwidth@=\dimen117
-\totwidth@=\dimen118
-\lineht@=\dimen119
-\@envbody=\toks19
-\multlinegap=\skip44
-\multlinetaggap=\skip45
-\mathdisplay@stack=\toks20
-LaTeX Info: Redefining \[ on input line 2844.
-LaTeX Info: Redefining \] on input line 2845.
-)
-(/usr/local/texlive/2019/texmf-dist/tex/latex/base/fontenc.sty
-Package: fontenc 2018/08/11 v2.0j Standard LaTeX package
-
-(/usr/local/texlive/2019/texmf-dist/tex/latex/base/t1enc.def
-File: t1enc.def 2018/08/11 v2.0j Standard LaTeX file
-LaTeX Font Info:    Redeclaring font encoding T1 on input line 48.
-))
-(/usr/local/texlive/2019/texmf-dist/tex/latex/base/inputenc.sty
-Package: inputenc 2018/08/11 v1.3c Input encoding file
-\inpenc@prehook=\toks21
-\inpenc@posthook=\toks22
-
-(/usr/local/texlive/2019/texmf-dist/tex/latex/ucs/utf8x.def
-File: utf8x.def 2004/10/17 UCS: Input encoding UTF-8
-))
-(/usr/local/texlive/2019/texmf-dist/tex/latex/ucs/ucs.sty
-Package: ucs 2013/05/11 v2.2 UCS: Unicode input support
-
-(/usr/local/texlive/2019/texmf-dist/tex/latex/ucs/data/uni-global.def
-File: uni-global.def 2013/05/13 UCS: Unicode global data
-)
-\uc@secondtry=\count103
-\uc@combtoks=\toks23
-\uc@combtoksb=\toks24
-\uc@temptokena=\toks25
-)
-(/usr/local/texlive/2019/texmf-dist/tex/latex/abstract/abstract.sty
+) (/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/base/fontenc.sty
+Package: fontenc 2020/08/10 v2.0s Standard LaTeX package
+LaTeX Font Info:    Trying to load font information for T1+ppl on input line 11
+2.
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/psnfss/t1ppl.fd
+File: t1ppl.fd 2001/06/04 font definitions for T1/ppl.
+)) (/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/base/inputenc.sty
+Package: inputenc 2020/08/01 v1.3d Input encoding file
+\inpenc@prehook=\toks17
+\inpenc@posthook=\toks18
+) (/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/abstract/abstract.sty
 Package: abstract 2009/06/08 v1.2a configurable abstracts
-\abstitleskip=\skip46
-\absleftindent=\skip47
-\absrightindent=\skip48
-\absparindent=\skip49
-\absparsep=\skip50
-)
-(/usr/local/texlive/2019/texmf-dist/tex/latex/graphics/color.sty
-Package: color 2016/07/10 v1.1e Standard LaTeX Color (DPC)
-
-(/usr/local/texlive/2019/texmf-dist/tex/latex/graphics-cfg/color.cfg
+\abstitleskip=\skip49
+\absleftindent=\skip50
+\absrightindent=\skip51
+\absparindent=\skip52
+\absparsep=\skip53
+) (/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/graphics/color.sty
+Package: color 2020/02/24 v1.2b Standard LaTeX Color (DPC)
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/graphics-cfg/color.cfg
 File: color.cfg 2016/01/02 v1.6 sample color configuration
 )
 Package color Info: Driver file: pdftex.def on input line 147.
-
-(/usr/local/texlive/2019/texmf-dist/tex/latex/graphics-def/pdftex.def
-File: pdftex.def 2018/01/08 v1.0l Graphics/color driver for pdftex
-))
-(/usr/local/texlive/2019/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
-Package: fancyvrb 2019/01/15
-
-Style option: `fancyvrb' v3.2a <2019/01/15> (tvz)
-\FV@CodeLineNo=\count104
-\FV@InFile=\read1
-\FV@TabBox=\box29
-\c@FancyVerbLine=\count105
-\FV@StepNumber=\count106
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2020/10/05 v1.2a Graphics/color driver for pdftex
+)) (/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
+Package: fancyvrb 2020/05/03 v3.6 verbatim text (tvz,hv)
+\FV@CodeLineNo=\count186
+\FV@InFile=\read2
+\FV@TabBox=\box47
+\c@FancyVerbLine=\count187
+\FV@StepNumber=\count188
 \FV@OutFile=\write3
-)
-(/usr/local/texlive/2019/texmf-dist/tex/latex/framed/framed.sty
+) (/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/framed/framed.sty
 Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
-\OuterFrameSep=\skip51
-\fb@frw=\dimen120
-\fb@frh=\dimen121
-\FrameRule=\dimen122
-\FrameSep=\dimen123
-)
-(/usr/local/texlive/2019/texmf-dist/tex/latex/graphics/graphicx.sty
-Package: graphicx 2017/06/01 v1.1a Enhanced LaTeX Graphics (DPC,SPQR)
-
-(/usr/local/texlive/2019/texmf-dist/tex/latex/graphics/graphics.sty
-Package: graphics 2017/06/25 v1.2c Standard LaTeX Graphics (DPC,SPQR)
-
-(/usr/local/texlive/2019/texmf-dist/tex/latex/graphics/trig.sty
+\OuterFrameSep=\skip54
+\fb@frw=\dimen147
+\fb@frh=\dimen148
+\FrameRule=\dimen149
+\FrameSep=\dimen150
+) (/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/tools/longtable.sty
+Package: longtable 2020/01/07 v4.13 Multi-page Table package (DPC)
+\LTleft=\skip55
+\LTright=\skip56
+\LTpre=\skip57
+\LTpost=\skip58
+\LTchunksize=\count189
+\LTcapwidth=\dimen151
+\LT@head=\box48
+\LT@firsthead=\box49
+\LT@foot=\box50
+\LT@lastfoot=\box51
+\LT@cols=\count190
+\LT@rows=\count191
+\c@LT@tables=\count192
+\c@LT@chunks=\count193
+\LT@p@ftn=\toks19
+) (/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/booktabs/booktabs.sty
+Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
+\heavyrulewidth=\dimen152
+\lightrulewidth=\dimen153
+\cmidrulewidth=\dimen154
+\belowrulesep=\dimen155
+\belowbottomsep=\dimen156
+\aboverulesep=\dimen157
+\abovetopsep=\dimen158
+\cmidrulesep=\dimen159
+\cmidrulekern=\dimen160
+\defaultaddspace=\dimen161
+\@cmidla=\count194
+\@cmidlb=\count195
+\@aboverulesep=\dimen162
+\@belowrulesep=\dimen163
+\@thisruleclass=\count196
+\@lastruleclass=\count197
+\@thisrulewidth=\dimen164
+) (/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2020/09/09 v1.2b Enhanced LaTeX Graphics (DPC,SPQR)
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2020/08/30 v1.4c Standard LaTeX Graphics (DPC,SPQR)
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/graphics/trig.sty
 Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
 )
-(/usr/local/texlive/2019/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/graphics-cfg/graphics.cf
+g
 File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
-Package graphics Info: Driver file: pdftex.def on input line 99.
+Package graphics Info: Driver file: pdftex.def on input line 105.
 )
-\Gin@req@height=\dimen124
-\Gin@req@width=\dimen125
+\Gin@req@height=\dimen165
+\Gin@req@width=\dimen166
+) (/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/grffile/grffile.sty
+Package: grffile 2019/11/11 v2.1 Extended file name support for graphics (legac
+y)
+Package grffile Info: This package is an empty stub for compatibility on input 
+line 40.
+) (/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/titlesec/titlesec.sty
+Package: titlesec 2019/10/16 v2.13 Sectioning titles
+\ttl@box=\box52
+\beforetitleunit=\skip59
+\aftertitleunit=\skip60
+\ttl@plus=\dimen167
+\ttl@minus=\dimen168
+\ttl@toksa=\toks20
+\titlewidth=\dimen169
+\titlewidthlast=\dimen170
+\titlewidthfirst=\dimen171
+) (/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/natbib/natbib.sty
+Package: natbib 2010/09/13 8.31b (PWD, AO)
+\bibhang=\skip61
+\bibsep=\skip62
+LaTeX Info: Redefining \cite on input line 694.
+\c@NAT@ctr=\count198
 )
-(/usr/local/texlive/2019/texmf-dist/tex/latex/oberdiek/grffile.sty
-Package: grffile 2017/06/30 v1.18 Extended file name support for graphics (HO)
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/underscore/underscore.st
+y
+Package: underscore 2006/09/13
+LaTeX Info: Redefining \_ on input line 42.
+)
+\c@hypothesis=\count199
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/setspace/setspace.sty
+Package: setspace 2011/12/19 v6.7a set line spacing
+) (/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/hyperref/hyperref.sty
+Package: hyperref 2020-05-15 v7.00e Hypertext links for LaTeX
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
+Package: ltxcmds 2020-05-10 v1.25 LaTeX kernel commands for general use (HO)
+)
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.
+sty
+Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO
+)
 
-(/usr/local/texlive/2019/texmf-dist/tex/latex/oberdiek/kvoptions.sty
-Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
-
-(/usr/local/texlive/2019/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
-Package: ltxcmds 2016/05/16 v1.23 LaTeX kernel commands for general use (HO)
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/generic/infwarerr/infwarerr.st
+y
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
 )
-(/usr/local/texlive/2019/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
-Package: kvsetkeys 2016/05/16 v1.17 Key value parser (HO)
-
-(/usr/local/texlive/2019/texmf-dist/tex/generic/oberdiek/infwarerr.sty
-Package: infwarerr 2016/05/16 v1.4 Providing info/warning/error messages (HO)
-)
-(/usr/local/texlive/2019/texmf-dist/tex/generic/oberdiek/etexcmds.sty
-Package: etexcmds 2016/05/16 v1.6 Avoid name clashes with e-TeX commands (HO)
-
-(/usr/local/texlive/2019/texmf-dist/tex/generic/oberdiek/ifluatex.sty
-Package: ifluatex 2016/05/16 v1.4 Provides the ifluatex switch (HO)
-Package ifluatex Info: LuaTeX not detected.
-))))
-(/usr/local/texlive/2019/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
-Package: pdftexcmds 2018/09/10 v0.29 Utility functions of pdfTeX for LuaTeX (HO
-)
-Package pdftexcmds Info: LuaTeX not detected.
 Package pdftexcmds Info: \pdf@primitive is available.
 Package pdftexcmds Info: \pdf@ifprimitive is available.
 Package pdftexcmds Info: \pdfdraftmode found.
 )
-Package grffile Info: Option `multidot' is set to `true'.
-Package grffile Info: Option `extendedchars' is set to `false'.
-Package grffile Info: Option `space' is set to `true'.
-Package grffile Info: \Gin@ii of package `graphicx' fixed on input line 494.
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/generic/kvsetkeys/kvsetkeys.st
+y
+Package: kvsetkeys 2019/12/15 v1.18 Key value parser (HO)
 )
-(/usr/local/texlive/2019/texmf-dist/tex/latex/titlesec/titlesec.sty
-Package: titlesec 2016/03/21 v2.10.2 Sectioning titles
-\ttl@box=\box30
-\beforetitleunit=\skip52
-\aftertitleunit=\skip53
-\ttl@plus=\dimen126
-\ttl@minus=\dimen127
-\ttl@toksa=\toks26
-\titlewidth=\dimen128
-\titlewidthlast=\dimen129
-\titlewidthfirst=\dimen130
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/generic/kvdefinekeys/kvdefinek
+eys.sty
+Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
 )
-(/usr/local/texlive/2019/texmf-dist/tex/latex/natbib/natbib.sty
-Package: natbib 2010/09/13 8.31b (PWD, AO)
-\bibhang=\skip54
-\bibsep=\skip55
-LaTeX Info: Redefining \cite on input line 694.
-\c@NAT@ctr=\count107
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/generic/pdfescape/pdfescape.st
+y
+Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
+) (/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/hycolor/hycolor.sty
+Package: hycolor 2020-01-27 v1.10 Color options for hyperref/bookmark (HO)
 )
-(/usr/local/texlive/2019/texmf-dist/tex/latex/underscore/underscore.sty
-Package: underscore 2006/09/13
-LaTeX Info: Redefining \_ on input line 42.
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/letltxmacro/letltxmacro.
+sty
+Package: letltxmacro 2019/12/03 v1.6 Let assignment for LaTeX macros (HO)
+) (/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/auxhook/auxhook.sty
+Package: auxhook 2019-12-17 v1.6 Hooks for auxiliary files (HO)
+) (/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/kvoptions/kvoptions.st
+y
+Package: kvoptions 2020-10-07 v3.14 Key value format for package options (HO)
 )
-\c@hypothesis=\count108
-
-(/usr/local/texlive/2019/texmf-dist/tex/latex/setspace/setspace.sty
-Package: setspace 2011/12/19 v6.7a set line spacing
+\@linkdim=\dimen172
+\Hy@linkcounter=\count266
+\Hy@pagecounter=\count267
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/hyperref/pd1enc.def
+File: pd1enc.def 2020-05-15 v7.00e Hyperref: PDFDocEncoding definition (HO)
+Now handling font encoding PD1 ...
+... no UTF-8 mapping file for font encoding PD1
+) (/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/generic/intcalc/intcalc.sty
+Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
+) (/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/generic/etexcmds/etexcmds.st
+y
+Package: etexcmds 2019/12/15 v1.7 Avoid name clashes with e-TeX commands (HO)
 )
-(/usr/local/texlive/2019/texmf-dist/tex/latex/hyperref/hyperref.sty
-Package: hyperref 2018/11/30 v6.88e Hypertext links for LaTeX
-
-(/usr/local/texlive/2019/texmf-dist/tex/generic/oberdiek/hobsub-hyperref.sty
-Package: hobsub-hyperref 2016/05/16 v1.14 Bundle oberdiek, subset hyperref (HO)
-
-
-(/usr/local/texlive/2019/texmf-dist/tex/generic/oberdiek/hobsub-generic.sty
-Package: hobsub-generic 2016/05/16 v1.14 Bundle oberdiek, subset generic (HO)
-Package: hobsub 2016/05/16 v1.14 Construct package bundles (HO)
-Package hobsub Info: Skipping package `infwarerr' (already loaded).
-Package hobsub Info: Skipping package `ltxcmds' (already loaded).
-Package hobsub Info: Skipping package `ifluatex' (already loaded).
-Package hobsub Info: Skipping package `ifvtex' (already loaded).
-Package: intcalc 2016/05/16 v1.2 Expandable calculations with integers (HO)
-Package hobsub Info: Skipping package `ifpdf' (already loaded).
-Package hobsub Info: Skipping package `etexcmds' (already loaded).
-Package hobsub Info: Skipping package `kvsetkeys' (already loaded).
-Package: kvdefinekeys 2016/05/16 v1.4 Define keys (HO)
-Package hobsub Info: Skipping package `pdftexcmds' (already loaded).
-Package: pdfescape 2016/05/16 v1.14 Implements pdfTeX's escape features (HO)
-Package: bigintcalc 2016/05/16 v1.4 Expandable calculations on big integers (HO
-)
-Package: bitset 2016/05/16 v1.2 Handle bit-vector datatype (HO)
-Package: uniquecounter 2016/05/16 v1.3 Provide unlimited unique counter (HO)
-)
-Package hobsub Info: Skipping package `hobsub' (already loaded).
-Package: letltxmacro 2016/05/16 v1.5 Let assignment for LaTeX macros (HO)
-Package: hopatch 2016/05/16 v1.3 Wrapper for package hooks (HO)
-Package: xcolor-patch 2016/05/16 xcolor patch
-Package: atveryend 2016/05/16 v1.9 Hooks at the very end of document (HO)
-Package atveryend Info: \enddocument detected (standard20110627).
-Package: atbegshi 2016/06/09 v1.18 At begin shipout hook (HO)
-Package: refcount 2016/05/16 v3.5 Data extraction from label references (HO)
-Package: hycolor 2016/05/16 v1.8 Color options for hyperref/bookmark (HO)
-)
-(/usr/local/texlive/2019/texmf-dist/tex/latex/oberdiek/auxhook.sty
-Package: auxhook 2016/05/16 v1.4 Hooks for auxiliary files (HO)
-)
-\@linkdim=\dimen131
-\Hy@linkcounter=\count109
-\Hy@pagecounter=\count110
-
-(/usr/local/texlive/2019/texmf-dist/tex/latex/hyperref/pd1enc.def
-File: pd1enc.def 2018/11/30 v6.88e Hyperref: PDFDocEncoding definition (HO)
-)
-\Hy@SavedSpaceFactor=\count111
-
-(/usr/local/texlive/2019/texmf-dist/tex/latex/latexconfig/hyperref.cfg
-File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive
-)
-Package hyperref Info: Hyper figures OFF on input line 4519.
-Package hyperref Info: Link nesting OFF on input line 4524.
-Package hyperref Info: Hyper index ON on input line 4527.
-Package hyperref Info: Plain pages OFF on input line 4534.
-Package hyperref Info: Backreferencing OFF on input line 4539.
+\Hy@SavedSpaceFactor=\count268
+Package hyperref Info: Hyper figures OFF on input line 4464.
+Package hyperref Info: Link nesting OFF on input line 4469.
+Package hyperref Info: Hyper index ON on input line 4472.
+Package hyperref Info: Plain pages OFF on input line 4479.
+Package hyperref Info: Backreferencing OFF on input line 4484.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
-Package hyperref Info: Bookmarks ON on input line 4772.
-\c@Hy@tempcnt=\count112
-
-(/usr/local/texlive/2019/texmf-dist/tex/latex/url/url.sty
-\Urlmuskip=\muskip11
+Package hyperref Info: Bookmarks ON on input line 4717.
+\c@Hy@tempcnt=\count269
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/url/url.sty
+\Urlmuskip=\muskip16
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
-LaTeX Info: Redefining \url on input line 5125.
-\XeTeXLinkMargin=\dimen132
-\Fld@menulength=\count113
-\Field@Width=\dimen133
-\Fld@charsize=\dimen134
-Package hyperref Info: Hyper figures OFF on input line 6380.
-Package hyperref Info: Link nesting OFF on input line 6385.
-Package hyperref Info: Hyper index ON on input line 6388.
-Package hyperref Info: backreferencing OFF on input line 6395.
-Package hyperref Info: Link coloring OFF on input line 6400.
-Package hyperref Info: Link coloring with OCG OFF on input line 6405.
-Package hyperref Info: PDF/A mode OFF on input line 6410.
-LaTeX Info: Redefining \ref on input line 6450.
-LaTeX Info: Redefining \pageref on input line 6454.
-\Hy@abspage=\count114
-\c@Item=\count115
-\c@Hfootnote=\count116
+LaTeX Info: Redefining \url on input line 5076.
+\XeTeXLinkMargin=\dimen173
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/generic/bitset/bitset.sty
+Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
+
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/generic/bigintcalc/bigintcalc.
+sty
+Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO
+)
+))
+\Fld@menulength=\count270
+\Field@Width=\dimen174
+\Fld@charsize=\dimen175
+Package hyperref Info: Hyper figures OFF on input line 6347.
+Package hyperref Info: Link nesting OFF on input line 6352.
+Package hyperref Info: Hyper index ON on input line 6355.
+Package hyperref Info: backreferencing OFF on input line 6362.
+Package hyperref Info: Link coloring OFF on input line 6367.
+Package hyperref Info: Link coloring with OCG OFF on input line 6372.
+Package hyperref Info: PDF/A mode OFF on input line 6377.
+LaTeX Info: Redefining \ref on input line 6417.
+LaTeX Info: Redefining \pageref on input line 6421.
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/base/atbegshi-ltx.sty
+Package: atbegshi-ltx 2020/08/17 v1.0a Emulation of the original atbegshi packa
+ge
+with kernel methods
+)
+\Hy@abspage=\count271
+\c@Item=\count272
+\c@Hfootnote=\count273
 )
 Package hyperref Info: Driver (autodetected): hpdftex.
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/hyperref/hpdftex.def
+File: hpdftex.def 2020-05-15 v7.00e Hyperref driver for pdfTeX
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/base/atveryend-ltx.sty
+Package: atveryend-ltx 2020/08/19 v1.0a Emulation of the original atvery packag
+e
+with kernel methods
+)
+\Fld@listcount=\count274
+\c@bookmark@seq@number=\count275
 
-(/usr/local/texlive/2019/texmf-dist/tex/latex/hyperref/hpdftex.def
-File: hpdftex.def 2018/11/30 v6.88e Hyperref driver for pdfTeX
-\Fld@listcount=\count117
-\c@bookmark@seq@number=\count118
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/rerunfilecheck/rerunfile
+check.sty
+Package: rerunfilecheck 2019/12/05 v1.9 Rerun checks for auxiliary files (HO)
 
-(/usr/local/texlive/2019/texmf-dist/tex/latex/oberdiek/rerunfilecheck.sty
-Package: rerunfilecheck 2016/05/16 v1.8 Rerun checks for auxiliary files (HO)
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/generic/uniquecounter/uniqueco
+unter.sty
+Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
+)
 Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
-82.
+86.
 )
-\Hy@SectionHShift=\skip56
+\Hy@SectionHShift=\skip63
 )
-Package hyperref Info: Option `breaklinks' set `true' on input line 157.
-
+Package hyperref Info: Option `breaklinks' set `true' on input line 158.
 
 Package hyperref Warning: Option `bookmarks' has already been used,
-(hyperref)                setting the option has no effect on input line 157.
+(hyperref)                setting the option has no effect on input line 158.
 
-Package hyperref Info: Option `colorlinks' set `true' on input line 157.
-(/usr/local/texlive/2019/texmf-dist/tex/latex/placeins/placeins.sty
+Package hyperref Info: Option `colorlinks' set `true' on input line 158.
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/placeins/placeins.sty
 Package: placeins 2005/04/18  v 2.2
 )
-(./End-term-project-Yizhen.aux)
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdft
+ex.def
+File: l3backend-pdftex.def 2020-09-24 L3 backend support: PDF output (pdfTeX)
+\l__kernel_color_stack_int=\count276
+\l__pdf_internal_box=\box53
+) (./End-term-project-Yizhen.aux)
 \openout1 = `End-term-project-Yizhen.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 175.
-LaTeX Font Info:    ... okay on input line 175.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 175.
-LaTeX Font Info:    ... okay on input line 175.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 175.
-LaTeX Font Info:    ... okay on input line 175.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 175.
-LaTeX Font Info:    ... okay on input line 175.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 175.
-LaTeX Font Info:    ... okay on input line 175.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 175.
-LaTeX Font Info:    ... okay on input line 175.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 175.
-LaTeX Font Info:    ... okay on input line 175.
-LaTeX Font Info:    Try loading font information for T1+ppl on input line 175.
-
-(/usr/local/texlive/2019/texmf-dist/tex/latex/psnfss/t1ppl.fd
-File: t1ppl.fd 2001/06/04 font definitions for T1/ppl.
-)
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 176.
+LaTeX Font Info:    ... okay on input line 176.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 176.
+LaTeX Font Info:    ... okay on input line 176.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 176.
+LaTeX Font Info:    ... okay on input line 176.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 176.
+LaTeX Font Info:    ... okay on input line 176.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 176.
+LaTeX Font Info:    ... okay on input line 176.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 176.
+LaTeX Font Info:    ... okay on input line 176.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 176.
+LaTeX Font Info:    ... okay on input line 176.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 176.
+LaTeX Font Info:    ... okay on input line 176.
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -420,263 +358,207 @@ File: t1ppl.fd 2001/06/04 font definitions for T1/ppl.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-(/usr/local/texlive/2019/texmf-dist/tex/latex/ucs/ucsencs.def
-File: ucsencs.def 2011/01/21 Fixes to fontencodings LGR, T3
-)
-(/usr/local/texlive/2019/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
-[Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count119
-\scratchdimen=\dimen135
-\scratchbox=\box31
-\nofMPsegments=\count120
-\nofMParguments=\count121
-\everyMPshowfont=\toks27
-\MPscratchCnt=\count122
-\MPscratchDim=\dimen136
-\MPnumerator=\count123
-\makeMPintoPDFobject=\count124
-\everyMPtoPDFconversion=\toks28
-) (/usr/local/texlive/2019/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
-Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
+\big@size=\dimen176
 
-(/usr/local/texlive/2019/texmf-dist/tex/latex/oberdiek/grfext.sty
-Package: grfext 2016/05/16 v1.2 Manage graphics extensions (HO)
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-ba
+se.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/grfext/grfext.sty
+Package: grfext 2019/12/03 v1.3 Manage graphics extensions (HO)
 )
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
-38.
+85.
 Package grfext Info: Graphics extension search list:
 (grfext)             [.pdf,.png,.jpg,.mps,.jpeg,.jbig2,.jb2,.PDF,.PNG,.JPG,.JPE
 G,.JBIG2,.JB2,.eps]
-(grfext)             \AppendGraphicsExtensions on input line 456.
+(grfext)             \AppendGraphicsExtensions on input line 504.
 
-(/usr/local/texlive/2019/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/latexconfig/epstopdf-sys
+.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-\AtBeginShipoutBox=\box32
-Package hyperref Info: Link coloring ON on input line 175.
-
-(/usr/local/texlive/2019/texmf-dist/tex/latex/hyperref/nameref.sty
-Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
-
-(/usr/local/texlive/2019/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
-Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
+Package hyperref Info: Link coloring ON on input line 176.
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/hyperref/nameref.sty
+Package: nameref 2019/09/16 v2.46 Cross-referencing by name of section
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/refcount/refcount.sty
+Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 )
-\c@section@level=\count125
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/generic/gettitlestring/gettitl
+estring.sty
+Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-LaTeX Info: Redefining \ref on input line 175.
-LaTeX Info: Redefining \pageref on input line 175.
-LaTeX Info: Redefining \nameref on input line 175.
-
+\c@section@level=\count277
+)
+LaTeX Info: Redefining \ref on input line 176.
+LaTeX Info: Redefining \pageref on input line 176.
+LaTeX Info: Redefining \nameref on input line 176.
 (./End-term-project-Yizhen.out) (./End-term-project-Yizhen.out)
 \@outlinefile=\write4
 \openout4 = `End-term-project-Yizhen.out'.
 
-LaTeX Font Info:    Font shape `T1/ppl/bx/n' in size <11> not available
-(Font)              Font shape `T1/ppl/b/n' tried instead on input line 191.
-LaTeX Font Info:    Try loading font information for T1+phv on input line 191.
-
-(/usr/local/texlive/2019/texmf-dist/tex/latex/psnfss/t1phv.fd
-File: t1phv.fd 2001/06/04 scalable font definitions for T1/phv.
+LaTeX Font Info:    Trying to load font information for T1+phv on input line 19
+2.
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/psnfss/t1phv.fd
+File: t1phv.fd 2020/03/25 scalable font definitions for T1/phv.
 )
-LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <11> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 191.
-LaTeX Font Info:    Try loading font information for T1+cmtt on input line 214.
-
-
-(/usr/local/texlive/2019/texmf-dist/tex/latex/base/t1cmtt.fd
-File: t1cmtt.fd 2014/09/29 v2.5h Standard LaTeX font definitions
-)
-LaTeX Font Info:    Font shape `T1/ppl/bx/n' in size <10.95> not available
-(Font)              Font shape `T1/ppl/b/n' tried instead on input line 234.
-LaTeX Font Info:    Try loading font information for OT1+ppl on input line 247.
-
-
-(/usr/local/texlive/2019/texmf-dist/tex/latex/psnfss/ot1ppl.fd
+LaTeX Font Info:    Trying to load font information for OT1+ppl on input line 2
+46.
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/psnfss/ot1ppl.fd
 File: ot1ppl.fd 2001/06/04 font definitions for OT1/ppl.
 )
-LaTeX Font Info:    Try loading font information for OML+zplm on input line 247
-.
-
-(/usr/local/texlive/2019/texmf-dist/tex/latex/psnfss/omlzplm.fd
+LaTeX Font Info:    Trying to load font information for OML+zplm on input line 
+246.
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/psnfss/omlzplm.fd
 File: omlzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OML/zplm.
 )
-LaTeX Font Info:    Try loading font information for OMS+zplm on input line 247
-.
-
-(/usr/local/texlive/2019/texmf-dist/tex/latex/psnfss/omszplm.fd
+LaTeX Font Info:    Trying to load font information for OMS+zplm on input line 
+246.
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/psnfss/omszplm.fd
 File: omszplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMS/zplm.
 )
-LaTeX Font Info:    Try loading font information for OMX+zplm on input line 247
-.
-
-(/usr/local/texlive/2019/texmf-dist/tex/latex/psnfss/omxzplm.fd
+LaTeX Font Info:    Trying to load font information for OMX+zplm on input line 
+246.
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/psnfss/omxzplm.fd
 File: omxzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMX/zplm.
 )
-LaTeX Font Info:    Try loading font information for OT1+zplm on input line 247
-.
-
-(/usr/local/texlive/2019/texmf-dist/tex/latex/psnfss/ot1zplm.fd
+LaTeX Font Info:    Trying to load font information for OT1+zplm on input line 
+246.
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/psnfss/ot1zplm.fd
 File: ot1zplm.fd 2002/09/08 Fontinst v1.914 font definitions for OT1/zplm.
 )
-(/usr/local/texlive/2019/texmf-dist/tex/latex/ucs/data/uni-32.def
-File: uni-32.def 2013/05/13 UCS: Unicode data U+2000..U+20FF
-)
+
+LaTeX Warning: Command \textellipsis invalid in math mode on input line 250.
+
 <figs/unnamed-chunk-2.pdf, id=54, 469.755pt x 325.215pt>
 File: figs/unnamed-chunk-2.pdf Graphic file (type pdf)
 <use figs/unnamed-chunk-2.pdf>
-Package pdftex.def Info: figs/unnamed-chunk-2.pdf  used on input line 275.
+Package pdftex.def Info: figs/unnamed-chunk-2.pdf  used on input line 274.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-LaTeX Font Info:    Try loading font information for U+fplmbb on input line 299
-.
-
-(/usr/local/texlive/2019/texmf-dist/tex/latex/psnfss/ufplmbb.fd
+LaTeX Font Info:    Trying to load font information for U+fplmbb on input line 
+295.
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/psnfss/ufplmbb.fd
 File: ufplmbb.fd 2003/10/30 Fontinst v1.914 font definitions for U/fplmbb.
 ) [1
 
-{/usr/local/texlive/2019/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2 <./f
-igs/unnamed-chunk-2.pdf>]
-Overfull \hbox (8.00494pt too wide) in paragraph at lines 315--316
+{/Users/jeremydai/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
+] [2 <./figs/unnamed-chunk-2.pdf>] [3]
+Overfull \hbox (3.44249pt too wide) in paragraph at lines 311--314
 \T1/ppl/m/n/10.95 Based on the mod-els, we have a to-tal of five pa-ram-e-ters 
 to be es-ti-mated from the data: $\OML/zplm/m/it/10.95 ^^V[]\OT1/ppl/m/n/10.95 
 , \OML/zplm/m/it/10.95 ^^[[]\OT1/ppl/m/n/10.95 , \OML/zplm/m/it/10.95 ^^V[]\OT1
-/ppl/m/n/10.95 , \OML/zplm/m/it/10.95 ^^[[]\OT1/ppl/m/n/10.95 , \OML/zplm/m/it/
-10.95 ^^R$\T1/ppl/m/n/10.95 .
+/ppl/m/n/10.95 , \OML/zplm/m/it/10.95 ^^[[]^^R$\T1/ppl/m/n/10.95 .
  []
 
+LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 3
+31.
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/base/t1cmtt.fd
+File: t1cmtt.fd 2019/12/16 v2.5j Standard LaTeX font definitions
+)
 LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <10.95> not available
-(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 333.
-[3] [4]
-<figs/unnamed-chunk-6.pdf, id=96, 469.755pt x 325.215pt>
+(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 332.
+[4]
+<figs/unnamed-chunk-6.pdf, id=94, 469.755pt x 325.215pt>
 File: figs/unnamed-chunk-6.pdf Graphic file (type pdf)
 <use figs/unnamed-chunk-6.pdf>
-Package pdftex.def Info: figs/unnamed-chunk-6.pdf  used on input line 434.
+Package pdftex.def Info: figs/unnamed-chunk-6.pdf  used on input line 419.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-File: figs/unnamed-chunk-6.pdf Graphic file (type pdf)
-<use figs/unnamed-chunk-6.pdf>
-Package pdftex.def Info: figs/unnamed-chunk-6.pdf  used on input line 435.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-
-Overfull \hbox (16.99884pt too wide) in paragraph at lines 434--436
-[][]
- []
-
-[5 <./figs/unnamed-chunk-6.pdf>]
-<figs/unnamed-chunk-7.pdf, id=110, 469.755pt x 325.215pt>
+<figs/unnamed-chunk-7.pdf, id=95, 469.755pt x 325.215pt>
 File: figs/unnamed-chunk-7.pdf Graphic file (type pdf)
 <use figs/unnamed-chunk-7.pdf>
-Package pdftex.def Info: figs/unnamed-chunk-7.pdf  used on input line 448.
+Package pdftex.def Info: figs/unnamed-chunk-7.pdf  used on input line 425.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<figs/unnamed-chunk-8.pdf, id=111, 469.755pt x 325.215pt>
+<figs/unnamed-chunk-8.pdf, id=96, 469.755pt x 325.215pt>
 File: figs/unnamed-chunk-8.pdf Graphic file (type pdf)
 <use figs/unnamed-chunk-8.pdf>
-Package pdftex.def Info: figs/unnamed-chunk-8.pdf  used on input line 459.
+Package pdftex.def Info: figs/unnamed-chunk-8.pdf  used on input line 442.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<figs/unnamed-chunk-9.pdf, id=112, 469.755pt x 325.215pt>
+<figs/unnamed-chunk-9.pdf, id=97, 469.755pt x 325.215pt>
 File: figs/unnamed-chunk-9.pdf Graphic file (type pdf)
 <use figs/unnamed-chunk-9.pdf>
-Package pdftex.def Info: figs/unnamed-chunk-9.pdf  used on input line 471.
+Package pdftex.def Info: figs/unnamed-chunk-9.pdf  used on input line 453.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
- [6] [7 <./figs/unnamed-chunk-7.pdf>] [8 <./figs/unnamed-chunk-8.pdf>] [9 <./fi
-gs/unnamed-chunk-9.pdf>]
-<figs/unnamed-chunk-13.pdf, id=162, 469.755pt x 325.215pt>
-File: figs/unnamed-chunk-13.pdf Graphic file (type pdf)
-<use figs/unnamed-chunk-13.pdf>
-Package pdftex.def Info: figs/unnamed-chunk-13.pdf  used on input line 532.
+[5] [6 <./figs/unnamed-chunk-6.pdf>] [7 <./figs/unnamed-chunk-7.pdf>] [8 <./fig
+s/unnamed-chunk-8.pdf>] [9 <./figs/unnamed-chunk-9.pdf>]
+<figs/unnamed-chunk-10.pdf, id=161, 469.755pt x 325.215pt>
+File: figs/unnamed-chunk-10.pdf Graphic file (type pdf)
+<use figs/unnamed-chunk-10.pdf>
+Package pdftex.def Info: figs/unnamed-chunk-10.pdf  used on input line 466.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-File: figs/unnamed-chunk-13.pdf Graphic file (type pdf)
-<use figs/unnamed-chunk-13.pdf>
-Package pdftex.def Info: figs/unnamed-chunk-13.pdf  used on input line 533.
+[10 <./figs/unnamed-chunk-10.pdf>]
+<figs/unnamed-chunk-14.pdf, id=178, 469.755pt x 325.215pt>
+File: figs/unnamed-chunk-14.pdf Graphic file (type pdf)
+<use figs/unnamed-chunk-14.pdf>
+Package pdftex.def Info: figs/unnamed-chunk-14.pdf  used on input line 523.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-
-Overfull \hbox (16.99884pt too wide) in paragraph at lines 532--534
-[][]
- []
-
-[10] [11 <./figs/unnamed-chunk-13.pdf>] [12]
-Overfull \hbox (152.66579pt too wide) in paragraph at lines 596--596
-[]\T1/cmtt/m/n/10.95 ## % Table created by stargazer v.5.2.2 by Marek Hlavac, H
-arvard University. E-mail: hlavac at fas.harvard.edu[] 
- []
-
-
-Overfull \hbox (724.16125pt too wide) in paragraph at lines 596--596
-[]\T1/cmtt/m/n/10.95 ## Statistic & \multicolumn{1}{c}{N} & \multicolumn{1}{c}{
-Mean} & \multicolumn{1}{c}{St. Dev.} & \multicolumn{1}{c}{Min} & \multicolumn{1
-}{c}{Pctl(25)} & \multicolumn{1}{c}{Pctl(75)} & \multicolumn{1}{c}{Max} \\[] 
- []
-
-<figs/unnamed-chunk-19.pdf, id=182, 469.755pt x 325.215pt>
-File: figs/unnamed-chunk-19.pdf Graphic file (type pdf)
-<use figs/unnamed-chunk-19.pdf>
-Package pdftex.def Info: figs/unnamed-chunk-19.pdf  used on input line 600.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[13] [14 <./figs/unnamed-chunk-19.pdf>]
-Overfull \hbox (152.66579pt too wide) in paragraph at lines 675--675
-[]\T1/cmtt/m/n/10.95 ## % Table created by stargazer v.5.2.2 by Marek Hlavac, H
-arvard University. E-mail: hlavac at fas.harvard.edu[] 
- []
-
-
-Overfull \hbox (724.16125pt too wide) in paragraph at lines 675--675
-[]\T1/cmtt/m/n/10.95 ## Statistic & \multicolumn{1}{c}{N} & \multicolumn{1}{c}{
-Mean} & \multicolumn{1}{c}{St. Dev.} & \multicolumn{1}{c}{Min} & \multicolumn{1
-}{c}{Pctl(25)} & \multicolumn{1}{c}{Pctl(75)} & \multicolumn{1}{c}{Max} \\[] 
- []
-
-<figs/unnamed-chunk-25.pdf, id=199, 469.755pt x 325.215pt>
-File: figs/unnamed-chunk-25.pdf Graphic file (type pdf)
-<use figs/unnamed-chunk-25.pdf>
-Package pdftex.def Info: figs/unnamed-chunk-25.pdf  used on input line 679.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[15] [16 <./figs/unnamed-chunk-25.pdf>]
-<figs/unnamed-chunk-30.pdf, id=215, 469.755pt x 325.215pt>
-File: figs/unnamed-chunk-30.pdf Graphic file (type pdf)
-<use figs/unnamed-chunk-30.pdf>
-Package pdftex.def Info: figs/unnamed-chunk-30.pdf  used on input line 707.
+<figs/unnamed-chunk-15.pdf, id=179, 469.755pt x 325.215pt>
+File: figs/unnamed-chunk-15.pdf Graphic file (type pdf)
+<use figs/unnamed-chunk-15.pdf>
+Package pdftex.def Info: figs/unnamed-chunk-15.pdf  used on input line 529.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 
-Overfull \hbox (16.99884pt too wide) in paragraph at lines 707--710
-[][]
- []
+LaTeX Warning: Command \textellipsis invalid in math mode on input line 551.
 
-[17 <./figs/unnamed-chunk-30.pdf>]
+[11] [12 <./figs/unnamed-chunk-14.pdf>] [13 <./figs/unnamed-chunk-15.pdf>]
+
+LaTeX Warning: Command \textellipsis invalid in math mode on input line 572.
+
+<figs/unnamed-chunk-21.pdf, id=206, 469.755pt x 325.215pt>
+File: figs/unnamed-chunk-21.pdf Graphic file (type pdf)
+<use figs/unnamed-chunk-21.pdf>
+Package pdftex.def Info: figs/unnamed-chunk-21.pdf  used on input line 596.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[14] [15 <./figs/unnamed-chunk-21.pdf>]
+
+LaTeX Warning: Command \textellipsis invalid in math mode on input line 649.
+
+<figs/unnamed-chunk-27.pdf, id=223, 469.755pt x 325.215pt>
+File: figs/unnamed-chunk-27.pdf Graphic file (type pdf)
+<use figs/unnamed-chunk-27.pdf>
+Package pdftex.def Info: figs/unnamed-chunk-27.pdf  used on input line 673.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[16] [17 <./figs/unnamed-chunk-27.pdf>]
+<figs/unnamed-chunk-32.pdf, id=240, 469.755pt x 325.215pt>
+File: figs/unnamed-chunk-32.pdf Graphic file (type pdf)
+<use figs/unnamed-chunk-32.pdf>
+Package pdftex.def Info: figs/unnamed-chunk-32.pdf  used on input line 704.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+LaTeX Font Info:    Trying to load font information for TS1+ppl on input line 7
+18.
+(/Users/jeremydai/Library/TinyTeX/texmf-dist/tex/latex/psnfss/ts1ppl.fd
+File: ts1ppl.fd 2001/06/04 font definitions for TS1/ppl.
+) [18 <./figs/unnamed-chunk-32.pdf>]
 No file End-term-project-Yizhen.bbl.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 723.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 723.
 (./End-term-project-Yizhen.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 723.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 723.
 Package rerunfilecheck Info: File `End-term-project-Yizhen.out' has not changed
 .
-(rerunfilecheck)             Checksum: 6990CA787898089000563AA5AD393B51;754.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 723.
+(rerunfilecheck)             Checksum: 9C1E22744715D46B68D180A6BF85230A;723.
  ) 
 Here is how much of TeX's memory you used:
- 8398 strings out of 492616
- 123252 string characters out of 6129482
- 231711 words of memory out of 5000000
- 12101 multiletter control sequences out of 15000+600000
- 30316 words of font info for 65 fonts, out of 8000000 for 9000
- 1141 hyphenation exceptions out of 8191
- 36i,6n,33p,433b,369s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2019/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}
-{/usr/local/texlive/2019/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/tex
-live/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texl
-ive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texliv
-e/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive
-/2019/texmf-dist/fonts/type1/public/mathpazo/fplmbb.pfb></usr/local/texlive/201
-9/texmf-dist/fonts/type1/public/mathpazo/fplmri.pfb></usr/local/texlive/2019/te
-xmf-dist/fonts/type1/public/cm-super/sfit1095.pfb></usr/local/texlive/2019/texm
-f-dist/fonts/type1/public/cm-super/sftt1095.pfb></usr/local/texlive/2019/texmf-
-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2019/texmf-dist/fo
-nts/type1/urw/palatino/uplb8a.pfb></usr/local/texlive/2019/texmf-dist/fonts/typ
-e1/urw/palatino/uplr8a.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/urw/
-palatino/uplri8a.pfb>
-Output written on End-term-project-Yizhen.pdf (17 pages, 456899 bytes).
+ 7398 strings out of 481865
+ 115166 string characters out of 5930177
+ 421959 words of memory out of 5000000
+ 23470 multiletter control sequences out of 15000+600000
+ 559446 words of font info for 78 fonts, out of 8000000 for 9000
+ 14 hyphenation exceptions out of 8191
+ 66i,6n,72p,442b,363s stack positions out of 5000i,500n,10000p,200000b,80000s
+ </Users/jeremydai/Library/TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/ecit
+1095.600pk> </Users/jeremydai/Library/TinyTeX/texmf-var/fonts/pk/ljfour/jknappe
+n/ec/ectt1095.600pk>{/Users/jeremydai/Library/TinyTeX/texmf-dist/fonts/enc/dvip
+s/base/8r.enc}</Users/jeremydai/Library/TinyTeX/texmf-dist/fonts/type1/public/a
+msfonts/cm/cmmi10.pfb></Users/jeremydai/Library/TinyTeX/texmf-dist/fonts/type1/
+public/amsfonts/cm/cmr10.pfb></Users/jeremydai/Library/TinyTeX/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmsy10.pfb></Users/jeremydai/Library/TinyTeX/texmf-di
+st/fonts/type1/public/mathpazo/fplmbb.pfb></Users/jeremydai/Library/TinyTeX/tex
+mf-dist/fonts/type1/public/mathpazo/fplmri.pfb></Users/jeremydai/Library/TinyTe
+X/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></Users/jeremydai/Library/Tiny
+TeX/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></Users/jeremydai/Library/Ti
+nyTeX/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></Users/jeremydai/Library/
+TinyTeX/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
+Output written on End-term-project-Yizhen.pdf (18 pages, 479047 bytes).
 PDF statistics:
- 277 PDF objects out of 1000 (max. 8388607)
- 226 compressed objects within 3 object streams
- 48 named destinations out of 1000 (max. 500000)
- 142 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 422 PDF objects out of 1000 (max. 8388607)
+ 251 compressed objects within 3 object streams
+ 56 named destinations out of 1000 (max. 500000)
+ 152 words of extra memory for PDF output out of 10000 (max. 10000000)
 

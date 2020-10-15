@@ -2,10 +2,10 @@
 \usepackage[left=1in,top=1in,right=1in,bottom=1in]{geometry}
 \newcommand*{\authorfont}{\fontfamily{phv}\selectfont}
 \usepackage[]{mathpazo}
-\usepackage{amsmath}
+
 
   \usepackage[T1]{fontenc}
-  \usepackage[utf8x]{inputenc}
+  \usepackage[utf8]{inputenc}
 
 
 
@@ -79,6 +79,7 @@
 \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs}
 
 \usepackage{graphicx,grffile}
 \makeatletter
@@ -148,7 +149,7 @@
 \hypersetup{breaklinks=true,
             bookmarks=true,
             pdfauthor={Yizhen Dai (s2395479)},
-             pdfkeywords = {pandoc, r markdown, knitr},  
+             pdfkeywords = {Advanced Statistical Computating, Final Project, Simulation},  
             pdftitle={End-term project: Advanced Statistical Computing 2020},
             colorlinks=true,
             citecolor=blue,
@@ -207,14 +208,12 @@
 
     \vskip 8.5pt % \small 
 
-\noindent This document provides an introduction to R Markdown, argues for its
-benefits, and presents a sample manuscript template intended for an
-academic audience. I include basic syntax to R Markdown and a minimal
-working example of how the analysis itself can be conducted within R
-with the \texttt{knitr} package.
+\noindent This report is the result of the efforts for the final exam/project of
+Advanced Statistical Computating. The goal of this project is to analyze
+the cost and the benefit of a re-insruance policy through simulation.
 
 
-\vskip 8.5pt \noindent \emph{Keywords}: pandoc, r markdown, knitr \par
+\vskip 8.5pt \noindent \emph{Keywords}: Advanced Statistical Computating, Final Project, Simulation \par
 
     \hbox{\vrule height .2pt width 39.14pc}
 
@@ -244,14 +243,14 @@ liability insurance} (PLI) and
 compensation} (WC), were affected by a huge claim from one client during
 the last year. Therefore, ANV comes to a reinsurance company for an
 insurance policy. To put the problem in a mathematical format, we define
-the following notation: - \(X_1\): the loss incurred for PLI from ANV
-clients (in million euros); - \(X_2\): the loss incurred for WC from ANV
-clients (in million euros); - \(t\): the threshold set by the
+the following notation: * \(X_1\): the loss incurred for PLI from ANV
+clients (in million euros); * \(X_2\): the loss incurred for WC from ANV
+clients (in million euros); * \(t\): the threshold set by the
 reinsurance company (in million euros). For some threshold
 \(t = 100,110,…,200\), if the total loss incurred for PLI and WC from a
 certain client exceeds \(t\), ANV pays the claim themselves; Otherwise,
-the reinsurance company pays the claim; - \(V(t)\): the expected
-over-threshold claims, which is equal to \(E[(X_1+X_2)1(X_1+X_2>t)]\); -
+the reinsurance company pays the claim; * \(V(t)\): the expected
+over-threshold claims, which is equal to \(E[(X_1+X_2)1(X_1+X_2>t)]\); *
 \(P(t)\): the price that reinsurance company asks. \(P(t)\) depends on
 the threshold \(t\) as \(P(t)=40000 * e^{-t/7}\).
 
@@ -263,21 +262,18 @@ of ANV during last year. With limited data available, we use statistical
 modeling to approximate \(V(t)\) and therefore determine if
 \(V(t) > P(t)\).
 
-\hypertarget{data-explorative-analysis}{%
-\subsection{Data Explorative analysis}\label{data-explorative-analysis}}
+\hypertarget{models}{%
+\subsection{Models}\label{models}}
 
 \(X_1\) and \(X_2\) are positively correlated. The correlation between
 \(X_1\) and \(X_2\) is 0.528. The linear regression line (in red) and
-the \emph{LOWESS} smoother line (in blue) is shown below.
+the \emph{LOWESS} smoother line (in blue) is shown below in Figure 1.
 
 \begin{figure}
 \centering
 \includegraphics{figs/unnamed-chunk-2.pdf}
 \caption{The relationship between X1 and X2}
 \end{figure}
-
-\hypertarget{models}{%
-\subsection{Models}\label{models}}
 
 In order to reflect the dependence in the data, we cannot simulate
 \(X_1\) and \(X_2\) separately. We use a Copula model to model the joint
@@ -296,11 +292,11 @@ which are the marginal functions of \(f_{X_{1}}\) and \(f_{X_{2}}\);
 
 Preliminary experiments suggested the following parametric models:
 
-$f_{X_{1}}( \cdot  ; \mu_{1}, \sigma_{1})  \sim     \text{Lognormal} (\mu_{1}, \sigma_{1}), \mu_{1} \in \mathbb{R}, \sigma_{1}>0$
+\(f_{X_{1}}\left(\cdot ; \mu_{1}, \sigma_{1}\right) \sim \textrm{Lognormal} \left(\mu_{1}, \sigma_{1}\right), \mu_{1} \in \mathbb{R}, \sigma_{1}>0\)
 
-$f_{X_{2}}( \cdot ;  \mu_{2}, \sigma_{2})  \sim     \text{Lognormal} (\mu_{2}, \sigma_{2}), \mu_{2} \in \mathbb{R}, \sigma_{2}>0$
+\(f_{X_{2}}\left(\cdot ; \mu_{2}, \sigma_{2}\right) \sim \textrm{Lognormal} \left(\mu_{2}, \sigma_{2}\right), \mu_{2} \in \mathbb{R}, \sigma_{2}>0\)
 
-$c(\cdot ; \theta)   \sim      \operatorname{Joe}(\theta), \theta \geq 1$
+\(c(\cdot ; \theta) \sim \textrm{Joe}(\theta), \theta \geq 1\)
 
 where a Lognormal distribution is for a random variable whose logarithm
 is normally distributed; a Joe distribution is one of the most prominent
@@ -312,18 +308,21 @@ bivariate Archimedean copulas in Copula models.
 \hypertarget{parameter-estimates}{%
 \subsection{Parameter Estimates}\label{parameter-estimates}}
 
-Based on the models, we have a total of five parameters to be estimated from the data: $\mu_{1}, \sigma_{1},\mu_{2},\sigma_{2},\theta $. The maximum likelihood estimation is used to estimate these parameters.
+Based on the models, we have a total of five parameters to be estimated
+from the data: \(\mu_{1},\sigma_{1},\mu_{2},\sigma_{2}\theta\). The
+maximum likelihood estimation is used to estimate these parameters.
 
-First, we estimate $\mu_{1}, \sigma_{1},\mu_{2},\sigma_{2}$ by finding the values that can maximize the sum of log density of the
-observed data so the data is most probable under our model assumption
-$f_{X_{1}}, f_{X_{2}}$. To speed up the optimization, we can use the
+First, we estimate \(\mu_{1},\sigma_{1},\mu_{2},\sigma_{2}\) by finding
+the values that can maximize the sum of log density of the observed data
+so the data is most probable under our model assumption
+\(f_{X_{1}},f_{X_{2}}\). To speed up the optimization, we can use the
 sample mean and sample standard deviation of the observed data on the
 log scale.
 
 Afterwards, we estimate \(\theta\) using the probability integral
 transforms of the observed data. Such transforms are not observed get
-pseudo-observations by pluging in the estimated
-\(\mu_{1}, \sigma_{1},\mu_{2},\sigma_{2}\). It might work if our
+pseudo-observations by plugging in the estimated
+\(\mu_{1},\sigma_{1},\mu_{2},\sigma_{2}\). It might work if our
 estimated parameters are close to the true parameters.
 
 The codes for parameter estimates are shown below.
@@ -331,9 +330,12 @@ The codes for parameter estimates are shown below.
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{get_theta <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(x1, x2, est1, est2) \{}
-    \CommentTok{############################## This function estimate theta using pseudo-observations x1 and x2 are the}
-    \CommentTok{############################## observed data est1 and est2 are the estimated parameters of lognormal}
-    \CommentTok{############################## distribution}
+    \CommentTok{### This function estimate theta using pseudo-observations}
+    
+    \CommentTok{### x1 and x2 are the observed data}
+    
+    \CommentTok{### est1 and est2 are the estimated parameters of lognormal distribution}
+    
     
     \CommentTok{### get u1 and u2 based on the estimated mu and sigma}
 \NormalTok{    u1 <-}\StringTok{ }\KeywordTok{plnorm}\NormalTok{(x1, }\DataTypeTok{meanlog =}\NormalTok{ est1[}\DecValTok{1}\NormalTok{], }\DataTypeTok{sdlog =}\NormalTok{ est1[}\DecValTok{2}\NormalTok{])}
@@ -348,8 +350,9 @@ The codes for parameter estimates are shown below.
 
 
 \NormalTok{estimate <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(x1, x2) \{}
-    \CommentTok{############################## This function estimate the five parameters in our Copula model x1 and x2}
-    \CommentTok{############################## are the observed data}
+    \CommentTok{### This function estimate the five parameters in our Copula model}
+    
+    \CommentTok{### x1 and x2 are the observed data}
     
 \NormalTok{    meanlog <-}\StringTok{ }\KeywordTok{sapply}\NormalTok{(}\KeywordTok{list}\NormalTok{(}\KeywordTok{log}\NormalTok{(x1), }\KeywordTok{log}\NormalTok{(x2)), mean)}
 \NormalTok{    sdlog <-}\StringTok{ }\KeywordTok{sapply}\NormalTok{(}\KeywordTok{list}\NormalTok{(}\KeywordTok{log}\NormalTok{(x1), }\KeywordTok{log}\NormalTok{(x2)), sd)}
@@ -378,29 +381,8 @@ The codes for parameter estimates are shown below.
 \end{Highlighting}
 \end{Shaded}
 
-The estimated parameters are:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{est <-}\StringTok{ }\KeywordTok{estimate}\NormalTok{(x1,x2)}
-\NormalTok{est}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## $est1
-##       mu1    sigma1 
-## 1.9821375 0.5134642 
-## 
-## $est2
-##       mu2    sigma2 
-## 2.9968901 0.3108409 
-## 
-## $est3
-## [1] 1.608163
-\end{verbatim}
-
-\(\hat{\mu_{1}}=1.982, \hat{\sigma_{1}}=0.513,\hat{\mu_{2}}=2.997,\hat{\sigma_{2}}=0.311,\hat{\theta}=1.608\)
+The estimated parameters are
+\(\hat{\mu_{1}}= 1.982,\hat{\sigma_{1}}=0.513,\hat{\mu_{2}}=2.997,\hat{\sigma_{2}}=0.311,\hat{\theta}=1.608\).
 
 \hypertarget{simulated-data}{%
 \subsection{Simulated data}\label{simulated-data}}
@@ -410,14 +392,14 @@ the average cost \(V(t)\) over the years.
 
 To generate enough data, we need a function that simulates from the
 joint model for \((X_1,X_2)\) for a given set of parameters
-\((\mu_{1},\sigma_{1},\mu_{2},\sigma_{2},\theta)\). The function is
+\((\mu_{1}, \sigma_{1},\mu_{2},\sigma_{2},\theta)\). The function is
 shown below.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{rmycopula <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(n, mu1, sd1, mu2, sd2, theta) \{}
-    \CommentTok{############################## This function simulates n samples from a Joe copula with estimated}
-    \CommentTok{############################## parameters}
+    \CommentTok{### This function simulates n samples from a Joe copula with estimated}
+    \CommentTok{### parameters}
     
     \CommentTok{### use rCopula(n, joeCopula(theta)) to simulate u1 and u2}
 \NormalTok{    u <-}\StringTok{ }\KeywordTok{rCopula}\NormalTok{(n, }\KeywordTok{joeCopula}\NormalTok{(theta))  }\CommentTok{# u is a (n x 2) matrix}
@@ -429,53 +411,61 @@ shown below.
 \end{Shaded}
 
 To evaluate our estimated model, we can compare the simulated data using
-the above function with the observed data.
+the above function with the observed data. They are shown in Figure 2
+and Figure 3.
 
+\begin{figure}
+\centering
 \includegraphics{figs/unnamed-chunk-6.pdf}
-\includegraphics{figs/unnamed-chunk-6.pdf}
+\caption{Observed Data}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{figs/unnamed-chunk-7.pdf}
+\caption{Simulated Data}
+\end{figure}
 
 We can see the marginal and joint distributions of observed data and
 simulated data are similar, which is a good sign of our implementation.
 
 We can also check change in data distributions when we tune the
 parameters using our simulation function. Currently
-\(\hat{\mu_{1}},= 1.982,\hat{\sigma_{1}}=0.513,\hat{\mu_{2}}=2.997,\hat{\sigma_{2}}=0.311,\hat{\theta}=1.608\).
+\(\hat{\mu_{1}},= 1.982, \hat{\sigma_{1}}=0.513,\hat{\mu_{2}}=2.997,\hat{\sigma_{2}}=0.311,\hat{\theta}=1.608\).
 
-When we increase \(\theta\) to 4:
-
-\begin{figure}
-\centering
-\includegraphics{figs/unnamed-chunk-7.pdf}
-\caption{theta = 4}
-\end{figure}
-
+First, we increase \(\theta\) to 4. The results are shown in Figure 4.
 We can see with a bigger theta, the data are more correlated with
 smaller deviation from the linear regression line.
-
-Next, we check the distribution with bigger \(\mu_1,\mu_2: 3, 4\)
 
 \begin{figure}
 \centering
 \includegraphics{figs/unnamed-chunk-8.pdf}
-\caption{mu1 = 3, mu2 = 4}
+\caption{theta = 4}
 \end{figure}
 
-We can see when we increase \(\mu_1,\mu_2\), the center of the contour
-also shifts in the same direction.
-
-Next, we check the distribution with bigger standard deviation of
-Lognormal distribution: \(\sigma_1 =\sigma_2 = 0.8\).
+Next, we check the distribution with bigger \(\mu_1=3, \mu_2=4\). The
+results are shown in Figure 5. We can see when we increase
+\(\mu_1,\mu_2\), the center of the contour also shifts in the same
+direction.
 
 \begin{figure}
 \centering
 \includegraphics{figs/unnamed-chunk-9.pdf}
-\caption{sigma1 = sigma2 = 0.8}
+\caption{mu1 = 3, mu2 = 4}
 \end{figure}
 
-We can see that the data is more dispersed, which is same as expected.
-We can also observe that a small change in \(\sigma_1, \sigma_2\) has a
-big influence on the extreme values. This is partly because the
-\(\sigma\) is on the log scale.
+Next, we check the distribution with bigger standard deviation of
+Lognormal distribution: \(\sigma_1 =\sigma_2 = 0.8\). The results are
+shown in Figure 6. We can see that the data is more dispersed, which is
+same as expected. We can also observe that a small change in
+\(\sigma_1, \sigma_2\) has a big influence on the extreme values. This
+is partly because the \(\sigma\) is on the log scale.
+
+\begin{figure}
+\centering
+\includegraphics{figs/unnamed-chunk-10.pdf}
+\caption{sigma1 = sigma2 = 0.8}
+\end{figure}
 
 \hypertarget{simulation-study}{%
 \section{Simulation Study}\label{simulation-study}}
@@ -493,10 +483,9 @@ points. The codes for accuracy analysis is shown below:
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{fit_n_times <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(n)\{}
-  \CommentTok{##############################}
-  \CommentTok{# This function estimates the parameters for 100 times and returns the RMSE}
-  \CommentTok{# n: the number of data points in each simulation run}
-  \CommentTok{##############################}
+  \CommentTok{### This function estimates the parameters for 100 times and returns the RMSE}
+  
+  \CommentTok{### n: the number of data points in each simulation run}
   
   \CommentTok{### simulate}
 \NormalTok{  sim_data <-}\StringTok{ }\KeywordTok{lapply}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{100}\NormalTok{,}\ControlFlowTok{function}\NormalTok{(x) }\KeywordTok{rmycopula}\NormalTok{(n, }\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\FloatTok{0.5}\NormalTok{, }\DecValTok{2}\NormalTok{))}
@@ -527,10 +516,19 @@ points. The codes for accuracy analysis is shown below:
 \end{Highlighting}
 \end{Shaded}
 
-The RMSE and average computing time are shown in the following figure.
+The average computing time and RMSE are shown in Figure 7 and Figure 8.
 
-\includegraphics{figs/unnamed-chunk-13.pdf}
-\includegraphics{figs/unnamed-chunk-13.pdf}
+\begin{figure}
+\centering
+\includegraphics{figs/unnamed-chunk-14.pdf}
+\caption{Average computing time vs number of runs}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{figs/unnamed-chunk-15.pdf}
+\caption{RMSE vs number of runs}
+\end{figure}
 
 We can see that required computation time increase linearly with the
 number of runs.
@@ -571,33 +569,31 @@ simulation runs.The codes are shown below
 \end{Highlighting}
 \end{Shaded}
 
-The table and the plot of \(V(t)\) for \(t=100,110,…,200\) based on
-\(10^5\) Monte Carlo samples are shown below.
+The plot of \(V(t)\) for \(t=100,110,…,200\) based on \(10^5\) Monte
+Carlo samples is shown in Figure 9.
 
-\begin{verbatim}
-## 
-## % Table created by stargazer v.5.2.2 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
-## % Date and time: Thu, Oct 15, 2020 - 02:34:26
-## \begin{table}[!htbp] \centering 
-##   \caption{P(t) and V(t)} 
-##   \label{} 
-## \begin{tabular}{@{\extracolsep{5pt}}lccccccc} 
-## \\[-1.8ex]\hline 
-## \hline \\[-1.8ex] 
-## Statistic & \multicolumn{1}{c}{N} & \multicolumn{1}{c}{Mean} & \multicolumn{1}{c}{St. Dev.} & \multicolumn{1}{c}{Min} & \multicolumn{1}{c}{Pctl(25)} & \multicolumn{1}{c}{Pctl(75)} & \multicolumn{1}{c}{Max} \\ 
-## \hline \\[-1.8ex] 
-## P(t) & 11 & 0.003 & 0.008 & 0.00000 & 0.00000 & 0.001 & 0.025 \\ 
-## V(t) & 11 & 0.004 & 0.009 & 0.000 & 0.000 & 0.004 & 0.031 \\ 
-## Std for V(t) & 11 & 0.357 & 0.646 & 0.000 & 0.000 & 0.479 & 1.832 \\ 
-## P(t) \textless  V(t) & 11 & 0.273 & 0.467 & 0 & 0 & 0.5 & 1 \\ 
-## \hline \\[-1.8ex] 
-## \end{tabular} 
-## \end{table}
-\end{verbatim}
+\begin{longtable}[]{@{}lrrrr@{}}
+\toprule
+& P(t) & V(t) & Std for V(t) & P(t) \textless{} V(t)\tabularnewline
+\midrule
+\endhead
+100 & 0.0249950 & 0.0305661 & 1.8318015 & 1\tabularnewline
+110 & 0.0059901 & 0.0108184 & 1.1414797 & 1\tabularnewline
+120 & 0.0014355 & 0.0074188 & 0.9579313 & 1\tabularnewline
+130 & 0.0003440 & 0.0000000 & 0.0000000 & 0\tabularnewline
+140 & 0.0000824 & 0.0000000 & 0.0000000 & 0\tabularnewline
+150 & 0.0000198 & 0.0000000 & 0.0000000 & 0\tabularnewline
+160 & 0.0000047 & 0.0000000 & 0.0000000 & 0\tabularnewline
+170 & 0.0000011 & 0.0000000 & 0.0000000 & 0\tabularnewline
+180 & 0.0000003 & 0.0000000 & 0.0000000 & 0\tabularnewline
+190 & 0.0000001 & 0.0000000 & 0.0000000 & 0\tabularnewline
+200 & 0.0000000 & 0.0000000 & 0.0000000 & 0\tabularnewline
+\bottomrule
+\end{longtable}
 
 \begin{figure}
 \centering
-\includegraphics{figs/unnamed-chunk-19.pdf}
+\includegraphics{figs/unnamed-chunk-21.pdf}
 \caption{P(t) vs t}
 \end{figure}
 
@@ -623,8 +619,8 @@ codes are shown below.
 
 
 \NormalTok{dmycopula <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(Y, est) \{}
-    \CommentTok{############################## This function calculate the density of the copula model at Y Y: the}
-    \CommentTok{############################## observed data with X1 and X2}
+    \CommentTok{### This function calculate the density of the copula model at Y Y: the}
+    \CommentTok{### observed data with X1 and X2}
 \NormalTok{    x1 <-}\StringTok{ }\NormalTok{Y[, }\DecValTok{1}\NormalTok{]}
 \NormalTok{    x2 <-}\StringTok{ }\NormalTok{Y[, }\DecValTok{2}\NormalTok{]}
 \NormalTok{    u1 <-}\StringTok{ }\KeywordTok{plnorm}\NormalTok{(x1, }\DataTypeTok{meanlog =}\NormalTok{ est}\OperatorTok{$}\NormalTok{est1[}\DecValTok{1}\NormalTok{], }\DataTypeTok{sdlog =}\NormalTok{ est}\OperatorTok{$}\NormalTok{est1[}\DecValTok{2}\NormalTok{])}
@@ -650,33 +646,31 @@ codes are shown below.
 \end{Highlighting}
 \end{Shaded}
 
-The table and the plot of \(V(t)\) for \(t=100,110,…,200\) based on
-\(10^5\) Monte Carlo samples and importance sampling are shown below.
+The plot of \(V(t)\) for \(t=100,110,…,200\) based on \(10^5\) Monte
+Carlo samples and importance sampling is shown in Figure 10.
 
-\begin{verbatim}
-## 
-## % Table created by stargazer v.5.2.2 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
-## % Date and time: Thu, Oct 15, 2020 - 02:34:26
-## \begin{table}[!htbp] \centering 
-##   \caption{P(t) and V(t) based on importance sampling} 
-##   \label{} 
-## \begin{tabular}{@{\extracolsep{5pt}}lccccccc} 
-## \\[-1.8ex]\hline 
-## \hline \\[-1.8ex] 
-## Statistic & \multicolumn{1}{c}{N} & \multicolumn{1}{c}{Mean} & \multicolumn{1}{c}{St. Dev.} & \multicolumn{1}{c}{Min} & \multicolumn{1}{c}{Pctl(25)} & \multicolumn{1}{c}{Pctl(75)} & \multicolumn{1}{c}{Max} \\ 
-## \hline \\[-1.8ex] 
-## P(t) & 11 & 0.003 & 0.008 & 0.00000 & 0.00000 & 0.001 & 0.025 \\ 
-## V(t) & 11 & 0.005 & 0.009 & 0.00002 & 0.0001 & 0.004 & 0.028 \\ 
-## Std of V(t) & 11 & 0.125 & 0.159 & 0.007 & 0.015 & 0.175 & 0.486 \\ 
-## P(t) \textless  V(t) & 11 & 1.000 & 0.000 & 1 & 1 & 1 & 1 \\ 
-## \hline \\[-1.8ex] 
-## \end{tabular} 
-## \end{table}
-\end{verbatim}
+\begin{longtable}[]{@{}lrrrr@{}}
+\toprule
+& P(t) & V(t) & Std of V(t) & P(t) \textless{} V(t)\tabularnewline
+\midrule
+\endhead
+100 & 0.0249950 & 0.0280979 & 0.4863116 & 1\tabularnewline
+110 & 0.0059901 & 0.0136015 & 0.3358949 & 1\tabularnewline
+120 & 0.0014355 & 0.0058363 & 0.2110803 & 1\tabularnewline
+130 & 0.0003440 & 0.0026723 & 0.1389756 & 1\tabularnewline
+140 & 0.0000824 & 0.0010283 & 0.0803192 & 1\tabularnewline
+150 & 0.0000198 & 0.0005796 & 0.0600486 & 1\tabularnewline
+160 & 0.0000047 & 0.0001392 & 0.0230496 & 1\tabularnewline
+170 & 0.0000011 & 0.0001029 & 0.0223332 & 1\tabularnewline
+180 & 0.0000003 & 0.0000362 & 0.0073649 & 1\tabularnewline
+190 & 0.0000001 & 0.0000231 & 0.0065468 & 1\tabularnewline
+200 & 0.0000000 & 0.0000209 & 0.0065346 & 1\tabularnewline
+\bottomrule
+\end{longtable}
 
 \begin{figure}
 \centering
-\includegraphics{figs/unnamed-chunk-25.pdf}
+\includegraphics{figs/unnamed-chunk-27.pdf}
 \caption{P(t) and V(t) vs t based on importance sampling}
 \end{figure}
 
@@ -688,9 +682,10 @@ regardless of the value of \(t\).
 \subsection{Confidence Intervals}\label{confidence-intervals}}
 
 Since we are not sure how confident we are about our estimates, we can
-to conduct bootstrapping to get confident intervals of \(V(t)\). The
-codes doing a bootstrap method to compute 80\% confidence intervals for
-\(V(t)\) are shown below.
+to conduct bootstrapping to get confidence intervals of \(V(t)\). The
+codes doing a bootstrap method (1000 times) to compute 80\% confidence
+intervals for \(V(t)\) are shown below. The results are shown in Figure
+11.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -704,13 +699,28 @@ codes doing a bootstrap method to compute 80\% confidence intervals for
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{figs/unnamed-chunk-30.pdf} \# Results As you can see
-from the graph, there is huge uncertainty in the values of \(P(t)\). We
-cannot draw a conclusion that \(V(t)\) will be smaller than \(P(t)\).
+\begin{figure}
+\centering
+\includegraphics{figs/unnamed-chunk-32.pdf}
+\caption{90\% Confidence Interval P(t) in dashed line and V(t)}
+\end{figure}
 
-The implementation does account for MC approximation error since we are
-doing bootstrapping. The implementation does not account for estimation
-error since we are relying on the existing data (648 data points).
+\hypertarget{results}{%
+\section{Results}\label{results}}
+
+As you can see from the Figure 11, there is huge uncertainty in the
+values of \(P(t)\). We cannot draw a conclusion that \(V(t)\) will be
+smaller than \(P(t)\) on a 90\% confidence level.
+
+\begin{itemize}
+\tightlist
+\item
+  The implementation does account for Monte Carlo approximation error
+  since we are doing bootstrapping.
+\item
+  The implementation does not account for estimation error since we are
+  relying on the existing data (648 data points).
+\end{itemize}
 
 
 

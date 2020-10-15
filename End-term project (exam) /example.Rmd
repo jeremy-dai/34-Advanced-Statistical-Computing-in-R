@@ -76,13 +76,15 @@ The implications for workflow are faily substantial. Authors can rather quickly 
 coefplot(M1)
 ```
 
+To reference a figure, use the syntax \@ref(label), where label is the figure label. So for the example above we’d use \@ref(fig:diamonds), which would result in a cross-reference like this:
+
 
 ## Table
 add `results="asis"` to the brackets to start the R code chunk. The ensuing output will look like this (though the table may come on the next page).
 
 ```{r, eval=F, tidy = TRUE, size="small", cache=FALSE, results="asis", message=F, warning=F}
 
-stargazer(M1, title="A Handsome Table", header=FALSE)
+kable(M1, title="A Handsome Table", header=T)
 ```
 
 ## Footnote

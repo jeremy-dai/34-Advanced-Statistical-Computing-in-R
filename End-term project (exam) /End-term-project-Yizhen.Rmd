@@ -305,13 +305,14 @@ Having a feeling of the simulation models, we fit all the five parameters to the
 
 ```{r ,tidy=T ,eval = F}
 B <- 10^5 # number of simulation runs
+t <- seq(100, 200, 10) # the thresholds
 
 ### simulated B data points to save time
 simulated_data <- rmycopula(B, est$est1[1], est$est1[2], est$est2[1], est$est2[2], est$est3)
 total_claim <- rowSums(simulated_data) # x1 + x2
 
 ### replace claims <= t with zeros
-V <- sapply(seq(100,200,10), function(t) 
+V <- sapply(t, function(t) 
   c(total_claim[total_claim > t], rep(0,sum(total_claim <= t))))
 
 Vt <- colMeans(V) # mean for each client
@@ -323,7 +324,7 @@ Vt_sd <- apply(V, 2, sd) # sd
 ### old methods -- Discard
 ### discard due to incorrect number of samples
 total_claim <- matrix(total_claim, nrow=k)
-V <- sapply(seq(100,200,10), function(t) 
+V <- sapply(t, function(t) 
   {apply(total_claim, 2, function(x) mean(x[x > t]))})
 V[is.na(V)] <- 0 # replace NA with zeros
 
@@ -333,7 +334,7 @@ for (i in 1:B){
   temp_data <- simulated_data[(k*(i-1)+1):(k*i),] # simulated data for current run
   total_claim <- rowSums(temp_data) 
   ### calculate V(t) for t=100,110,…,200
-  V_new <- sapply(seq(100,200,10), function(t) mean(total_claim[total_claim > t])) 
+  V_new <- sapply(t, function(t) mean(total_claim[total_claim > t])) 
   V <- rbind(V,V_new)
 }
 #################################### 
@@ -351,19 +352,19 @@ load('Vt.RData')
 The plot of $V(t)$ for $t=100,110,…,200$ based on $10^5$ Monte Carlo samples is shown in Figure 9.
 
 ```{r ,echo=F ,size='small', cache=FALSE, results="asis", message=F, warning=F}
-Pt <- 40000 * exp(-seq(100,200,10)/7)
+Pt <- 40000 * exp(-t/7)
 results <- cbind(Pt, Vt, Vt_sd, Pt < Vt)
 results <- as.data.frame(results)
 names(results) <- c('P(t)', 'V(t)', 'Std for V(t)', 'P(t) < V(t)')
-rownames(results) <- seq(100,200,10)
+rownames(results) <- t
 
 kable(results, title="P(t) and V(t) based on 10^5 simulutation samples", header=T)
 
 ```
 
 ```{r ,echo=F, fig.cap="P(t) vs t"}
-plot(seq(100,200,10), Vt, type='b', xlab = 'threshold(t)', ylab = 'P/V')
-lines(seq(100,200,10), Pt, type='b', col='red')
+plot(t, Vt, type='b', xlab = 'threshold(t)', ylab = 'P/V')
+lines(t, Pt, type='b', col='red')
 legend( x = 'topright', legend = c('Vt','Pt'), pch=1, 
         col = c('black', 'red'))
 ```
@@ -396,7 +397,7 @@ simulated_data2 <- rmycopula(B, est2$est1[1], est2$est1[2],
                est2$est2[1], est2$est2[2], est2$est3)
 total_claim2 <- rowSums(simulated_data2) 
 
-V2 <- sapply(seq(100,200,10), function(t) {
+V2 <- sapply(t, function(t) {
   ind <- (total_claim2 > t) # index for the data with total claim > t
   temp <- simulated_data2[ind,] # get Y for dmycopula
   ### importance sampling
@@ -418,7 +419,7 @@ for (i in 1:B){
   total_claim <- rowSums(Y) 
   ### importance sampling
   density_div <- dmycopula(Y, est) / dmycopula(Y, est2)
-  V_new <- sapply(seq(100,200,10), function(t) sum(total_claim[total_claim > t]*
+  V_new <- sapply(t, function(t) sum(total_claim[total_claim > t]*
                                                    density_div[total_claim > t])) 
   V2 <- rbind(V2,V_new)
 }
@@ -442,14 +443,14 @@ The plot of $V(t)$ for $t=100,110,…,200$ based on $10^5$ Monte Carlo samples a
 results2 <- cbind(Pt, Vt2, Vt_sd2, Pt < Vt2)
 results2 <- as.data.frame(results2)
 names(results2) <- c('P(t)', 'V(t)', 'Std of V(t)', 'P(t) < V(t)')
-rownames(results2) <- seq(100,200,10)
+rownames(results2) <- t
 
 kable(results2, title="P(t) and V(t) based on importance sampling", header=T)
 ```
 
 ```{r ,echo=F, fig.cap="P(t) and V(t) vs t  based on importance sampling"}
-plot(seq(100,200,10), Vt2, xlab ='threshold(t)', ylab ='P/V', type='b')
-lines(seq(100,200,10), Pt, type='b', col='red')
+plot(t, Vt2, xlab ='threshold(t)', ylab ='P/V', type='b')
+lines(t, Pt, type='b', col='red')
 legend( x = 'topright', legend = c('Vt','Pt'), pch=1, 
         col = c('black', 'red'))
 ```
@@ -459,7 +460,7 @@ The $V(t)$ based on importance sampling have values when $t>120$. Based on the r
 ## Confidence Intervals
 Since we are not sure how confident we are about our estimates, we can to conduct bootstrapping to get confidence intervals of $V(t)$. The codes doing a bootstrap method (1000 times) to compute 80% confidence intervals for $V(t)$ are shown below. The results are shown in Figure 11.
 
-```{r ,echo=F ,eval=F, tidy=T}
+```{r , eval=F, tidy=T}
 #### Empirical bootstrap algorithm
 b <- 1000 # number of bootstrap runs
 set.seed(1234)
@@ -475,15 +476,16 @@ for (i in 1:b) {
   est_boot <- estimate(x1_boot,x2_boot)
   ### create est2 for importance sampling
   est2_boot <- est_boot
-  est2_boot$est1[1] <- est2_boot$est1[1]+1
-  est2_boot$est2[1] <- est2_boot$est1[1]+0.1
+  est2_boot$est1[1] <- est2_boot$est1[1]+ 0.5 
+  est2_boot$est2[1] <- est2_boot$est1[1]+ 0.5
+  
 
   ### importance sampling
   simulated_data3 <- rmycopula(B, est2_boot$est1[1], est2_boot$est1[2], 
                est2_boot$est2[1], est2_boot$est2[2], est2_boot$est3)
   total_claim3 <- rowSums(simulated_data3) 
 
-  V_new <- sapply(seq(100,200,10), function(t) {
+  V_new <- sapply(t, function(t) {
     ind <- (total_claim3 > t) # index for the data with total claim > t
     temp <- simulated_data3[ind,] # get Y for dmycopula
     c(total_claim3[ind] * dmycopula(temp, est_boot)/dmycopula(temp, est2_boot), 
@@ -507,20 +509,20 @@ load('Vt_boot.RData')
 ```{r, tidy=T}
 ### construct the confident intervals
 mean_boot <- apply(V3, 2, mean)
-se_boot <- apply(V3, 2, sd) # Bootstrap se's of the coefficients
+quantile_boot <- apply(V3, 2, function(x) quantile(x, probs = c(0.1,0.9))) # quantile
 ### calculate 80% confidence intervals for V(t)
-CI_low <- mean_boot + se_boot * qnorm(0.1) 
-CI_low[CI_low < 0] <- 0
-CI_up  <- mean_boot + se_boot * qnorm(0.9)
+CI_low <- quantile_boot[1,]
+CI_up  <- quantile_boot[2,]
 ```
 
-```{r ,echo=F, fig.cap= '90% Confidence Interval P(t) in dashed line and V(t)' }
-plot(seq(100,200,10), mean_boot, xlab ='threshold(t)', ylab ='P/V', type='b')
-lines(seq(100,200,10), CI_low, lty=2)
-lines(seq(100,200,10), CI_up, lty=2)
-lines(seq(100,200,10), Pt,type='b', col='red')
-legend( x = 'topright', legend = c('Vt','Pt'), pch=1, 
+```{r ,echo=F, warning=F, fig.cap= '90% Confidence Interval P(t) in dashed line and V(t)' }
+plot(t, mean_boot, xlab ='threshold(t)', ylab ='P/V', ylim=c(0,0.05), type='b')
+lines(t, Pt,type='b', col='red')
+legend(x = 'topright', legend = c('Vt','Pt'), pch=1, 
         col = c('black', 'red'))
+polygon(c(t,rev(t)),c(CI_low,rev(CI_up)),col=rgb(.5, .5, .5,0.2))
+arrows(t, CI_low, t, CI_up, length=0.05, angle=90, code=3)
+
 ```
 
 # Results

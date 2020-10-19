@@ -40,7 +40,7 @@ library(WVPlots)
 library(gridExtra)
 library(tidyverse)
 library(knitr)
-tinytex::install_tinytex()
+#tinytex::install_tinytex()
 options(digits.secs = 3)
 ```
 
@@ -48,14 +48,15 @@ options(digits.secs = 3)
 # Introduction
 ## The goal
 This project aims at solving a modeling problem faced by an insurance company - ANV. Two of ANV business lines, [Professional liability insurance](https://en.wikipedia.org/wiki/Professional_liability_insurance) (PLI) and [Workers’ compensation](https://en.wikipedia.org/wiki/Workers%27_compensation) (WC), were affected by a huge claim from one client during the last year. Therefore, ANV comes to a reinsurance company for an insurance policy. To put the problem in a mathematical format, we define the following notation:
+
 * $X_1$: the loss incurred for PLI from ANV clients (in million euros);
 * $X_2$: the loss incurred for WC from ANV clients (in million euros);
-* $t$: the threshold set by the reinsurance company (in million euros). For some threshold $t = 100,110,…,200$, if the total loss incurred for PLI and WC from a certain client exceeds $t$, ANV pays the claim themselves; Otherwise, the reinsurance company pays the claim;
+* $t$: the threshold set by the reinsurance company (in million euros). For some threshold $t = 100,110,…,200$, if the total loss incurred for PLI and WC from a certain client exceeds $t$, ANV pays the claim themselves; Otherwise, the reinsurance company pays the claim.
+
 * $V(t)$: the expected over-threshold claims, which is equal to $E[(X_1+X_2)1(X_1+X_2>t)]$;
 * $P(t)$: the price that reinsurance company asks. $P(t)$ depends on the threshold $t$ as $P(t)=40000 * e^{-t/7}$.
 
-Our goal is to determine if ANV should buy such policy from the reinsurance company. Of course, the policy is only reasonable if the expected over-threshold claim exceeds the price: $V(t) > P(t)$. The data available is the loss incurred for PLI and
-WC for all the clients of ANV during last year. With limited data available, we use statistical modeling to approximate $V(t)$ and therefore determine if $V(t) > P(t)$.
+Our goal is to determine if ANV should buy such policy from the reinsurance company. Of course, the policy is only reasonable if the expected over-threshold claim exceeds the price: $V(t) > P(t)$. The data available is the loss incurred for PLI and WC for all the clients of ANV during last year. With limited data available, we use statistical modeling to approximate $V(t)$ and therefore determine if $V(t) > P(t)$.
 
 ## Models
 ```{r include=FALSE}
@@ -94,14 +95,25 @@ where a Lognormal distribution is for a random variable whose logarithm is norma
 
 # Methodolgy
 ## Parameter Estimates
-Based on the models, we have a total of five parameters to be estimated from the data: $\mu_{1},\sigma_{1},\mu_{2},\sigma_{2}\theta$. The maximum likelihood estimation is used to estimate these parameters. 
+Based on the models, we have a total of five parameters to be estimated from the data: $\mu_{1},\sigma_{1},\mu_{2},\sigma_{2},\theta$. The maximum likelihood estimation is used to estimate these parameters. The idea behind is to estimate these five parameters by maximizing likelihood function. 
 
 First, we estimate $\mu_{1},\sigma_{1},\mu_{2},\sigma_{2}$ by finding the values that can maximize the sum of log density of the observed data so the data is most probable under our model assumption $f_{X_{1}},f_{X_{2}}$. To speed up the optimization, we can use the sample mean and sample standard deviation of the observed data on the log scale.
 
-Afterwards, we estimate $\theta$ using the probability integral transforms of the observed data. Such transforms are not observed get pseudo-observations by plugging in the estimated $\mu_{1},\sigma_{1},\mu_{2},\sigma_{2}$. It might work if our estimated parameters are close to the true parameters.
+$\hat{\mu} = \arg \max_{\mu}\left\{\ln \left\{\prod f_{X}\left(  \mu \mid x\right)\right\}\right\}$
 
-The codes for parameter estimates are shown below. 
-```{r tidy=T}
+$\hat{\sigma} = \arg \max _{\sigma}\left\{\ln \left\{\prod f_{X}\left( \sigma \mid x \right)\right\}\right\}$
+
+Afterwards, we estimate $\theta$ using the probability integral transforms $u_1,u_2$ of the observed data $x_1,x_2$ using the cumulative distribution function of Lognormal distribution $F_{X_{1}},F_{X_{2}}$. Such transforms are not observed get pseudo-observations by plugging in the estimated $\mu_{1},\sigma_{1},\mu_{2},\sigma_{2}$. It would work if our estimated parameters are close to the true parameters.
+
+$u_1 = F_{X_{1}}(x_1 \mid \hat{\mu_1}, \hat{\sigma_1})$
+
+$u_2 = F_{X_{2}}(x_2 \mid \hat{\mu_2}, \hat{\sigma_2})$
+
+$\hat{\theta} = \arg \max _ {\theta}\left\{\ln \left\{\prod_{i} c\left(\theta \mid u_1, u_2\right)\right\}\right\}$
+
+```{r include=F}
+t <- seq(100, 200, 10) # the thresholds
+
 get_theta <- function(x1, x2, est1, est2){
   ### This function estimate theta using pseudo-observations
   
@@ -151,18 +163,18 @@ estimate <- function(x1,x2){
 ```
 
 
-```{r ,echo=F}
+```{r, echo=F}
 est <- estimate(x1,x2)
 ```
 
-The estimated parameters are $\hat{\mu_{1}}= 1.982,\hat{\sigma_{1}}=0.513,\hat{\mu_{2}}=2.997,\hat{\sigma_{2}}=0.311,\hat{\theta}=1.608$.
+The resulted estimated parameters are $\hat{\mu_{1}}= 1.982,\hat{\sigma_{1}}=0.513,\hat{\mu_{2}}=2.997,\hat{\sigma_{2}}=0.311,\hat{\theta}=1.608$.
 
 ## Simulated data
 We get the parameter estimates, then we can simulate enough data to get the average cost $V(t)$ over the years. 
 
-To generate enough data, we need a function that simulates from the joint model for $(X_1,X_2)$ for a given set of parameters $(\mu_{1}, \sigma_{1},\mu_{2},\sigma_{2},\theta)$. The function is shown below.
+To generate enough data, we need a function that simulates from the joint model for $(X_1,X_2)$ for a given set of parameters $(\mu_{1}, \sigma_{1},\mu_{2},\sigma_{2},\theta)$. We firstly simulate $u_1, u_2$ using the density function of Joe. Then we get $x_1, x_2$ based on Lognormal distributions.
 
-```{r tidy=T}
+```{r include=F}
 rmycopula <- function(n, mu1, sd1, mu2, sd2, theta){
   ### This function simulates n samples from a Joe copula with estimated parameters 
   
@@ -174,7 +186,7 @@ rmycopula <- function(n, mu1, sd1, mu2, sd2, theta){
 }
 ```
 
-To evaluate our estimated model, we can compare the simulated data using the above function with the observed data. They are shown in Figure 2 and Figure 3.
+To evaluate our estimated model, we can compare the simulated data with the observed data. They are shown in Figure 2 and Figure 3.
 
 ```{r ,echo=F, fig.cap="Observed Data"}
 set.seed(1234)
@@ -227,9 +239,9 @@ ScatterHist(simulated_data, 'x1', 'x2', title='sigma1 = sigma2 = 0.8', contour =
 
 To evaluate how accurate our parameter estimation can be, we conduct a simulation study assuming the following values for true parameters: $\mu_1=1,\sigma_1=2,\mu_2=3,\sigma_2=0.5,\theta=2$.
 
-We compute the RMSE for 100 simulation runs of 200,500 and 1000 data points. The codes for accuracy analysis is shown below:
+We compute the RMSE for 100 simulation runs of 200,500 and 1000 data points. 
 
-```{r, eval=F }
+```{r, include=F, eval=F}
 fit_n_times <- function(n){
   ### This function estimates the parameters for 100 times and returns the RMSE
   
@@ -271,18 +283,17 @@ save(time, RMSE, file = 'fit_n_times.RData')
 load('fit_n_times.RData')
 ```
 
-The average computing time and RMSE are shown in Figure 7 and Figure 8.
 
 ```{r ,echo=F ,fig.cap="Average computing time vs number of runs"}
 ### plot time
-plot(time, type ='b')
+plot(time, xlab = 'number of runs', type ='b')
 ```
 
 ```{r ,echo=F ,fig.cap="RMSE vs number of runs"}
 ### plot RMSE
 RMSE <- as.data.frame(RMSE)
 names(RMSE) <- c('mu1', 'sigma1', 'mu2', 'sigma2', 'theta')
-plot(NULL, xlab = 'number_of_runs', ylab = 'RMSE', 
+plot(NULL, xlab = 'number of runs', ylab = 'RMSE', 
      xlim=c(0, 10^3), ylim=c(min(RMSE), max(RMSE))) 
 number_of_runs <- c(2,5,10) * 100
 lines(number_of_runs, type ='b', RMSE$mu1, col='red')
@@ -294,18 +305,15 @@ legend( x = 'topright', legend = names(RMSE), pch=1,
         col = c('red', 'orange', 'black', 'blue', 'green'))
 ```
 
-We can see that required computation time increase linearly with the number of runs.
-
-RMSE gets smaller with more simulation runs. $\theta$ is the hardest parameter to estimate with largest RMSE.  $\mu_1, \sigma_1$ have higher RMSE than $\mu_2, \sigma_2$ separately. This is probably due to a lower standard deviation for $f_{X_2}$ (0.5 compared to 2 on the log scale). The distribution for $f_{X_1}$ is more dispersed, leading to a larger RMSE for $\mu_1, \sigma_1$.
+The average computing time and RMSE are shown in Figure 7 and Figure 8. We can see that required computation time increase linearly with the number of runs. RMSE gets smaller with more simulation runs. $\theta$ is the hardest parameter to estimate with largest RMSE.  $\mu_1, \sigma_1$ have higher RMSE than $\mu_2, \sigma_2$ separately. This is probably due to a lower standard deviation for $f_{X_2}$ (0.5 compared to 2 on the log scale). The distribution for $f_{X_1}$ is more dispersed, leading to a larger RMSE for $\mu_1, \sigma_1$.
 
 
 ## Working on the real data: V(t)
-Having a feeling of the simulation models, we fit all the five parameters to the observed data. We compute the expected payout of the reinsurance $V(t)$ using parametric Monte Carlo simulation (based on the estimated parameters). We use $10^5$ Monte Carlo samples and calculate expected $V(t), t=100,110,…,200$, as the average over the simulation runs.The codes are shown below
+Having a feeling of the simulation models, we fit all the five parameters to the observed data. We compute the expected payout of the reinsurance $V(t)$ using parametric Monte Carlo simulation (based on the estimated parameters). We use $10^5$ Monte Carlo samples and calculate expected $V(t), t=100,110,…,200$, as the average over the simulation runs.
 
 
-```{r ,tidy=T ,eval = F}
+```{r , include=F ,eval = F}
 B <- 10^5 # number of simulation runs
-t <- seq(100, 200, 10) # the thresholds
 
 ### simulated B data points to save time
 simulated_data <- rmycopula(B, est$est1[1], est$est1[2], est$est2[1], est$est2[2], est$est3)
@@ -317,27 +325,6 @@ V <- sapply(t, function(t)
 
 Vt <- colMeans(V) # mean for each client
 Vt_sd <- apply(V, 2, sd) # sd
-```
-
-```{r, include=F ,eval = F}
-#################################### 
-### old methods -- Discard
-### discard due to incorrect number of samples
-total_claim <- matrix(total_claim, nrow=k)
-V <- sapply(t, function(t) 
-  {apply(total_claim, 2, function(x) mean(x[x > t]))})
-V[is.na(V)] <- 0 # replace NA with zeros
-
-### discard due to slowness
-V <- c()
-for (i in 1:B){
-  temp_data <- simulated_data[(k*(i-1)+1):(k*i),] # simulated data for current run
-  total_claim <- rowSums(temp_data) 
-  ### calculate V(t) for t=100,110,…,200
-  V_new <- sapply(t, function(t) mean(total_claim[total_claim > t])) 
-  V <- rbind(V,V_new)
-}
-#################################### 
 ```
 
 ```{r ,include=F ,eval = F}
@@ -352,14 +339,14 @@ load('Vt.RData')
 The plot of $V(t)$ for $t=100,110,…,200$ based on $10^5$ Monte Carlo samples is shown in Figure 9.
 
 ```{r ,echo=F ,size='small', cache=FALSE, results="asis", message=F, warning=F}
-Pt <- 40000 * exp(-t/7)
+Pt <- 40000 * exp(0 - t / 7) 
 results <- cbind(Pt, Vt, Vt_sd, Pt < Vt)
 results <- as.data.frame(results)
 names(results) <- c('P(t)', 'V(t)', 'Std for V(t)', 'P(t) < V(t)')
 rownames(results) <- t
 
+print("P(t) and V(t) based on 10^5 simulutation samples")
 kable(results, title="P(t) and V(t) based on 10^5 simulutation samples", header=T)
-
 ```
 
 ```{r ,echo=F, fig.cap="P(t) vs t"}
@@ -372,14 +359,14 @@ legend( x = 'topright', legend = c('Vt','Pt'), pch=1,
 Based on the results, buying the reinsurance policy seems a good idea when $t\leq120$ since the policy price ($P(t)$)is smaller than the potential cost of not buying the policy ($V(t)$). However, the standard deviation is high for $V(t)$. This is because the claim exceeding $t$ is a highly improbable event. 
 
 ## Importance sampling
-To handle the highly improbable events, we use importance sampling. The codes are shown below.  
+To handle the highly improbable events, we must get more samples of claims exceeding $t$. Therefore, importance sampling comes to play. It is implemented by sampling from an alternative distribution that has higher densities in the region of our interest. In our case, the alternative density function is the Copula function with new $u_{1}^{\textrm{new}},u_{2}^{\textrm{new}}$. $u_{1}^{\textrm{new}} = \hat{u_1} + 1 ,u_{2}^{\textrm{new}}= \hat{u_2}+1$. We adjust our estimate using an adjustment factor, which is the ratio of the alternative distribution density and the original distribution density.
 
-```{r, eval=F ,tidy=T}
+```{r, eval=F ,include=F}
 ### new parameters est2 for importance sampling
 est2 <- est
 ### setting higher mu's to make the events more probable
-est2$est1[1] <- est2$est1[1] + 0.5
-est2$est2[1] <- est2$est2[1] + 0.5
+est2$est1[1] <- est2$est1[1] + 1
+est2$est2[1] <- est2$est2[1] + 1
 
 
 dmycopula <- function(Y, est) {
@@ -409,24 +396,6 @@ Vt_sd2 <- apply(V2, 2, sd) # sd
 
 ```
 
-```{r ,include=F ,eval = F}
-#################################### 
-### old methods -- Discard
-### discard due to incorrect number of samples
-V2 <- c()
-for (i in 1:B){
-  Y <- simulated_data2[(k*(i-1)+1):(k*i),] # get Y for dmycopula
-  total_claim <- rowSums(Y) 
-  ### importance sampling
-  density_div <- dmycopula(Y, est) / dmycopula(Y, est2)
-  V_new <- sapply(t, function(t) sum(total_claim[total_claim > t]*
-                                                   density_div[total_claim > t])) 
-  V2 <- rbind(V2,V_new)
-}
-Vt2 <- colMeans(V2)/k # mean
-Vt_sd2 <- apply(V2, 2, sd)/k #sd
-#################################### 
-```
 
 ```{r, include=F ,eval = F}
 save(Vt2, Vt_sd2, file = 'Vt2.RData')
@@ -437,7 +406,8 @@ rm(V2, simulated_data2, total_claim2)
 load('Vt2.RData')
 ```
 
-The plot of $V(t)$ for $t=100,110,…,200$ based on $10^5$ Monte Carlo samples and importance sampling is shown in Figure 10.
+The plot of $V(t)$ for $t=100,110,…,200$ based on $10^5$ Monte Carlo samples and importance sampling is shown in Figure 10. The $V(t)$ based on importance sampling have values when $t>120$. Based on the results, the company should buy the reinsurance policy regardless of the value of $t$ since $P(t) < V(t)$.
+
 
 ```{r ,echo=F, size='small', cache=FALSE, results="asis", message=F, warning=F}
 results2 <- cbind(Pt, Vt2, Vt_sd2, Pt < Vt2)
@@ -445,6 +415,7 @@ results2 <- as.data.frame(results2)
 names(results2) <- c('P(t)', 'V(t)', 'Std of V(t)', 'P(t) < V(t)')
 rownames(results2) <- t
 
+print("P(t) and V(t) based on importance sampling")
 kable(results2, title="P(t) and V(t) based on importance sampling", header=T)
 ```
 
@@ -455,12 +426,11 @@ legend( x = 'topright', legend = c('Vt','Pt'), pch=1,
         col = c('black', 'red'))
 ```
 
-The $V(t)$ based on importance sampling have values when $t>120$. Based on the results, the company should buy the reinsurance policy regardless of the value of $t$.
 
 ## Confidence Intervals
-Since we are not sure how confident we are about our estimates, we can to conduct bootstrapping to get confidence intervals of $V(t)$. The codes doing a bootstrap method (1000 times) to compute 80% confidence intervals for $V(t)$ are shown below. The results are shown in Figure 11.
+Since we are not sure how confident we are about our estimates, we can to conduct bootstrapping to get confidence intervals of $V(t)$. The codes doing a bootstrap method (1000 times) to compute 80% confidence intervals for $V(t)$ are shown below. After getting 1000 results, we can calculate the confidence intervals by getting the 10th and 90th percentiles. The Confidence Intervals for $V(t)$ are shown in Figure 11.
 
-```{r , eval=F, tidy=T}
+```{r , eval=F, include=F}
 #### Empirical bootstrap algorithm
 b <- 1000 # number of bootstrap runs
 set.seed(1234)
@@ -476,8 +446,8 @@ for (i in 1:b) {
   est_boot <- estimate(x1_boot,x2_boot)
   ### create est2 for importance sampling
   est2_boot <- est_boot
-  est2_boot$est1[1] <- est2_boot$est1[1]+ 0.5 
-  est2_boot$est2[1] <- est2_boot$est1[1]+ 0.5
+  est2_boot$est1[1] <- est2_boot$est1[1]+ 1 
+  est2_boot$est2[1] <- est2_boot$est1[1]+ 1
   
 
   ### importance sampling
@@ -497,7 +467,7 @@ for (i in 1:b) {
 ```
 
 
-```{r ,include=F ,eval = F}
+```{r ,include=F, eval = F}
 save(V3, file = 'Vt_boot.RData')
 rm(V_new, simulated_data3, total_claim3)
 ```
@@ -506,7 +476,7 @@ rm(V_new, simulated_data3, total_claim3)
 load('Vt_boot.RData')
 ```
  
-```{r, tidy=T}
+```{r, include=F}
 ### construct the confident intervals
 mean_boot <- apply(V3, 2, mean)
 quantile_boot <- apply(V3, 2, function(x) quantile(x, probs = c(0.1,0.9))) # quantile
@@ -515,20 +485,29 @@ CI_low <- quantile_boot[1,]
 CI_up  <- quantile_boot[2,]
 ```
 
+```{r ,echo=F, size='small', cache=FALSE, results="asis", message=F, warning=F}
+results3 <- cbind(Pt, CI_low, Pt < CI_low)
+results3 <- as.data.frame(results3)
+names(results3) <- c('P(t)', 'Lower bound of CI(V(t))', 'P(t) < V(t)_Lower')
+rownames(results3) <- t
+
+print("P(t) and the 90% confidence interval of V(t)")
+kable(results3, title="P(t) and the 90% confidence interval of V(t)", header=T)
+```
+
 ```{r ,echo=F, warning=F, fig.cap= '90% Confidence Interval P(t) in dashed line and V(t)' }
 plot(t, mean_boot, xlab ='threshold(t)', ylab ='P/V', ylim=c(0,0.05), type='b')
 lines(t, Pt,type='b', col='red')
 legend(x = 'topright', legend = c('Vt','Pt'), pch=1, 
         col = c('black', 'red'))
-polygon(c(t,rev(t)),c(CI_low,rev(CI_up)),col=rgb(.5, .5, .5,0.2))
+polygon(c(t,rev(t)),c(CI_low,rev(CI_up)),
+        border = rgb(.5, .5, .5, 0),
+        col= rgb(.5, .5, .5, 0.2))
 arrows(t, CI_low, t, CI_up, length=0.05, angle=90, code=3)
-
 ```
 
 # Results
-As you can see from the Figure 11, there is huge uncertainty in the values of $P(t)$. We cannot draw a conclusion that $V(t)$ will be smaller than $P(t)$ on a 90% confidence level.
+The implementation does account for Monte Carlo approximation error since we are doing bootstrapping. However, it does not account for estimation error since we are relying on the existing data (648 data points). 
 
-* The implementation does account for Monte Carlo approximation error since we are doing bootstrapping.
-* The implementation does not account for estimation error since we are relying on the existing data (648 data points). 
- 
+As seen from the Figure 11, there is huge uncertainty in the values of $P$ when $t$ is 100. We cannot draw a conclusion that $V$ will be smaller than $P$ on a 90% confidence level when $t$ is 100. However, when $t\geq110$, the $P$ is smaller than the lower bound of the confidence interval $V$, indicating that the company ANV should buy the re-insurance.
 
